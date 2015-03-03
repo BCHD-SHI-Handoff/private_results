@@ -251,7 +251,7 @@ if Rails.env == "development"
     })
 
     delivery = nil
-    if [true, false].sample
+    if [true, false].sample # Flip a coin if the results were delivered.
       delivery_method = ['phone', 'online'].sample
       delivery = Delivery.create({
          # Randomly pick a date up to 7 days after visit.
@@ -262,7 +262,7 @@ if Rails.env == "development"
       })
     end
 
-    tests_for_visit = tests.sample(rand(3))
+    tests_for_visit = tests.sample(rand(3) + 1)
     tests_for_visit.each do |test|
       status = test[:statuses].sample
       result = Result.create({
@@ -270,10 +270,9 @@ if Rails.env == "development"
         test_id: test[:test_id],
         positive: [status_positive, status_positive_and_treated, status_hepb_infected].include?(status),
         status_id: status.nil? ? nil : status.id,
-        delivery_id: delivery.nil? ? nil : delivery.id
+        delivery_id: delivery.nil? ? nil : delivery.id,
+        recorded_on: visited_on + 1.days
       })
     end
-
-    # Flip a coin if the results were delivered.
   end
 end

@@ -17,8 +17,10 @@ ActiveRecord::Schema.define(version: 20150301181749) do
   enable_extension "plpgsql"
 
   create_table "clinics", force: true do |t|
-    t.string "code", null: false
-    t.string "name", null: false
+    t.string   "code",       null: false
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "deliveries", force: true do |t|
@@ -29,11 +31,12 @@ ActiveRecord::Schema.define(version: 20150301181749) do
   end
 
   create_table "results", force: true do |t|
-    t.integer "visit_id",    null: false
-    t.integer "test_id",     null: false
-    t.boolean "positive"
-    t.integer "status_id"
-    t.integer "delivery_id"
+    t.integer  "visit_id",    null: false
+    t.integer  "test_id",     null: false
+    t.boolean  "positive"
+    t.integer  "status_id"
+    t.integer  "delivery_id"
+    t.datetime "recorded_on", null: false
   end
 
   add_index "results", ["delivery_id"], name: "index_results_on_delivery_id", using: :btree
@@ -41,11 +44,13 @@ ActiveRecord::Schema.define(version: 20150301181749) do
   add_index "results", ["visit_id"], name: "index_results_on_visit_id", using: :btree
 
   create_table "scripts", force: true do |t|
-    t.string  "name"
-    t.integer "test_id"
-    t.string  "language",  null: false
-    t.integer "status_id"
-    t.text    "message",   null: false
+    t.string   "name"
+    t.integer  "test_id"
+    t.string   "language",   null: false
+    t.integer  "status_id"
+    t.text     "message",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "scripts", ["status_id"], name: "index_scripts_on_status_id", using: :btree

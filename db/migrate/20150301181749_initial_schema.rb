@@ -14,11 +14,13 @@ class InitialSchema < ActiveRecord::Migration
       t.string :language, null: false
       t.belongs_to :status, index: true
       t.text :message, null: false
+      t.timestamps
     end
 
     create_table :clinics do |t|
       t.string :code, null: false, unique: true
       t.string :name, null: false, unique: true
+      t.timestamps
     end
 
     create_table :visits do |t|
@@ -42,6 +44,7 @@ class InitialSchema < ActiveRecord::Migration
       t.boolean :positive
       t.belongs_to :status
       t.belongs_to :delivery, index: true
+      t.datetime :recorded_on, null: false, index: true
     end
   end
 end
