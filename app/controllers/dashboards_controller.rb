@@ -8,7 +8,7 @@ class DashboardsController < ApplicationController
 
     @dashboard = {results_delivered: {}, percentage_delivered: {}, visits: {}}
     breakdowns.each do |symbol, time|
-      delivered = Result.where("recorded_on > ?", time).where.not(:delivery_id => nil).count
+      delivered = Result.where("recorded_on > ?", time).includes(:deliveries).where.not(:deliveries_results => {:result_id => nil}).count
       total = Result.where("recorded_on > ?", time).count
       @dashboard[:results_delivered][symbol] = delivered
       @dashboard[:percentage_delivered][symbol] = (100 * delivered.to_f / total).round(0)
