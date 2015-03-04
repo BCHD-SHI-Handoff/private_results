@@ -1,0 +1,86 @@
+<div class="patient_search_result">
+  <h3>
+    Patient: <%= visits.first.patient_number%>
+    <small>
+      has had
+      <span class="badge"><%= visits.length %></span>
+      Visits
+    </small>
+  </h3>
+
+  <% visits.each do |visit| %>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 visit">
+        <h4>
+          Visit date: <time><%= visit.visited_on.to_formatted_s(:long) %></time>
+          <small>
+            <%= time_ago_in_words(visit.visited_on) %>
+            ago
+            at <%= visit.clinic.name %>
+          </small>
+        </h4>
+
+        <div class="pull-right">
+          <div class="btn-group">
+            <%# <%= link_to providers_visit_detail_path(visit), class: 'btn btn-default' do %1> %>
+            <%#   <span class="glyphicon glyphicon-folder-open"></span> Details</a> %>
+            <%# <% end %1> %>
+          </div>
+        </div>
+
+        <table class="table table-condensed">
+          <thead>
+            <th>Test</th>
+            <th>Result</th>
+            <th>Delivery Status</th>
+          </thead>
+          <tbody>
+            <% visit.results.each do |result| %>
+              <tr>
+                <td><%= result.test.name %></td>
+                <td>
+                  <% if result.status.nil? %>
+                    <span class="label label-info">Unknown
+                  <% else %>
+                    <% if ['negative', 'immune'].include?(result.status.status.downcase) %>
+                      <span class="label label-success">
+                    <% elsif ['positive', 'hep b infected'].include?(result.status.status.downcase) %>
+                      <span class="label label-danger">
+                    <% elsif ['positive and treated', 'need vaccination'].include?(result.status.status.downcase) %>
+                      <span class="label label-warning">
+                    <% else %>
+                      <span class="label label-info">
+                    <% end %>
+                      <%= result.status.status %>
+                    </span>
+                    <% end %>
+                </td>
+                <td>
+                  <% if result.deliveries.length > 0 %>
+                    <span class="label label-primary">Delivered</span>
+                  <% else %>
+                    <span class="label label-warning">Not Delivered</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <table class="table table-striped">
+          <thead>
+            <th>Called at</th>
+            <th>Message</th>
+          </thead>
+          <tbody>
+            <% visit.results.map{|r| r.deliveries}.flatten.uniq do |delivery| %>
+              <tr>
+                <td><%= delivery.delivered_at.to_formatted_s(:long) %></td>
+                <td><%= delivery.message %></td>
+              </tr>
+            <% end %>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</div>

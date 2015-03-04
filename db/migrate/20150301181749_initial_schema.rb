@@ -43,8 +43,12 @@ class InitialSchema < ActiveRecord::Migration
       t.belongs_to :test, null: false, index: true
       t.boolean :positive
       t.belongs_to :status
-      t.belongs_to :delivery, index: true
       t.datetime :recorded_on, null: false, index: true
+    end
+
+    create_table :deliveries_results, id: false do |t|
+      t.belongs_to :delivery, index: true
+      t.belongs_to :result, index: true
     end
   end
 end

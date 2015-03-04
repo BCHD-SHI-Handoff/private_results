@@ -30,16 +30,22 @@ ActiveRecord::Schema.define(version: 20150301181749) do
     t.text     "message",           null: false
   end
 
+  create_table "deliveries_results", id: false, force: true do |t|
+    t.integer "delivery_id"
+    t.integer "result_id"
+  end
+
+  add_index "deliveries_results", ["delivery_id"], name: "index_deliveries_results_on_delivery_id", using: :btree
+  add_index "deliveries_results", ["result_id"], name: "index_deliveries_results_on_result_id", using: :btree
+
   create_table "results", force: true do |t|
     t.integer  "visit_id",    null: false
     t.integer  "test_id",     null: false
     t.boolean  "positive"
     t.integer  "status_id"
-    t.integer  "delivery_id"
     t.datetime "recorded_on", null: false
   end
 
-  add_index "results", ["delivery_id"], name: "index_results_on_delivery_id", using: :btree
   add_index "results", ["test_id"], name: "index_results_on_test_id", using: :btree
   add_index "results", ["visit_id"], name: "index_results_on_visit_id", using: :btree
 

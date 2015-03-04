@@ -265,14 +265,17 @@ if Rails.env == "development"
     tests_for_visit = tests.sample(rand(3) + 1)
     tests_for_visit.each do |test|
       status = test[:statuses].sample
-      result = Result.create({
+      result = Result.new({
         visit_id: visit.id,
         test_id: test[:test_id],
         positive: [status_positive, status_positive_and_treated, status_hepb_infected].include?(status),
         status_id: status.nil? ? nil : status.id,
-        delivery_id: delivery.nil? ? nil : delivery.id,
         recorded_on: visited_on + 1.days
       })
+      if !delivery.nil?
+        result.deliveries << delivery
+      end
+      result.save
     end
   end
 end

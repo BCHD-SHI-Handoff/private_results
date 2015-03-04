@@ -1,0 +1,47 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h1 class="page-header">
+    <span class="glyphicon glyphicon-user"></span>
+    Patients
+  </h1>
+
+  <div class="row">
+    <div class="col-sm-8 col-md-8">
+      <form accept-charset="UTF-8" action="/patients" class="new_patient_search ng-pristine ng-valid" id="new_patient_search" method="get">
+        <div class="input-group">
+          <input aria-required="true"
+            autofocus="autofocus"
+            class="form-control input-lg"
+            name="patient_number"
+            placeholder="Patient ID"
+            required="required"
+            type="search">
+
+          <span class="input-group-btn">
+            <button class="btn btn-lg" type="submit">
+              <span class="glyphicon glyphicon-search"></span>
+              Search
+            </button>
+          </span>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-8 col-md-8">
+      <% if @visits.nil? %>
+      <% elsif @visits.length == 0 %>
+        <div class="alert alert-danger" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign"></span>
+          Patient
+          <strong><%= @patient_number %></strong>
+          not found
+        </div>
+      <% else %>
+        <%= render partial: '/patient', locals: { visits: @visits } %>
+        <hr />
+      <% end %>
+    </div>
+  </div>
+</div>
