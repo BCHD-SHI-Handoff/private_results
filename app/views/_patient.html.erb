@@ -73,7 +73,7 @@
             <th>Message</th>
           </thead>
           <tbody>
-            <% visit.results.map{|r| r.deliveries}.flatten.uniq do |delivery| %>
+            <% visit.results.map{|r| r.deliveries}.flatten.uniq.each do |delivery| %>
               <tr>
                 <td><%= delivery.delivered_at.to_formatted_s(:long) %></td>
                 <td><%= delivery.message %></td>
