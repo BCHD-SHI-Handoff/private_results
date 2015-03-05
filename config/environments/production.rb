@@ -42,7 +42,9 @@ Rails.application.configure do
   # config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :info
+  # Following https://github.com/plataformatec/devise#password-reset-tokens-and-rails-logs
+  # which suggests setting it to warn to prevent tokens leaking out into logs.
+  config.log_level = :warn
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]

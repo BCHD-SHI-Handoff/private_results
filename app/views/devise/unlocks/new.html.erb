@@ -1,0 +1,28 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h1 class="page-header">
+    <span class="glyphicon glyphicon-lock"></span>
+    Resend Unlock Instructions
+  </h1>
+
+  <div class="row">
+  <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+    <%= devise_error_messages! %>
+      <div class="input-group">
+        <%= f.email_field :email,
+                          autofocus: true,
+                          class: 'form-control input-lg',
+                          placeholder: 'Email'%>
+
+        <span class="input-group-btn">
+          <button class="btn btn-lg" type="submit">
+            <span class="glyphicon glyphicon-exclamation-sign"></span> Resend unlock instructions
+          </button>
+        </span>
+      </div>
+
+  <% end %>
+  </div>
+
+  <br>
+  <%= render "devise/shared/links" %>
+</div>
