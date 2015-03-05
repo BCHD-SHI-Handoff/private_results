@@ -12,13 +12,13 @@
     </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-          <%# <% if current_user %1> %>
-          <%#   <li> %>
-          <%#     <%= link_to(:logout, :method => :delete) do %1> %>
-          <%#       <span class="glyphicon glyphicon-log-out"></span> Sign Out %>
-          <%#     <% end %1> %>
-          <%#   </li> %>
-          <%# <% end %1> %>
+          <% if user_signed_in? %>
+            <li>
+              <%= link_to(destroy_user_session_path, :method => :delete) do %>
+                <span class="glyphicon glyphicon-log-out"></span> Sign Out
+              <% end %>
+            </li>
+          <% end %>
         </ul>
       </div>
   </div>
