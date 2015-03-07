@@ -1,0 +1,4 @@
+var userRow = $('#users-table').find("[data-user-id='<%= @user.id %>']");
+userRow.fadeOut(400, function() {
+  userRow.remove();
+});

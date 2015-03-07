@@ -1,4 +1,4 @@
-<tr class="user">
+<tr class="user" data-user-id=<%= user.id %>>
   <td class="activation-status">
     <% if user.active? %>
       <span class="label label-info">Active</span>
@@ -10,19 +10,41 @@
   <td class="roles"><%= user.role %></td>
   <td class="actions">
     <div class="btn-group">
-      <% if user.active? %>
-        <a class="btn btn-default btn-sm" href="#">
-          <span class="glyphicon glyphicon-remove">Deactivate</span>
-        </a>
-      <% else %>
-        <a class="btn btn-default btn-sm" href="#">
-          <span class="glyphicon glyphicon-ok">Activate</span>
-        </a>
+      <%= simple_form_for user, remote: true do |f| %>
+        <%= f.input :active, :as => :hidden, :input_html => { :value => !user.active? }%>
+        <%=
+          button_tag(
+            type: 'submit',
+            class: "btn btn-default btn-sm",
+            onclick: "return confirm('Are you sure you want to #{user.active? ? 'deactivate' : 'activate'} #{user.email}?')"
+          ) do
+        %>
+          <% if user.active? %>
+            <span class="glyphicon glyphicon-remove">Deactivate</span>
+          <% else %>
+            <span class="glyphicon glyphicon-ok">Activate</span>
+          <% end %>
+        <% end %>
+        <button class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-envelope"></span> Reset Password
+        </button>
+        <%= link_to edit_user_path(user), class: 'btn btn-sm btn-default', remote: true do %>
+          <span class="glyphicon glyphicon-pencil"></span> Edit
+        <% end %>
       <% end %>
-      <a href="#" class="btn btn-default btn-sm">
-        <span class="glyphicon glyphicon-envelope"></span> Reset Password
-      </a>
     </div>
   </td>
+  <td class="delete">
+    <%= simple_form_for user, :method => :delete, remote: true do |f| %>
+      <%=
+        button_tag(
+          type: 'submit',
+          class: "btn btn-danger btn-sm",
+          onclick: "return confirm('Are you sure you want permanently remove #{user.email}?')"
+        ) do
+      %>
+        <i class="glyphicon glyphicon-remove"></i>
+      <% end %>
+    <% end %>
+  </td>
 </tr>
-

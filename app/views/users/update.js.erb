@@ -1,0 +1,3 @@
+var userRow = $('#users-table').find("[data-user-id='<%= @user.id %>']");
+userRow.replaceWith($("<%= j (render partial: "user", locals: {user: @user}) %>"));
+$('#editUserModal').modal('hide'); // When editing user from modal.

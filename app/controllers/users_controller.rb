@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   respond_to :html, :js
+  before_action :find_user, only: [:edit, :update, :destroy]
+
 
   def index
     @users = User.all
@@ -16,7 +18,19 @@ class UsersController < ApplicationController
     flash[:notice] = "Email sent to '#{@user.email}'."
   end
 
+  def update
+    @user.update_attributes(user_params)
+  end
+
+  def destroy
+    @user.destroy()
+  end
+
   def user_params
-    params.require(:user).permit(:email, :role)
+    params.require(:user).permit(:email, :role, :active)
+  end
+
+  def find_user
+    @user = User.find(params[:id])
   end
 end

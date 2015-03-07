@@ -1,5 +1,6 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
   <div id="new-user-form-container"></div>
+  <div id="edit-user-form-container"></div>
 
   <h1 class="page-header">
     <div class="pull-right">
@@ -16,8 +17,9 @@
       <thead>
         <th>Status</th>
         <th>Email</th>
-        <th>Roles</th>
+        <th>Role</th>
         <th>Actions</th>
+        <th>Delete</th>
       </thead>
       <tbody>
         <% @users.each do |user| %>
