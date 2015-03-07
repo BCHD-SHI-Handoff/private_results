@@ -1,0 +1,28 @@
+<tr class="user">
+  <td class="activation-status">
+    <% if user.active? %>
+      <span class="label label-info">Active</span>
+    <% else %>
+      <span class="label label-warning">Inactive</span>
+    <% end %>
+  </td>
+  <td class="email"><%= link_to user.email, user_path(user) %></td>
+  <td class="roles"><%= user.role %></td>
+  <td class="actions">
+    <div class="btn-group">
+      <% if user.active? %>
+        <a class="btn btn-default btn-sm" href="#">
+          <span class="glyphicon glyphicon-remove">Deactivate</span>
+        </a>
+      <% else %>
+        <a class="btn btn-default btn-sm" href="#">
+          <span class="glyphicon glyphicon-ok">Activate</span>
+        </a>
+      <% end %>
+      <a href="#" class="btn btn-default btn-sm">
+        <span class="glyphicon glyphicon-envelope"></span> Reset Password
+      </a>
+    </div>
+  </td>
+</tr>
+

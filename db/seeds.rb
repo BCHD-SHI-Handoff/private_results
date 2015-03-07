@@ -1,4 +1,4 @@
-user = User.create(email: "admin@example.com", password: "adminadmin", password_confirmation: "adminadmin")
+user = User.create(email: "admin@example.com", password: "adminadmin", password_confirmation: "adminadmin", role: 0, active: true)
 user.confirm!
 
 #######################

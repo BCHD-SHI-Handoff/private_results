@@ -1,0 +1,2 @@
+$('#newUserModal').modal('hide');
+$('#users-table').append($("<%= j (render partial: "user", locals: {user: @user}) %>").hide().fadeIn(600));
