@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  as :user do
+      match '/user/confirmation' => 'confirmations#update', :via => :patch, :as => :update_user_confirmation
+  end
+  devise_for :users, :controllers => { :confirmations => "confirmations" }
+
   root to: 'dashboards#index'
 
   resources :patients, only: [:index]

@@ -1,16 +1,20 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
   <h1 class="page-header">
-    <span class="glyphicon glyphicon-lock"></span>
-    Change Your Password
+    <span class="glyphicon glyphicon-user"></span>
+    Account Activation<% if resource.email %> for <%= resource.email %><% end %>
   </h1>
 
   <div class="row">
-    <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <%= simple_form_for resource,
+        :as => resource_name,
+        :url => update_user_confirmation_path,
+        :html => {:method => 'patch'},
+        :id => 'activation-form' do |f| %>
       <%= devise_error_messages! %>
       <%= f.hidden_field :reset_password_token %>
 
       <div class="field">
-        <%= f.label :password, "New password" %><br />
+        <%= f.label :password, "Choose a Password" %><br />
         <%= f.password_field :password,
                           autofocus: true,
                           autocomplete: "off",
@@ -18,7 +22,7 @@
       </div>
 
       <div class="field">
-        <%= f.label :password, "Confirm new password" %><br />
+        <%= f.label :password, "Password Confirmation" %><br />
         <%= f.password_field :password_confirmation,
                           autofocus: false,
                           autocomplete: "off",
@@ -26,8 +30,9 @@
       </div>
 
       <br>
+      <%= hidden_field_tag :confirmation_token,@confirmation_token %>
       <div class="actions">
-        <%= f.submit "Update Password", class: "btn btn-primary btn-large" %>
+        <%= f.submit "Activate", class: "btn btn-primary btn-large" %>
       </div>
     <% end %>
   </div>

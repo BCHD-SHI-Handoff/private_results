@@ -12,9 +12,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    generated_password = Devise.friendly_token.first(8)
-    @user = User.create(user_params.merge({active: true, password: generated_password}))
-    # RegistrationMailer.welcome(user, generated_password).deliver
+    @user = User.create(user_params.merge({active: true}))
     flash[:success] = "Email sent to '#{@user.email}'"
   end
 

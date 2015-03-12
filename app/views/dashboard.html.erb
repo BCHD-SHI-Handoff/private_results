@@ -1,4 +1,12 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <% if flash[:notice].present? %>
+    <p class="alert alert-info"><%= notice %></p>
+  <% end %>
+
+  <% if flash[:alert].present?  %>
+    <p class="alert alert-warning"><%= alert %></p>
+  <% end %>
+
   <h1 class="page-header"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</h1>
   <div class="row result-delivery-stats">
     <h2>Results Delivered</h2>
