@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
+  use_growlyflash
   respond_to :html, :js
   before_action :find_user, only: [:edit, :update, :destroy]
-
 
   def index
     @users = User.all
@@ -13,17 +13,30 @@ class UsersController < ApplicationController
 
   def create
     generated_password = Devise.friendly_token.first(8)
-    @user  = User.create(user_params.merge({active: true, password: generated_password}))
+    @user = User.create(user_params.merge({active: true, password: generated_password}))
     # RegistrationMailer.welcome(user, generated_password).deliver
-    flash[:notice] = "Email sent to '#{@user.email}'."
+    flash[:success] = "Email sent to '#{@user.email}'"
   end
 
   def update
-    @user.update_attributes(user_params)
+    if !@user.update_attributes(user_params)
+      flash[:error] = "Failed to update '#{@user.email}'"
+    else
+      if user_params["email"] || user_params["role"]
+        flash[:success] = "Successfully updated '#{@user.email}'"
+      elsif user_params["active"]
+        action = user_params["active"] == 'true' ? "activated" : "deactivated"
+        flash[:success] = "Successfully #{action} '#{@user.email}'"
+      end
+    end
   end
 
   def destroy
-    @user.destroy()
+    if !@user.destroy()
+      flash[:error] = "Failed to delete '#{@user.email}'"
+    else
+      flash[:success] = "'#{@user.email}' has been removed"
+    end
   end
 
   def user_params

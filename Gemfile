@@ -31,6 +31,9 @@ gem 'devise'
 
 gem 'simple_form'
 
+# Use growly flash for XHR alerts
+gem 'growlyflash', '~> 0.6.0'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

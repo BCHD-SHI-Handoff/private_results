@@ -46,6 +46,9 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.3.0)
+    growlyflash (0.6.2)
+      coffee-rails (>= 3.2.1)
+      railties (>= 3.2, < 5.0)
     hike (1.2.3)
     i18n (0.7.0)
     jbuilder (2.2.8)
@@ -126,6 +129,7 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
   devise
+  growlyflash (~> 0.6.0)
   jbuilder (~> 2.0)
   jquery-rails
   pg
