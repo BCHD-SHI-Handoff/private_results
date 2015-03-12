@@ -103,3 +103,7 @@ body {
     height: 250px;
     margin-bottom: 100px;
 }
+
+.user .actions * {
+  display: inline;
+}
