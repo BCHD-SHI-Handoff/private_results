@@ -6,6 +6,12 @@ class User < ActiveRecord::Base
 
   enum role: [ :admin, :staff ]
 
+  # This method is called by devise to check if user can login.
+  def active_for_authentication?
+    # Check with super and then check if our user is active
+    super and self.active?
+  end
+
   # For details on the below methods, see:
   # https://github.com/plataformatec/devise/wiki/How-To:-Override-confirmations-so-users-can-pick-their-own-passwords-as-part-of-confirmation-activation
   # and http://stackoverflow.com/a/25544155
