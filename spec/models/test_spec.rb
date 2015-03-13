@@ -2,11 +2,7 @@ require "rails_helper"
 
 describe Test do
 
-  it "has a valid factory" do
-    expect(build(:test)).to be_valid
-  end
-
-  let(:test) { build(:test) }
+  let(:test) { Test.all.first }
 
   describe "ActiveModel validations" do
     it { expect(test).to validate_presence_of(:name) }

@@ -2,11 +2,7 @@ require "rails_helper"
 
 describe Status do
 
-  it "has a valid factory" do
-    expect(build(:status)).to be_valid
-  end
-
-  let(:status) { build(:status) }
+  let(:status) { Status.all.first }
 
   describe "ActiveModel validations" do
     it { expect(status).to validate_presence_of(:status) }

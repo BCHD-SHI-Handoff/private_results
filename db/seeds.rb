@@ -1,3 +1,6 @@
+# Doh! Having a test model clashes with a Test constant rails uses.
+Object.send(:remove_const, :Test)
+
 user = User.create(email: "admin@example.com", password: "adminadmin", password_confirmation: "adminadmin", role: 0, active: true)
 user.confirm!
 
