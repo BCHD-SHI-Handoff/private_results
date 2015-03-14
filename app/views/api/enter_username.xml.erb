@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <% if !@error_message.blank? %>
+      <Say voice="alice" language='<%= @language_code %>'><%= @error_message %></Say>
+    <% end %>
+
+    <Gather timeout="15" finishOnKey="#" action="enter_username_process.xml?language_code=<%= @language_code %>" method="GET">
+      <Say voice="alice" language='<%= @language_code %>'><%= @message %></Say>
+    </Gather>
+
+    <!-- If patient doesn't input anything, try again. -->
+    <Redirect method="GET">enter_username_repeat.xml?language_code=<%= @language_code %></Redirect>
+</Response>

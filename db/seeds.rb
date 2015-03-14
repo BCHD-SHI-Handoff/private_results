@@ -1,6 +1,3 @@
-# Doh! Having a test model clashes with a Test constant rails uses.
-Object.send(:remove_const, :Test)
-
 user = User.create(email: "admin@example.com", password: "adminadmin", password_confirmation: "adminadmin", role: 0, active: true)
 user.confirm!
 
@@ -39,10 +36,53 @@ status_hepb_infected = Status.create(status: "Hep B infected")
 #######################
 #       SCRIPTS       #
 #######################
+
 Script.create({
-  name: 'intro',
+  name: 'language_not_selected',
   language: 'english',
-  message: "Hello, and thank you for calling. Please enter the username on your\ncard, followed by the pound sign.\n"
+  message: "Sorry, I didn't get that."
+})
+
+Script.create({
+  name: 'welcome',
+  language: 'english',
+  message: "Hello, and thank you for calling."
+})
+
+Script.create({
+  name: 'enter_username',
+  language: 'english',
+  message: "Please enter the username on your card, followed by the pound sign."
+})
+
+Script.create({
+  name: 'enter_username_repeat',
+  language: 'english',
+  message: "We did not receive your username. Please try again."
+})
+
+Script.create({
+  name: 'enter_username_invalid',
+  language: 'english',
+  message: "We couldn’t find your username in our system. If you think this is an error, please contact the clinic."
+})
+
+Script.create({
+  name: 'enter_password',
+  language: 'english',
+  message: "Please enter the password on your card, followed by the pound sign."
+})
+
+Script.create({
+  name: 'enter_password_repeat',
+  language: 'english',
+  message: "We did not receive your password. Please try again."
+})
+
+Script.create({
+  name: 'enter_password_invalid',
+  language: 'english',
+  message: "Your password does not match the username you provided. If you think this is an error, please contact the clinic. Please re-enter your password, followed by the pound sign."
 })
 
 Script.create({

@@ -14,6 +14,16 @@ Rails.application.routes.draw do
       get :send_reset_password
     end
   end
+
+  namespace :api do
+    get 'welcome', defaults: { format: 'xml' }
+    get 'welcome_repeat', defaults: { format: 'xml' }
+    get 'welcome_process', defaults: { format: 'xml' }
+    get 'enter_username', defaults: { format: 'xml' }
+    get 'enter_username_repeat', defaults: { format: 'xml' }
+    get 'enter_username_process', defaults: { format: 'xml' }
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
