@@ -3,6 +3,10 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'
+
+# Provides common translations for different languages
+gem 'rails-i18n', '~> 4.0.0'
+
 # Use postgres as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -27,15 +31,19 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 # Authentication library
-gem 'devise'
+gem 'devise', '~> 3.4.1'
 
-gem 'simple_form'
+# Simple form to make building our front-end forms easier
+gem 'simple_form', '~> 3.1.0'
 
 # Use growly flash for XHR alerts
 gem 'growlyflash', '~> 0.6.0'
 
 # We use twilio to receive calls
 gem 'twilio-ruby', '~> 3.12'
+
+# We use twilio to receive calls
+gem 'liquid', '~> 3.0.1'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

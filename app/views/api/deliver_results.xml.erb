@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <% if @error_message %>
+      <Say voice="alice" language='<%= @language_code %>'><%= @error_message %></Say>
+    <% elsif @message %>
+      <Say voice="alice" language='<%= @language_code %>' loop='0'><%= @message %></Say>
+    <% end %>
+</Response>

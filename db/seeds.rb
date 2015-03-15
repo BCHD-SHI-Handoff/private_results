@@ -1,3 +1,8 @@
+if Rails.env == "test"
+  # Doh! Having a test model clashes with a Test constant rails uses.
+  Object.send(:remove_const, :Test)
+end
+
 user = User.create(email: "admin@example.com", password: "adminadmin", password_confirmation: "adminadmin", role: 0, active: true)
 user.confirm!
 
@@ -50,45 +55,51 @@ Script.create({
 })
 
 Script.create({
-  name: 'enter_username',
+  name: 'username_prompt',
   language: 'english',
   message: "Please enter the username on your card, followed by the pound sign."
 })
 
 Script.create({
-  name: 'enter_username_repeat',
+  name: 'username_prompt_repeat',
   language: 'english',
-  message: "We did not receive your username. Please try again."
+  message: "We did not receive your username."
 })
 
 Script.create({
-  name: 'enter_username_invalid',
+  name: 'username_prompt_invalid',
   language: 'english',
   message: "We couldn’t find your username in our system. If you think this is an error, please contact the clinic."
 })
 
 Script.create({
-  name: 'enter_password',
+  name: 'password_prompt',
   language: 'english',
   message: "Please enter the password on your card, followed by the pound sign."
 })
 
 Script.create({
-  name: 'enter_password_repeat',
+  name: 'password_prompt_repeat',
   language: 'english',
-  message: "We did not receive your password. Please try again."
+  message: "We did not receive your password."
 })
 
 Script.create({
-  name: 'enter_password_invalid',
+  name: 'password_prompt_invalid',
   language: 'english',
-  message: "Your password does not match the username you provided. If you think this is an error, please contact the clinic. Please re-enter your password, followed by the pound sign."
+  message: "Your password does not match the username you provided. If you think this is an error, please contact the clinic."
 })
 
 Script.create({
   name: 'master',
   language: 'english',
-  message: "You visited {{ visit.clinic.name }} on {{ visit.visited_on }} and were tested for\n\n{% for infection_test in infection_tests %}\n    {{ infection_test.name }},\n{% endfor %}.\n\n{% if pending_and_less_than_time_limit %}\n    Your test results are still pending. Please call back on\n    {{ result_ready_on }} to get your test results.\n\n{% elsif any_come_back_to_clinic %}\n    One or more of your test results requires medical\n    attention. Please come back to the clinic as soon as possible.\n    The clinic hours are...\n\n{% else %}\n    {% for infection_test in infection_tests %}\n    \t{{ infection_test.message }}\n    {% endfor %}\n{% endif %}\n\nThank you for calling!\n"
+  message: "You visited {{ clinic_name }} on {{ visit_date }} and were tested for {{ test_names }}.
+
+{% if any_pending %}Your test results are still pending. Please call back on {{ result_ready_on }} to get your test results.
+{% elsif any_come_back_to_clinic %}One or more of your test results requires medical attention. Please come back to the clinic as soon as possible. The clinic hours are {{ clinic_hours }}
+{% else %}{{ test_messages }}{% endif %}
+
+Thank you for calling!"
 })
 
 #######################

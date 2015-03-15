@@ -2,7 +2,9 @@
 <Response>
     <Pause/>
 
-    <% if !@error_message.blank? %>
+    <% if @welcome_message %>
+      <Say voice="alice" language='en-US'><%= @welcome_message %></Say>
+    <% elsif @error_message %>
       <Say voice="alice" language='en-US'><%= @error_message %></Say>
     <% end %>
 

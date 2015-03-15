@@ -19,9 +19,16 @@ Rails.application.routes.draw do
     get 'welcome', defaults: { format: 'xml' }
     get 'welcome_repeat', defaults: { format: 'xml' }
     get 'welcome_process', defaults: { format: 'xml' }
-    get 'enter_username', defaults: { format: 'xml' }
-    get 'enter_username_repeat', defaults: { format: 'xml' }
-    get 'enter_username_process', defaults: { format: 'xml' }
+
+    get 'username_prompt', defaults: { format: 'xml' }
+    get 'username_prompt_repeat', defaults: { format: 'xml' }
+    get 'username_prompt_process', defaults: { format: 'xml' }
+
+    get 'password_prompt', defaults: { format: 'xml' }
+    get 'password_prompt_repeat', defaults: { format: 'xml' }
+    get 'password_prompt_process', defaults: { format: 'xml' }
+
+    get 'deliver_results', defaults: { format: 'xml' }
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
