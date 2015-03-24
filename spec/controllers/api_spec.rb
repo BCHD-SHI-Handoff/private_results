@@ -144,8 +144,7 @@ describe ApiController, :type => :controller do
       session = {"visit_id" => visit.id, "language" => "english"}
 
       # Request our results.
-      # XXX add PhoneNumber to params.
-      get(:deliver_results, nil, session)
+      get(:deliver_results, { "Caller" => "+15551234567" }, session)
       expect(response).to have_http_status(:success) # 200
       expect(response).to render_template(:deliver_results)
 
@@ -159,6 +158,7 @@ describe ApiController, :type => :controller do
       visit.results.each do |result|
         expect(result.deliveries.length).to eq 1
         expect(result.deliveries.first.message).to eq actual_message
+        expect(result.deliveries.first.phone_number_used).to eq "+15551234567"
         expect(result.deliveries.first.delivery_method).to eq "phone"
       end
     end
