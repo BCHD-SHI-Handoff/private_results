@@ -92,28 +92,30 @@ class ApiController < ApplicationController
   end
 
   def deliver_results
-    # XXX Should probably look visit up based on username and password to prevent
-    # someone from accessing api/deliver_results with the right visit_id.
-    # Although how would they set the visit_id session?
-    visit = Visit.find_by_id(session[:visit_id])
+    visit = Visit.includes(:clinic, results: [:test, :status]).find_by_id(session[:visit_id])
 
     # Set our locale.
     # Twilio likes long locales like "en-US" while rails likes short form and as symbols.
     I18n.locale = get_language_code().split("-").first.to_sym
+
+    # Get the proper clinic hours message for the selected language.
+    clinic_hours = visit.clinic.hours_for_language(session[:language])
 
     template = Liquid::Template.parse(get_message("master")) # Parses and compiles the template
     @message = template.render(
       {
         "clinic_name" => visit.clinic.name,
         "visit_date" => visit.visited_on_date,
-        "clinic_hours" => "monday to friday, 8am to 9pm", # XXX clinic model should have hours
-        "any_pending" => false,
-        "result_ready_on" => nil,
-        "any_come_back_to_clinic" => false,
-        "test_names" => ["HIV", "Chlamydia", "Hepatitis B"].to_sentence(), # to_sentence will respect I18n.locale
-        "test_messages" => ["test message goes here", "another test message"].to_sentence(),
+        "clinic_hours" => clinic_hours,
+        "recent_visit_with_pending_results" => visit.is_recent? and visit.has_pending_results?,
+        "results_ready_on" => visit.results_ready_on,
+        "any_results_require_clinic_visit" => visit.require_clinic_visit?,
+        "test_names" => visit.test_names.to_sentence(), # to_sentence will respect I18n.locale
+        "test_messages" => visit.test_messages({"clinic_hours" => clinic_hours})
       }
     )
+
+    # XXX Store a delivery with the computed message
   end
 
   private

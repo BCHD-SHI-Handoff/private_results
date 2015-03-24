@@ -5,9 +5,9 @@ class Script < ActiveRecord::Base
   # Both a message and a language are required.
   validates :message, :language, presence: true
 
-  # Rquires either a name OR (test_id AND status_id).
+  # Rquires either a name OR test_id.
   validates :name, presence: true, if: "test_id.nil?"
-  validates :test_id, :status_id, presence: true, if: "name.nil?"
+  validates :test_id, presence: true, if: "name.nil?"
 
   # The test_id and status_id combo must be unique.
   validates_uniqueness_of :test_id, scope: :status_id, conditions: -> { where(name: nil) }

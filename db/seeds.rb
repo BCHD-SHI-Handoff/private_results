@@ -10,11 +10,11 @@ user.confirm!
 #       CLINICS       #
 #######################
 clinics = Clinic.create([
-  {code: "C", name: "Central Clinic"},
-  {code: "D", name: "Druid Clinic"},
-  {code: "E", name: "Eastern Clinic"},
-  {code: "TB", name: "TB Clinic"},
-  {code: "U", name: "Unknown"},
+  {code: "C", name: "Central Clinic", hours_in_english: "Monday to Friday, 9am to 5pm", hours_in_spanish: "Lunes a Viernes, 9am a 5pm"},
+  {code: "D", name: "Druid Clinic", hours_in_english: "Monday to Friday, 9am to 5pm", hours_in_spanish: "Lunes a Viernes, 9am a 5pm"},
+  {code: "E", name: "Eastern Clinic", hours_in_english: "Monday to Friday, 9am to 5pm", hours_in_spanish: "Lunes a Viernes, 9am a 5pm"},
+  {code: "TB", name: "TB Clinic", hours_in_english: "Monday to Friday, 9am to 5pm", hours_in_spanish: "Lunes a Viernes, 9am a 5pm"},
+  {code: "U", name: "Unknown", hours_in_english: "Monday to Friday, 9am to 5pm", hours_in_spanish: "Lunes a Viernes, 9am a 5pm"},
 ])
 
 #######################
@@ -95,8 +95,8 @@ Script.create({
   language: 'english',
   message: "You visited {{ clinic_name }} on {{ visit_date }} and were tested for {{ test_names }}.
 
-{% if any_pending %}Your test results are still pending. Please call back on {{ result_ready_on }} to get your test results.
-{% elsif any_come_back_to_clinic %}One or more of your test results requires medical attention. Please come back to the clinic as soon as possible. The clinic hours are {{ clinic_hours }}
+{% if recent_visit_with_pending_results %}Your test results are still pending. Please call back on {{ results_ready_on }} to get your test results.
+{% elsif any_results_require_clinic_visit %}One or more of your test results requires medical attention. Please come back to the clinic as soon as possible. The clinic hours are {{ clinic_hours }}.
 {% else %}{{ test_messages }}{% endif %}
 
 Thank you for calling!"
@@ -129,7 +129,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: chlamydia_test.id,
-  message: "I am not able to read you chlamydia test result. You will have to come back to the clinic in order to get your chlamydia test results. Clinic hours are...."
+  message: "I am not able to read you chlamydia test result. You will have to come back to the clinic in order to get your chlamydia test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -159,7 +159,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: gonorrhea_test.id,
-  message: "I am not able to read you gonorrhea test result. You will have to come back to the clinic in order to get your gonorrhea test results. Clinic hours are...."
+  message: "I am not able to read you gonorrhea test result. You will have to come back to the clinic in order to get your gonorrhea test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -189,7 +189,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: syphilis_test.id,
-  message: "I am not able to read you syphilis test result. You will have to come back to the clinic in order to get your syphilis test results. Clinic hours are...."
+  message: "I am not able to read you syphilis test result. You will have to come back to the clinic in order to get your syphilis test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -212,7 +212,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: hiv_test.id,
-  message: "I am not able to read you HIV test result. You will have to come back to the clinic in order to get your HIV test results. Clinic hours are...."
+  message: "I am not able to read you HIV test result. You will have to come back to the clinic in order to get your HIV test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -229,14 +229,14 @@ Script.create({
   language: 'english',
   test_id: hepb_test.id,
   status_id: status_need_vaccination.id,
-  message: "Your hepatitis B test results show that you need to get vaccinated for hepatitis B. Please return to the clinic to get vaccinated. Clinic hours are...."
+  message: "Your hepatitis B test results show that you need to get vaccinated for hepatitis B. Please return to the clinic to get vaccinated. Clinic hours are {{ clinic_hours }}."
 })
 
 Script.create({
   language: 'english',
   test_id: hepb_test.id,
   status_id: status_hepb_infected.id,
-  message: "Your hepatitis B test results show that you have evidence of hepatitis B and need to come back to the clinic. Clinic hours are..."
+  message: "Your hepatitis B test results show that you have evidence of hepatitis B and need to come back to the clinic. Clinic hours are {{ clinic_hours }}."
 })
 
 Script.create({
@@ -249,7 +249,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: hepb_test.id,
-  message: "I am not able to read you hepatitis B test results. You will have to come back to the clinic in order to get your hepatitis B test results. Clinic hours are...."
+  message: "I am not able to read you hepatitis B test results. You will have to come back to the clinic in order to get your hepatitis B test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -266,7 +266,7 @@ Script.create({
   language: 'english',
   test_id: hepc_test.id,
   status_id: status_positive.id,
-  message: "Your hepatitis C test was positive, which means that you have been exposed to hepatitis C. You need further evaluation. Please return to the clinic. Clinic hours are...."
+  message: "Your hepatitis C test was positive, which means that you have been exposed to hepatitis C. You need further evaluation. Please return to the clinic. Clinic hours are {{ clinic_hours }}."
 })
 
 Script.create({
@@ -279,7 +279,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: hepc_test.id,
-  message: "I am not able to read you hepatitis C test result. You will have to come back to the clinic in order to get your hepatitis C test results. Clinic hours are...."
+  message: "I am not able to read you hepatitis C test result. You will have to come back to the clinic in order to get your hepatitis C test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################

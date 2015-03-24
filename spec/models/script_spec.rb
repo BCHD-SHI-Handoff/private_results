@@ -14,11 +14,9 @@ describe Script do
       expect(named_script).to validate_uniqueness_of(:name)
     end
 
-    it "validates presense and uniqueness of test_id & status_id when name is nil" do
+    it "validates presense of test_id when name is nil" do
       test_script = Script.create({test_id: 33424, status_id: 3432434, language: "english", message: "hello world"})
       expect(test_script).to validate_presence_of(:test_id)
-      expect(test_script).to validate_presence_of(:status_id)
-      # expect(test_script).to validate_uniqueness_of(:test_id)
     end
   end
 
