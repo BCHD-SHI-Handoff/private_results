@@ -69,7 +69,7 @@ Script.create({
 Script.create({
   name: 'username_prompt_invalid',
   language: 'english',
-  message: "We couldn’t find your username in our system. If you think this is an error, please contact the clinic."
+  message: "We couldn’t find the username '{{ username }}' in our system. If you think this is an error, please contact the clinic."
 })
 
 Script.create({
@@ -87,7 +87,7 @@ Script.create({
 Script.create({
   name: 'password_prompt_invalid',
   language: 'english',
-  message: "Your password does not match the username you provided. If you think this is an error, please contact the clinic."
+  message: "The password '{{ password }}' does not match the username '{{ username }}' that you provided. If you think this is an error, please contact the clinic."
 })
 
 Script.create({

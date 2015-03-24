@@ -63,7 +63,10 @@ class ApiController < ApplicationController
       session[:username] = username
       redirect_to action: :password_prompt
     else
-      @error_message = get_message("username_prompt_invalid")
+      template = Liquid::Template.parse(get_message("username_prompt_invalid"))
+      @error_message = template.render({
+        "username" => space_number(username)
+      })
       render action: :username_prompt
     end
   end
@@ -86,7 +89,11 @@ class ApiController < ApplicationController
       session[:visit_id] = visit.id
       redirect_to action: :deliver_results
     else
-      @error_message = get_message("password_prompt_invalid")
+      template = Liquid::Template.parse(get_message("password_prompt_invalid"))
+      @error_message = template.render({
+        "password" => space_number(password),
+        "username" => space_number(session[:username])
+      })
       render action: :password_prompt
     end
   end
@@ -128,6 +135,13 @@ class ApiController < ApplicationController
   end
 
   private
+
+  # Add spaces between every character in number,
+  # turning "123" into "1 2 3". This allows twilio to pronounce
+  # it as "one two three" instead of "one hundred twenty three"
+  def space_number number
+    number.gsub(/(.{1})/, '\1 ').strip
+  end
 
   def get_language_code
     @language_code =
