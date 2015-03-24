@@ -2,6 +2,8 @@ class ApiController < ApplicationController
   skip_before_action :authenticate_user!
   skip_before_filter :verify_authenticity_token
 
+  rescue_from StandardError, with: :render_error
+
   before_action :get_language_code
 
   before_action :get_username_prompt, only: [
@@ -99,7 +101,7 @@ class ApiController < ApplicationController
   end
 
   def deliver_results
-    visit = Visit.includes(:clinic, results: [:test, :status]).find_by_id(session[:visit_id])
+    visit = Visit.includes(:clinic, results: [:test, :status]).find!(session[:visit_id])
 
     # Set our locale.
     # Twilio likes long locales like "en-US" while rails likes short form and as symbols.
@@ -163,6 +165,21 @@ class ApiController < ApplicationController
 
   def get_message(name)
     language = session[:language] || "english"
-    Script.select(:message).find_by(name: name, language: language).message
+    Script.select(:message).find_by!(name: name, language: language).message
+  end
+
+  def render_error exception
+    logger.error("Uncaught #{exception} exception occurred: #{exception.message}")
+    logger.error("Stack trace: #{exception.backtrace.join("\n")}")
+    begin
+      @error_message = get_message("error")
+    rescue ActiveRecord::RecordNotFound => exception2
+      logger.error("Uncaught #{exception2} exception occurred: #{exception2.message}")
+      logger.error("Stack trace: #{exception2.backtrace.join("\n")}")
+      # In case even the lookup for our 'error' message failed.
+      @error_message = "Sorry, an unknown error occurred, please contact the clinic."
+      @language_code = "en-US"
+    end
+    render "error"
   end
 end

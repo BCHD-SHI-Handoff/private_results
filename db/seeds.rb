@@ -41,6 +41,11 @@ status_hepb_infected = Status.create(status: "Hep B infected")
 #######################
 #       SCRIPTS       #
 #######################
+Script.create({
+  name: 'error',
+  language: 'english',
+  message: "Sorry, an unknown error occurred, please contact the clinic."
+})
 
 Script.create({
   name: 'language_not_selected',
