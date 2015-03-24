@@ -130,32 +130,37 @@ describe ApiController, :type => :controller do
 
   describe "deliver_results" do
 
-    it "should render results and create a delivery" do
-      # XXX Should use factories to setup fake visit and results.
-      visit = Visit.create({
-        patient_number: rand(10),
-        clinic_id: (Clinic.first).id,
-        visited_on: Time.now,
-        username: rand(1000000000..99999999999).to_s,
-        password: rand(1000000000..99999999999).to_s
-      })
+    it "should render pending message and create a delivery" do
+      pending_status = Status.find_by_status("Pending")
+      chlamydia_test = Test.find_by_name("Chlamydia")
+      gonorrhea_test = Test.find_by_name("Gonorrhea")
+      negative_status = Status.find_by_status("Negative")
+
+      visit = create(:visit, visited_on: 3.days.ago)
+      visit.results << create(:result, status_id: pending_status.id, test_id: chlamydia_test.id)
+      visit.results << create(:result, status_id: negative_status.id, test_id: gonorrhea_test.id)
 
       # Set our session.
       session = {"visit_id" => visit.id, "language" => "english"}
 
       # Request our results.
-      get(:deliver_results, { :format => :xml }, session)
+      # XXX add PhoneNumber to params.
+      get(:deliver_results, nil, session)
       expect(response).to have_http_status(:success) # 200
       expect(response).to render_template(:deliver_results)
-      expect(response.headers["Content-Type"]).to eq "application/xml; charset=utf-8"
 
-      # XXX Validate the correct message was received (refactor message calculation to model
-      # so that we do not hard code it again here).
-      expect(assigns(:message)).to_not be_nil
+      actual_message = "You visited #{visit.clinic.name} on #{visit.visited_on_date} and were tested for Chlamydia and Gonorrhea."
+      actual_message += "\n\n"
+      actual_message += "Your test results are still pending. Please call back on #{visit.results_ready_on} to get your test results."
+      actual_message += "\n\n\n"
+      actual_message += "Thank you for calling!"
+      expect(assigns(:message)).to eq actual_message
 
-      # XXX Test a delivery entry was made
+      visit.results.each do |result|
+        expect(result.deliveries.length).to eq 1
+        expect(result.deliveries.first.message).to eq actual_message
+        expect(result.deliveries.first.delivery_method).to eq "phone"
+      end
     end
-
   end
-
 end

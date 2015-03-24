@@ -107,7 +107,7 @@ class ApiController < ApplicationController
         "clinic_name" => visit.clinic.name,
         "visit_date" => visit.visited_on_date,
         "clinic_hours" => clinic_hours,
-        "recent_visit_with_pending_results" => visit.is_recent? and visit.has_pending_results?,
+        "recent_visit_with_pending_results" => visit.is_recent? && visit.has_pending_results?,
         "results_ready_on" => visit.results_ready_on,
         "any_results_require_clinic_visit" => visit.require_clinic_visit?,
         "test_names" => visit.test_names.to_sentence(), # to_sentence will respect I18n.locale
@@ -115,7 +115,16 @@ class ApiController < ApplicationController
       }
     )
 
-    # XXX Store a delivery with the computed message
+    # Create a record of the message that we sent.
+    delivery = Delivery.create(
+      delivered_at: Time.now,
+      delivery_method: "phone",
+      phone_number_used: params['PhoneNumber'],
+      message: @message
+    )
+    visit.results.each do |result|
+      result.deliveries << delivery
+    end
   end
 
   private

@@ -129,7 +129,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: chlamydia_test.id,
-  message: "I am not able to read you chlamydia test result. You will have to come back to the clinic in order to get your chlamydia test results. Clinic hours are {{ clinic_hours }}."
+  message: "I am not able to read your chlamydia test result. You will have to come back to the clinic in order to get your chlamydia test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -159,7 +159,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: gonorrhea_test.id,
-  message: "I am not able to read you gonorrhea test result. You will have to come back to the clinic in order to get your gonorrhea test results. Clinic hours are {{ clinic_hours }}."
+  message: "I am not able to read your gonorrhea test result. You will have to come back to the clinic in order to get your gonorrhea test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -189,7 +189,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: syphilis_test.id,
-  message: "I am not able to read you syphilis test result. You will have to come back to the clinic in order to get your syphilis test results. Clinic hours are {{ clinic_hours }}."
+  message: "I am not able to read your syphilis test result. You will have to come back to the clinic in order to get your syphilis test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -212,7 +212,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: hiv_test.id,
-  message: "I am not able to read you HIV test result. You will have to come back to the clinic in order to get your HIV test results. Clinic hours are {{ clinic_hours }}."
+  message: "I am not able to read your HIV test result. You will have to come back to the clinic in order to get your HIV test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -249,7 +249,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: hepb_test.id,
-  message: "I am not able to read you hepatitis B test results. You will have to come back to the clinic in order to get your hepatitis B test results. Clinic hours are {{ clinic_hours }}."
+  message: "I am not able to read your hepatitis B test results. You will have to come back to the clinic in order to get your hepatitis B test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -279,7 +279,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: hepc_test.id,
-  message: "I am not able to read you hepatitis C test result. You will have to come back to the clinic in order to get your hepatitis C test results. Clinic hours are {{ clinic_hours }}."
+  message: "I am not able to read your hepatitis C test result. You will have to come back to the clinic in order to get your hepatitis C test results. Clinic hours are {{ clinic_hours }}."
 })
 
 #######################
