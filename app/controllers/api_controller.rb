@@ -101,7 +101,7 @@ class ApiController < ApplicationController
   end
 
   def deliver_results
-    visit = Visit.includes(:clinic, results: [:test, :status]).find!(session[:visit_id])
+    visit = Visit.includes(:clinic, results: [:test, :status]).find(session[:visit_id])
 
     # Set our locale.
     # Twilio likes long locales like "en-US" while rails likes short form and as symbols.
@@ -134,6 +134,15 @@ class ApiController < ApplicationController
     visit.results.each do |result|
       result.deliveries << delivery
     end
+
+    session[:message] = @message
+    @to_repeat_message = get_message("to_repeat_message")
+  end
+
+  def repeat_message
+    @message = session[:message]
+    @to_repeat_message = get_message("to_repeat_message")
+    render action: :deliver_results
   end
 
   private

@@ -107,6 +107,12 @@ Script.create({
 Thank you for calling!"
 })
 
+Script.create({
+  name: 'to_repeat_message',
+  language: 'english',
+  message: "To replay this message, press any key."
+})
+
 #######################
 #      CHLAMYDIA      #
 #######################

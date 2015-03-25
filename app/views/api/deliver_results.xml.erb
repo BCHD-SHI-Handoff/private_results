@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <% if @error_message %>
-      <Say voice="alice" language='<%= @language_code %>'><%= @error_message %></Say>
-    <% elsif @message %>
-      <Say voice="alice" language='<%= @language_code %>' loop='0'><%= @message %></Say>
-    <% end %>
+  <% if @error_message %>
+    <Say voice="alice" language='<%= @language_code %>'><%= @error_message %></Say>
+  <% elsif @message %>
+    <Say voice="alice" language='<%= @language_code %>'><%= @message %></Say>
+  <% end %>
+
+  <Pause/>
+  <Gather timeout="100000"
+    numDigits="1"
+    action="repeat_message.xml"
+    method="GET">
+    <Say voice="alice" language='<%= @language_code %>'><%= @to_repeat_message %></Say>
+  </Gather>
 </Response>

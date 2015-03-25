@@ -15,20 +15,21 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :api do
-    get 'welcome', defaults: { format: 'xml' }
-    get 'welcome_repeat', defaults: { format: 'xml' }
-    get 'welcome_process', defaults: { format: 'xml' }
+  namespace :api, defaults: {format: 'xml'} do
+    get 'welcome'
+    get 'welcome_repeat'
+    get 'welcome_process'
 
-    get 'username_prompt', defaults: { format: 'xml' }
-    get 'username_prompt_repeat', defaults: { format: 'xml' }
-    get 'username_prompt_process', defaults: { format: 'xml' }
+    get 'username_prompt'
+    get 'username_prompt_repeat'
+    get 'username_prompt_process'
 
-    get 'password_prompt', defaults: { format: 'xml' }
-    get 'password_prompt_repeat', defaults: { format: 'xml' }
-    get 'password_prompt_process', defaults: { format: 'xml' }
+    get 'password_prompt'
+    get 'password_prompt_repeat'
+    get 'password_prompt_process'
 
-    get 'deliver_results', defaults: { format: 'xml' }
+    get 'deliver_results'
+    get 'repeat_message'
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
