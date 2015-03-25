@@ -136,12 +136,10 @@ class ApiController < ApplicationController
     end
 
     session[:message] = @message
-    @to_repeat_message = get_message("to_repeat_message")
   end
 
   def repeat_message
     @message = session[:message]
-    @to_repeat_message = get_message("to_repeat_message")
     render action: :deliver_results
   end
 

@@ -7,10 +7,5 @@
   <% end %>
 
   <Pause/>
-  <Gather timeout="100000"
-    numDigits="1"
-    action="repeat_message.xml"
-    method="GET">
-    <Say voice="alice" language='<%= @language_code %>'><%= @to_repeat_message %></Say>
-  </Gather>
+  <Redirect method="GET">repeat_message.xml</Redirect>
 </Response>
