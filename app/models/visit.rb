@@ -8,6 +8,25 @@ class Visit < ActiveRecord::Base
   # The username and password combo must be unique.
   validates_uniqueness_of :username, scope: :password
 
+  def get_results_message(template, language)
+    # Get the proper clinic hours message for the selected language.
+    clinic_hours = self.clinic.hours_for_language(language)
+
+    template = Liquid::Template.parse(template) # Parses and compiles the template
+    template.render(
+      {
+        "clinic_name" => self.clinic.name,
+        "visit_date" => self.visited_on_date,
+        "clinic_hours" => clinic_hours,
+        "recent_visit_with_pending_results" => self.is_recent? && self.has_pending_results?,
+        "results_ready_on" => self.results_ready_on,
+        "any_results_require_clinic_visit" => self.require_clinic_visit?,
+        "test_names" => self.test_names.to_sentence(), # to_sentence will respect I18n.locale
+        "test_messages" => self.test_messages({"clinic_hours" => clinic_hours})
+      }
+    )
+  end
+
   # Get all of the test names for each result of the visit.
   def test_names
     self.results.map{|r| r.test.name}

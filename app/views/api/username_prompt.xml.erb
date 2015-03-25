@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <% if @error_message %>
-      <Say voice="alice" language='<%= @language_code %>'><%= @error_message %></Say>
-    <% end %>
+  <% if @error_message %>
+    <Say voice="alice" language='<%= @language_code %>'><%= @error_message %></Say>
+  <% end %>
 
-    <Gather timeout="15" finishOnKey="#" action="username_prompt_process.xml" method="GET">
-      <Say voice="alice" language='<%= @language_code %>'><%= @message %></Say>
-    </Gather>
+  <Gather timeout="15" finishOnKey="#" action="/api/username_prompt_process.xml" method="get">
+    <Say voice="alice" language='<%= @language_code %>'><%= @message %></Say>
+  </Gather>
 
-    <!-- If patient doesn't input anything, try again. -->
-    <Redirect method="GET">username_prompt_repeat.xml</Redirect>
+  <!-- If patient doesn't input anything, try again. -->
+  <Redirect method="get">/api/username_prompt_repeat.xml</Redirect>
 </Response>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Pause/>
+  <Pause/>
 
-    <% if @welcome_message %>
-      <Say voice="alice" language='en-US'><%= @welcome_message %></Say>
-    <% elsif @error_message %>
-      <Say voice="alice" language='en-US'><%= @error_message %></Say>
-    <% end %>
+  <% if @welcome_message %>
+    <Say voice="alice" language='en-US'><%= @welcome_message %></Say>
+  <% elsif @error_message %>
+    <Say voice="alice" language='en-US'><%= @error_message %></Say>
+  <% end %>
 
-    <Gather timeout="5" numDigits="1" action="welcome_process.xml" method="GET">
-      <Say voice="alice" language='en-US'>For English, press 1</Say>
-      <Say voice="alice" language='es-MX'>Para Español oprima numero 2</Say>
-    </Gather>
+  <Gather timeout="5" numDigits="1" action="/api/welcome_process.xml" method="get">
+    <Say voice="alice" language='en-US'>For English, press 1</Say>
+    <Say voice="alice" language='es-MX'>Para Español oprima numero 2</Say>
+  </Gather>
 
-    <!-- If patient doesn't input anything, try again. -->
-    <Redirect method="GET">welcome_repeat.xml</Redirect>
+  <!-- If patient doesn't input anything, try again. -->
+  <Redirect method="get">/api/welcome_repeat.xml</Redirect>
 </Response>

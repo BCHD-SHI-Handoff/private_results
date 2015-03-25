@@ -107,22 +107,7 @@ class ApiController < ApplicationController
     # Twilio likes long locales like "en-US" while rails likes short form and as symbols.
     I18n.locale = get_language_code().split("-").first.to_sym
 
-    # Get the proper clinic hours message for the selected language.
-    clinic_hours = visit.clinic.hours_for_language(session[:language])
-
-    template = Liquid::Template.parse(get_message("master")) # Parses and compiles the template
-    @message = template.render(
-      {
-        "clinic_name" => visit.clinic.name,
-        "visit_date" => visit.visited_on_date,
-        "clinic_hours" => clinic_hours,
-        "recent_visit_with_pending_results" => visit.is_recent? && visit.has_pending_results?,
-        "results_ready_on" => visit.results_ready_on,
-        "any_results_require_clinic_visit" => visit.require_clinic_visit?,
-        "test_names" => visit.test_names.to_sentence(), # to_sentence will respect I18n.locale
-        "test_messages" => visit.test_messages({"clinic_hours" => clinic_hours})
-      }
-    )
+    @message = visit.get_results_message(get_message("master"), session[:language])
 
     # Create a record of the message that we sent.
     delivery = Delivery.create(

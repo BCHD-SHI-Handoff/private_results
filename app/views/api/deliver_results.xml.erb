@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <% if @error_message %>
-    <Say voice="alice" language='<%= @language_code %>'><%= @error_message %></Say>
-  <% elsif @message %>
-    <Say voice="alice" language='<%= @language_code %>'><%= @message %></Say>
-  <% end %>
+  <Say voice="alice" language='<%= @language_code %>'><%= @message %></Say>
 
   <Pause/>
-  <Redirect method="GET">repeat_message.xml</Redirect>
+  <Redirect method="get">/api/repeat_message.xml</Redirect>
 </Response>

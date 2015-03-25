@@ -64,6 +64,9 @@ group :development, :test do
 end
 
 group :test do
+  gem 'rack_session_access'
+  gem 'capybara'
+  gem 'twilio-test-toolkit'
   gem 'shoulda-matchers'
   gem 'shoulda-callback-matchers'
 end
