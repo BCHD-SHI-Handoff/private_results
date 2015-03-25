@@ -49,7 +49,7 @@ describe Visit do
         visit.results << create(:result, test_id: chlamydia_test.id , status_id: nil)
         actual_message = "Your gonorrhea test was negative, which means that you probably do not have gonorrhea."
         actual_message += "\n\n"
-        actual_message += "I am not able to read you chlamydia test result. You will have to come back to"
+        actual_message += "I am not able to read your chlamydia test result. You will have to come back to"
         actual_message += " the clinic in order to get your chlamydia test results. Clinic hours are monday to friday."
         expect(visit.test_messages({"clinic_hours" => "monday to friday"})).to eq actual_message
       end

@@ -73,7 +73,7 @@ describe ApiController, :type => :controller do
       expect(assigns(:language_code)).to eq "en-US"
       expect(assigns(:message)).to eq @message
       error_message = Script.select(:message).find_by(name: "username_prompt_invalid", language: "english").message
-      expect(assigns(:error_message)).to eq error_message
+      expect(assigns(:error_message)).to eq error_message.gsub("{{ username }}", "3 3")
       expect(response).to render_template(:username_prompt)
     end
 
@@ -117,6 +117,8 @@ describe ApiController, :type => :controller do
       expect(assigns(:language_code)).to eq "en-US"
       expect(assigns(:message)).to eq @message
       error_message = Script.select(:message).find_by(name: "password_prompt_invalid", language: "english").message
+      error_message.gsub!("{{ username }}", space_number(@visit.username))
+      error_message.gsub!("{{ password }}", "3 3")
       expect(assigns(:error_message)).to eq error_message
       expect(response).to render_template(:password_prompt)
     end

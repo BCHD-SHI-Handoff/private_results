@@ -100,7 +100,7 @@ describe "twilio API" do
         puts 
         message = get_message("password_prompt_invalid")
           .gsub("{{ password }}", "9")
-          .gsub("{{ username }}", @visit.username.gsub(/(.{1})/, '\1 ').strip)
+          .gsub("{{ username }}", space_number(@visit.username))
         expect_say(@call, message)
       end
     end

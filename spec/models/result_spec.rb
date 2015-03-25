@@ -26,7 +26,7 @@ describe Result do
       # we account for that!
       expected_message = Script.select(:message)
         .find_by(test_id: result.test_id, status_id: result.status_id)
-        .message.sub("{{ clinic_hours }}", "monday to fiday")
+        .message.sub("{{ clinic_hours }}", "monday to friday")
       actual_message = result.message({"clinic_hours" => "monday to friday"})
       expect(actual_message).to eq expected_message
     end
