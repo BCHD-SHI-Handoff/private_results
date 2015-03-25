@@ -131,14 +131,10 @@ describe ApiController, :type => :controller do
   describe "deliver_results" do
 
     it "should render pending message and create a delivery" do
-      pending_status = Status.find_by_status("Pending")
-      chlamydia_test = Test.find_by_name("Chlamydia")
-      gonorrhea_test = Test.find_by_name("Gonorrhea")
-      negative_status = Status.find_by_status("Negative")
-
+      # Create a visit that is less than 5 days old (recent) and has at least one result pending.
       visit = create(:visit, visited_on: 3.days.ago)
-      visit.results << create(:result, status_id: pending_status.id, test_id: chlamydia_test.id)
-      visit.results << create(:result, status_id: negative_status.id, test_id: gonorrhea_test.id)
+      visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Chlamydia"))
+      visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
 
       # Set our session.
       session = {"visit_id" => visit.id, "language" => "english"}
@@ -155,12 +151,17 @@ describe ApiController, :type => :controller do
       actual_message += "Thank you for calling!"
       expect(assigns(:message)).to eq actual_message
 
+      # Each result should point to the recorded delivery.
       visit.results.each do |result|
         expect(result.deliveries.length).to eq 1
         expect(result.deliveries.first.message).to eq actual_message
         expect(result.deliveries.first.phone_number_used).to eq "+15551234567"
         expect(result.deliveries.first.delivery_method).to eq "phone"
       end
+    end
+
+    it "should render message and create a delivery" do
+      # XXX When results are in
     end
   end
 end
