@@ -25,89 +25,42 @@ describe Visit do
   end
 
   describe "public instance methods" do
-
-    describe "test_names" do
-      it "should return array of test names" do
-        visit = create(:visit_with_results)
-        test_names = []
-        visit.results.each do |result|
-          test_names << result.test.name
-        end
-        expect(visit.test_names).to match_array(test_names)
-      end
-    end
-
-    describe "test_messages" do
-      it "should return all of the results compiled into a message" do
-        visit = create(:visit)
-
-        chlamydia_test = Test.find_by_name("Chlamydia")
-        gonorrhea_test = Test.find_by_name("Gonorrhea")
-        negative_status = Status.find_by_status("Negative")
-
-        visit.results << create(:result, test_id: gonorrhea_test.id , status_id: negative_status.id)
-        visit.results << create(:result, test_id: chlamydia_test.id , status_id: nil)
-        actual_message = "Your gonorrhea test was negative, which means that you probably do not have gonorrhea."
-        actual_message += "\n\n"
-        actual_message += "I am not able to read your chlamydia test result. You will have to come back to"
-        actual_message += " the clinic in order to get your chlamydia test results. Clinic hours are monday to friday."
-        expect(visit.test_messages({"clinic_hours" => "monday to friday"})).to eq actual_message
-      end
-    end
-
-    describe "visited_on_date" do
-      it "should properly format date in english" do
-        visit = create(:visit, visited_on: Time.at(1427162681))
-        expect(visit.visited_on_date).to eq "Tuesday, March 24th"
-      end
-
-      it "should properly format date in spanish" do
-        I18n.locale = :es # Set locale to spanish
-        visit = create(:visit, visited_on: Time.at(1427162681))
-        expect(visit.visited_on_date).to eq "martes, marzo 24"
-        I18n.locale = :en # Set it back for other tests
-      end
-    end
-
-    describe "results_ready_on" do
-      it "should be 5 days from visit" do
-        visit = create(:visit, visited_on: Time.at(1427162681))
-        expect(visit.results_ready_on).to eq "Sunday, March 29th"
-      end
-    end
-
-    describe "is_recent?" do
-      it "should return true when visited_on date is less than 5 days ago" do
+    describe "get_results_message" do
+      it "should return pending message if recent visit and at least one result is pending" do
+        # Create a visit that is less than 5 days old (recent) and has at least one result pending.
         visit = create(:visit, visited_on: 3.days.ago)
-        expect(visit.is_recent?).to eq true
+        visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Chlamydia"))
+        visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
+        visited_on_date = visit.visited_on.strftime("%A, %B #{visit.visited_on.day.ordinalize}")
+        results_ready_on = visit.visited_on + 7.days
+        results_ready_date = results_ready_on.strftime("%A, %B #{results_ready_on.day.ordinalize}")
+        actual_message = "You visited #{visit.clinic.name} on #{visited_on_date} and were tested for Chlamydia and Gonorrhea."
+        actual_message += "\n\n"
+        actual_message += "Your test results are still pending. Please call back on #{results_ready_date} to get your test results."
+        actual_message += "\n\n\n"
+        actual_message += "Thank you for calling!"
+        expect(visit.get_results_message("english")).to eq actual_message
       end
 
-      it "should return false when visited_on date is greater than 5 days ago" do
-        visit = create(:visit, visited_on: 6.days.ago)
-        expect(visit.is_recent?).to eq false
-      end
-    end
-
-    describe "has_pending_results?" do
-      it "should return true when there's at least one pending result" do
-        pending_status = Status.find_by_status("Pending")
+      it "should return results message" do
         visit = create(:visit)
-        visit.results << create(:result)
-        visit.results << create(:result, status_id: pending_status.id)
-        expect(visit.has_pending_results?).to eq true
+        visit.results << create(:result, status: Status.find_by_status("Immune"), test: Test.find_by_name("Hepatitis B"))
+        visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
+        visit.results << create(:result, status: Status.find_by_status("Positive"), test: Test.find_by_name("Hepatitis C"))
+        visited_on_date = visit.visited_on.strftime("%A, %B #{visit.visited_on.day.ordinalize}")
+        actual_message = "You visited #{visit.clinic.name} on #{visited_on_date} and were tested for Hepatitis B, Gonorrhea, and Hepatitis C."
+        actual_message += "\n\n"
+        actual_message += "Your hepatitis B test results show you are immune to hepatitis B. You do not need to return to the clinic."
+        actual_message += "\n\n"
+        actual_message += "Your gonorrhea test was negative, which means that you probably do not have gonorrhea."
+        actual_message += "\n\n"
+        actual_message += "Your hepatitis C test was positive, which means that you have been exposed to hepatitis C. "
+        actual_message += "You need further evaluation. Please return to the clinic. Clinic hours are #{visit.clinic.hours_for_language("english")}."
+        actual_message += "\n\n"
+        actual_message += "Thank you for calling!"
+        expect(visit.get_results_message("english")).to eq actual_message
       end
 
-      it "should return false when there's zero pending results" do
-        negative_status = Status.find_by_status("Negative")
-        visit = create(:visit)
-        visit.results << create(:result, status_id: nil)
-        visit.results << create(:result, status_id: negative_status.id)
-        expect(visit.has_pending_results?).to eq false
-      end
-    end
-
-    describe "require_clinic_visit?" do
-      it { expect(visit.require_clinic_visit?).to eq false }
     end
   end
 end

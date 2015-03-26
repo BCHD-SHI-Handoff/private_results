@@ -14,4 +14,8 @@ class Script < ActiveRecord::Base
 
   # Name should be unique when it is not nil.
   validates_uniqueness_of :name, conditions: -> { where.not(name: nil) }
+
+  def self.get_message(name, language = "english")
+    Script.select(:message).find_by!(name: name, language: language).message
+  end
 end

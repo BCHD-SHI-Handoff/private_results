@@ -20,12 +20,12 @@ class ApiController < ApplicationController
 
   # Handles the initial call.
   def welcome
-    @welcome_message = get_message("welcome")
+    @welcome_message = Script.get_message("welcome")
   end
 
   # Patient failed to select a language at the welcome prompt.
   def welcome_repeat
-    @error_message = get_message("language_not_selected")
+    @error_message = Script.get_message("language_not_selected")
     render action: :welcome
   end
 
@@ -42,7 +42,7 @@ class ApiController < ApplicationController
       redirect_to action: :username_prompt
     else
       # Patient has not selected a valid language.
-      @error_message = get_message("language_not_selected")
+      @error_message = Script.get_message("language_not_selected")
       render action: :welcome
     end
   end
@@ -53,7 +53,7 @@ class ApiController < ApplicationController
 
   # Patient failed to enter a username at the username prompt.
   def username_prompt_repeat
-    @error_message = get_message("username_prompt_repeat")
+    @error_message = Script.get_message("username_prompt_repeat", session[:language])
     render action: :username_prompt
   end
 
@@ -65,7 +65,7 @@ class ApiController < ApplicationController
       session[:username] = username
       redirect_to action: :password_prompt
     else
-      template = Liquid::Template.parse(get_message("username_prompt_invalid"))
+      template = Liquid::Template.parse(Script.get_message("username_prompt_invalid", session[:language]))
       @error_message = template.render({
         "username" => space_number(username)
       })
@@ -79,7 +79,7 @@ class ApiController < ApplicationController
 
   # Patient failed to enter a password at the password prompt.
   def password_prompt_repeat
-    @error_message = get_message("password_prompt_repeat")
+    @error_message = Script.get_message("password_prompt_repeat", session[:language])
     render action: :password_prompt
   end
 
@@ -91,7 +91,7 @@ class ApiController < ApplicationController
       session[:visit_id] = visit.id
       redirect_to action: :deliver_results
     else
-      template = Liquid::Template.parse(get_message("password_prompt_invalid"))
+      template = Liquid::Template.parse(Script.get_message("password_prompt_invalid", session[:language]))
       @error_message = template.render({
         "password" => space_number(password),
         "username" => space_number(session[:username])
@@ -107,7 +107,7 @@ class ApiController < ApplicationController
     # Twilio likes long locales like "en-US" while rails likes short form and as symbols.
     I18n.locale = get_language_code().split("-").first.to_sym
 
-    @message = visit.get_results_message(get_message("master"), session[:language])
+    @message = visit.get_results_message(session[:language])
 
     # Create a record of the message that we sent.
     delivery = Delivery.create(
@@ -148,23 +148,18 @@ class ApiController < ApplicationController
   end
 
   def get_username_prompt
-    @message = get_message("username_prompt")
+    @message = Script.get_message("username_prompt", session[:language])
   end
 
   def get_password_prompt
-    @message = get_message("password_prompt")
-  end
-
-  def get_message(name)
-    language = session[:language] || "english"
-    Script.select(:message).find_by!(name: name, language: language).message
+    @message = Script.get_message("password_prompt", session[:language])
   end
 
   def render_error exception
     logger.error("Uncaught #{exception} exception occurred: #{exception.message}")
     logger.error("Stack trace: #{exception.backtrace.join("\n")}")
     begin
-      @error_message = get_message("error")
+      @error_message = Script.get_message("error", session[:language])
     rescue ActiveRecord::RecordNotFound => exception2
       logger.error("Uncaught #{exception2} exception occurred: #{exception2.message}")
       logger.error("Stack trace: #{exception2.backtrace.join("\n")}")

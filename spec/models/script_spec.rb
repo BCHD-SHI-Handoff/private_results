@@ -24,4 +24,12 @@ describe Script do
     it { expect(script).to belong_to(:test) }
     it { expect(script).to belong_to(:status) }
   end
+
+  describe "public instance methods" do
+    describe "get_message" do
+      it "should return message" do
+        expect(Script.get_message("language_not_selected")).to eq "Sorry, I didn't get that."
+      end
+    end
+  end
 end

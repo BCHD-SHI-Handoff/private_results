@@ -11,7 +11,7 @@ describe "twilio API" do
     end
 
     it "should say welcome message and prompt for language selection" do
-      expect_say(@call, get_message("welcome"))
+      expect_say(@call, Script.get_message("welcome"))
       @call.within_gather do |gather|
         expect_say(gather, "For English, press 1")
         expect_say(gather, "Para Español oprima numero 2")
@@ -21,14 +21,14 @@ describe "twilio API" do
     it "should repeat welcome with error when no language selected" do
      expect(@call.has_redirect_to?("/api/welcome_repeat.xml")).to eq true
      @call.follow_redirect!
-     expect_say(@call, get_message("language_not_selected"))
+     expect_say(@call, Script.get_message("language_not_selected"))
     end
 
     it "should repeat welcome with error when invalid language selected" do
       @call.within_gather do |gather|
         gather.press "9"
         expect(@call.current_path).to eq api_welcome_process_path
-        expect_say(@call, get_message("language_not_selected"))
+        expect_say(@call, Script.get_message("language_not_selected"))
       end
     end
 
@@ -50,21 +50,21 @@ describe "twilio API" do
 
     it "should prompt for username" do
       @call.within_gather do |gather|
-        expect_say(gather, get_message("username_prompt"))
+        expect_say(gather, Script.get_message("username_prompt"))
       end
     end
 
     it "should repeat username prompt with error when no username given" do
      expect(@call.has_redirect_to?("/api/username_prompt_repeat.xml")).to eq true
      @call.follow_redirect!
-     expect_say(@call, get_message("username_prompt_repeat"))
+     expect_say(@call, Script.get_message("username_prompt_repeat"))
     end
 
     it "should repeat username prompt with error when invalid username is given" do
       @call.within_gather do |gather|
         gather.press "9#"
         expect(@call.current_path).to eq api_username_prompt_process_path
-        expect_say(@call, get_message("username_prompt_invalid").gsub("{{ username }}", "9"))
+        expect_say(@call, Script.get_message("username_prompt_invalid").gsub("{{ username }}", "9"))
       end
     end
 
@@ -83,14 +83,14 @@ describe "twilio API" do
 
     it "should prompt for password" do
       @call.within_gather do |gather|
-        expect_say(gather, get_message("password_prompt"))
+        expect_say(gather, Script.get_message("password_prompt"))
       end
     end
 
     it "should repeat password prompt with error when no password given" do
      expect(@call.has_redirect_to?("/api/password_prompt_repeat.xml")).to eq true
      @call.follow_redirect!
-     expect_say(@call, get_message("password_prompt_repeat"))
+     expect_say(@call, Script.get_message("password_prompt_repeat"))
     end
 
     it "should repeat password prompt with error when invalid password is given" do
@@ -98,7 +98,7 @@ describe "twilio API" do
         gather.press "9#"
         expect(@call.current_path).to eq api_password_prompt_process_path
         puts 
-        message = get_message("password_prompt_invalid")
+        message = Script.get_message("password_prompt_invalid")
           .gsub("{{ password }}", "9")
           .gsub("{{ username }}", space_number(@visit.username))
         expect_say(@call, message)
@@ -116,7 +116,7 @@ describe "twilio API" do
       page.set_rack_session(language: "english")
       page.set_rack_session(visit_id: visit.id)
       @call = ttt_call(api_deliver_results_path, nil, nil, options = {method: :get})
-      @message = visit.get_results_message(get_message("master"), "english")
+      @message = visit.get_results_message("english")
     end
 
     it "should deliver results" do

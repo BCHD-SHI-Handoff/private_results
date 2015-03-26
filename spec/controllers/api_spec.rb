@@ -9,16 +9,14 @@ describe ApiController, :type => :controller do
     it "should set welcome message" do
       get :welcome
       expect(response).to have_http_status(:success) # 200
-      welcome_message = Script.select(:message).find_by(name: "welcome", language: "english").message
-      expect(assigns(:welcome_message)).to eq welcome_message
+      expect(assigns(:welcome_message)).to eq Script.get_message("welcome")
       expect(response).to render_template(:welcome)
     end
 
     it "should set error and render welcome on repeat" do
       get :welcome_repeat
       expect(response).to have_http_status(:success) # 200
-      error_message = Script.select(:message).find_by(name: "language_not_selected", language: "english").message
-      expect(assigns(:error_message)).to eq error_message
+      expect(assigns(:error_message)).to eq Script.get_message("language_not_selected")
       expect(response).to render_template(:welcome)
     end
 
@@ -37,8 +35,7 @@ describe ApiController, :type => :controller do
     it "should process bad language selection" do
       get :welcome_process, { "Digits" => "9"}
       expect(response).to have_http_status(:success) # 200
-      error_message = Script.select(:message).find_by(name: "language_not_selected", language: "english").message
-      expect(assigns(:error_message)).to eq error_message
+      expect(assigns(:error_message)).to eq Script.get_message("language_not_selected")
       expect(response).to render_template(:welcome)
     end
   end
@@ -46,7 +43,7 @@ describe ApiController, :type => :controller do
   describe "username prompt" do
     before :each do
       session[:language] = "english"
-      @message = Script.select(:message).find_by(name: "username_prompt", language: "english").message
+      @message = Script.get_message("username_prompt")
     end
 
     it "should set language code and message" do
@@ -62,8 +59,7 @@ describe ApiController, :type => :controller do
       expect(response).to have_http_status(:success) # 200
       expect(assigns(:language_code)).to eq "en-US"
       expect(assigns(:message)).to eq @message
-      error_message = Script.select(:message).find_by(name: "username_prompt_repeat", language: "english").message
-      expect(assigns(:error_message)).to eq error_message
+      expect(assigns(:error_message)).to eq Script.get_message("username_prompt_repeat")
       expect(response).to render_template(:username_prompt)
     end
 
@@ -72,8 +68,7 @@ describe ApiController, :type => :controller do
       expect(response).to have_http_status(:success) # 200
       expect(assigns(:language_code)).to eq "en-US"
       expect(assigns(:message)).to eq @message
-      error_message = Script.select(:message).find_by(name: "username_prompt_invalid", language: "english").message
-      expect(assigns(:error_message)).to eq error_message.gsub("{{ username }}", "3 3")
+      expect(assigns(:error_message)).to eq Script.get_message("username_prompt_invalid").gsub("{{ username }}", "3 3")
       expect(response).to render_template(:username_prompt)
     end
 
@@ -90,7 +85,7 @@ describe ApiController, :type => :controller do
       @visit = create(:visit)
       session[:language] = "english"
       session[:username] = @visit.username
-      @message = Script.select(:message).find_by(name: "password_prompt", language: "english").message
+      @message = Script.get_message("password_prompt")
     end
 
     it "should set language code and message" do
@@ -106,8 +101,7 @@ describe ApiController, :type => :controller do
       expect(response).to have_http_status(:success) # 200
       expect(assigns(:language_code)).to eq "en-US"
       expect(assigns(:message)).to eq @message
-      error_message = Script.select(:message).find_by(name: "password_prompt_repeat", language: "english").message
-      expect(assigns(:error_message)).to eq error_message
+      expect(assigns(:error_message)).to eq Script.get_message("password_prompt_repeat")
       expect(response).to render_template(:password_prompt)
     end
 
@@ -116,7 +110,7 @@ describe ApiController, :type => :controller do
       expect(response).to have_http_status(:success) # 200
       expect(assigns(:language_code)).to eq "en-US"
       expect(assigns(:message)).to eq @message
-      error_message = Script.select(:message).find_by(name: "password_prompt_invalid", language: "english").message
+      error_message = Script.get_message("password_prompt_invalid")
       error_message.gsub!("{{ username }}", space_number(@visit.username))
       error_message.gsub!("{{ password }}", "3 3")
       expect(assigns(:error_message)).to eq error_message
@@ -131,12 +125,8 @@ describe ApiController, :type => :controller do
   end
 
   describe "deliver_results" do
-
-    it "should render pending message and create a delivery" do
-      # Create a visit that is less than 5 days old (recent) and has at least one result pending.
-      visit = create(:visit, visited_on: 3.days.ago)
-      visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Chlamydia"))
-      visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
+    it "should render results message and create a delivery" do
+      visit = create(:visit_with_results)
 
       # Set our session.
       session = {"visit_id" => visit.id, "language" => "english"}
@@ -146,11 +136,7 @@ describe ApiController, :type => :controller do
       expect(response).to have_http_status(:success) # 200
       expect(response).to render_template(:deliver_results)
 
-      actual_message = "You visited #{visit.clinic.name} on #{visit.visited_on_date} and were tested for Chlamydia and Gonorrhea."
-      actual_message += "\n\n"
-      actual_message += "Your test results are still pending. Please call back on #{visit.results_ready_on} to get your test results."
-      actual_message += "\n\n\n"
-      actual_message += "Thank you for calling!"
+      actual_message = visit.get_results_message("english")
       expect(assigns(:message)).to eq actual_message
 
       # Each result should point to the recorded delivery.
@@ -160,10 +146,6 @@ describe ApiController, :type => :controller do
         expect(result.deliveries.first.phone_number_used).to eq "+15551234567"
         expect(result.deliveries.first.delivery_method).to eq "phone"
       end
-    end
-
-    it "should render message and create a delivery" do
-      # XXX When results are in
     end
   end
 end

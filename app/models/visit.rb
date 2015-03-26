@@ -8,24 +8,26 @@ class Visit < ActiveRecord::Base
   # The username and password combo must be unique.
   validates_uniqueness_of :username, scope: :password
 
-  def get_results_message(template, language)
-    # Get the proper clinic hours message for the selected language.
+  def get_results_message(language)
+    # Get the proper clinic hours message for the stored language language.
     clinic_hours = self.clinic.hours_for_language(language)
 
-    template = Liquid::Template.parse(template) # Parses and compiles the template
+    template = Liquid::Template.parse(Script.get_message("master", language))
     template.render(
       {
         "clinic_name" => self.clinic.name,
-        "visit_date" => self.visited_on_date,
+        "visit_date" => visited_on_date,
         "clinic_hours" => clinic_hours,
-        "recent_visit_with_pending_results" => self.is_recent? && self.has_pending_results?,
-        "results_ready_on" => self.results_ready_on,
-        "any_results_require_clinic_visit" => self.require_clinic_visit?,
-        "test_names" => self.test_names.to_sentence(), # to_sentence will respect I18n.locale
-        "test_messages" => self.test_messages({"clinic_hours" => clinic_hours})
+        "recent_visit_with_pending_results" => is_recent? && has_pending_results?,
+        "results_ready_on" => results_ready_on,
+        "any_results_require_clinic_visit" => require_clinic_visit?,
+        "test_names" => test_names.to_sentence(), # to_sentence will respect I18n.locale
+        "test_messages" => test_messages({"clinic_hours" => clinic_hours})
       }
     )
   end
+
+  private
 
   # Get all of the test names for each result of the visit.
   def test_names
@@ -41,15 +43,12 @@ class Visit < ActiveRecord::Base
     format_date(self.visited_on)
   end
 
-  # XXX When are results ready? 5 days from visit?
-  # XXX This definitely should match the days in is_recent?
   def results_ready_on
-    format_date(self.visited_on + 5.days)
+    format_date(self.visited_on + 7.days)
   end
 
-  # XXX Should this be set to 5 days?
   def is_recent?
-    self.visited_on > 5.days.ago
+    self.visited_on > 7.days.ago
   end
 
   def has_pending_results?
@@ -61,8 +60,6 @@ class Visit < ActiveRecord::Base
   def require_clinic_visit?
     false
   end
-
-  private
 
   # Formats the visited_on timestamp.
   # English example: "Saturday, March 29th"
