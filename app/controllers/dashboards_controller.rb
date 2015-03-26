@@ -11,7 +11,7 @@ class DashboardsController < ApplicationController
       delivered = Result.where("recorded_on > ?", time).includes(:deliveries).where.not(:deliveries_results => {:result_id => nil}).count
       total = Result.where("recorded_on > ?", time).count
       @dashboard[:results_delivered][symbol] = delivered
-      @dashboard[:percentage_delivered][symbol] = (100 * delivered.to_f / total).round(0)
+      @dashboard[:percentage_delivered][symbol] = total == 0 ? 0 : (100 * delivered.to_f / total).round(0)
       @dashboard[:visits][symbol] = Visit.where("visited_on > ?", time).count
     end
 

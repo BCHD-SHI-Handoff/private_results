@@ -6,6 +6,7 @@ require 'rspec/rails'
 require 'factory_girl_rails'
 require 'capybara/rails'
 require "rack_session_access/capybara"
+require 'devise'
 require 'helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -26,6 +27,7 @@ Object.send(:remove_const, :Test)
 
 RSpec.configure do |config|
   config.include Helpers
+  config.include Devise::TestHelpers, :type => :controller
 
   # Using the shortened version of FactoryGirl syntax.
   config.include FactoryGirl::Syntax::Methods
