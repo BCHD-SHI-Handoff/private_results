@@ -46,6 +46,8 @@ class UsersController < ApplicationController
     render nothing: true
   end
 
+  private
+
   def user_params
     params.require(:user).permit(:email, :role, :active)
   end
