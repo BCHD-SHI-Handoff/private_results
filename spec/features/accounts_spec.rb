@@ -8,8 +8,9 @@ require "rails_helper"
 
 describe "accounts" do
 
+  let(:active_user) { create(:user, active: true) }
   let(:inactive_user) { create(:user, active: false) }
-  let(:uncofirmed_user) { create(:user, confirmed_at: nil) }
+  let(:unconfirmed_user) { create(:user, confirmed_at: nil) }
   let(:locked_user) { create(:user, locked_at: Time.now, unlock_token: "dummy_token") }
   let(:invalid_email) { "invalid@example.com" }
 
@@ -44,11 +45,19 @@ describe "accounts" do
     end
 
     it "should fail for users without confirmed emails" do
-      fill_in "user_email", :with => uncofirmed_user.email
+      fill_in "user_email", :with => unconfirmed_user.email
       fill_in "user_password", :with => DEFAULT_USER_PASSWORD
       click_button "Log in"
       expect(current_path.to_s).to match new_user_session_path
       expect(page.find(".alert-warning")).to have_text(I18n.t("devise.failure.unconfirmed"))
+    end
+
+    it "should successfully logout" do
+      login_as(active_user, :scope => :user)
+      visit root_path
+      click_link "Sign Out"
+      expect(current_path.to_s).to match new_user_session_path
+      expect(page.find(".alert-warning")).to have_text(I18n.t("devise.failure.unauthenticated"))
     end
   end
 
@@ -77,9 +86,20 @@ describe "accounts" do
       expect(page.find(".alert-danger")).to have_text("Email " + I18n.t("errors.messages.not_found"))
       expect(current_path.to_s).to match user_password_path
     end
+
+    it "should be able to reset password" do
+      token = active_user.send_reset_password_instructions
+      visit "#{edit_user_password_path}?reset_password_token=#{token}"
+      fill_in "user_password", :with => DEFAULT_USER_PASSWORD
+      fill_in "user_password_confirmation", :with => DEFAULT_USER_PASSWORD
+      click_button "Update Password"
+      expect(current_path.to_s).to match root_path
+      expect(page.find(".alert-info")).to have_text(I18n.t("devise.passwords.updated"))
+    end
+
   end
 
-  describe "resend confirmation email" do
+  describe "confirmation email" do
     it "should send confirmation email again" do
       # Click confirmation instruction link on login page.
       visit root_path
@@ -87,11 +107,11 @@ describe "accounts" do
       expect(current_path.to_s).to match new_user_confirmation_path
 
       # Fill in email and click submit.
-      fill_in "user_email", :with => uncofirmed_user.email
+      fill_in "user_email", :with => unconfirmed_user.email
       click_button "Resend confirmation instructions"
 
       # Check email was sent and we got the proper result.
-      expect(last_email.to.first).to eq uncofirmed_user.email
+      expect(last_email.to.first).to eq unconfirmed_user.email
       expect(last_email.subject).to eq I18n.t("devise.mailer.confirmation_instructions.subject")
       expect(page.find(".alert-info")).to have_text(I18n.t("devise.confirmations.send_instructions"))
       expect(current_path.to_s).to match new_user_session_path
@@ -111,6 +131,20 @@ describe "accounts" do
       click_button "Resend confirmation instructions"
       expect(page.find(".alert-danger")).to have_text("Email " + I18n.t("errors.messages.not_found"))
       expect(current_path.to_s).to match user_confirmation_path
+    end
+
+    it "should confirm email" do
+      # Need to set password to nil in order to get the password form on email confirmation.
+      unconfirmed_user2 = create(:user, confirmed_at: nil, password: nil, password_confirmation: nil)
+      confirmation_email = unconfirmed_user2.send_confirmation_instructions
+      token = confirmation_email.body.to_s[/confirmation_token=([^"]+)/, 1]
+      visit "#{user_confirmation_path}?confirmation_token=#{token}"
+      expect(page).to have_text("Account Activation for #{unconfirmed_user2.email}")
+      fill_in "user_password", :with => DEFAULT_USER_PASSWORD
+      fill_in "user_password_confirmation", :with => DEFAULT_USER_PASSWORD
+      click_button "Activate"
+      expect(current_path.to_s).to match root_path
+      expect(page.find(".alert-info")).to have_text(I18n.t("devise.confirmations.confirmed"))
     end
   end
 
@@ -147,6 +181,12 @@ describe "accounts" do
       expect(page.find(".alert-danger")).to have_text("Email " + I18n.t("errors.messages.not_found"))
       expect(current_path.to_s).to match user_unlock_path
     end
-  end
 
+    it "should unlock email" do
+      token = locked_user.send_unlock_instructions
+      visit "#{user_unlock_path}?unlock_token=#{token}"
+      expect(current_path.to_s).to match new_user_session_path
+      expect(page.find(".alert-info")).to have_text(I18n.t("devise.unlocks.unlocked"))
+    end
+  end
 end
