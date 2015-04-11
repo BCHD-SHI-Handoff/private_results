@@ -6,7 +6,7 @@
       <span class="label label-warning">Inactive</span>
     <% end %>
   </td>
-  <td class="email"><%= link_to user.email, user_path(user) %></td>
+  <td class="email"><%= user.email %></td>
   <td class="roles"><%= user.role %></td>
   <td class="actions">
     <%= simple_form_for user, remote: true do |f| %>
