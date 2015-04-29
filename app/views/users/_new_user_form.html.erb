@@ -1,49 +1,43 @@
-<div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="newUserModalLabel">New User</h4>
-      </div>
-      <%= simple_form_for @user, html: { class: 'form-vertical' }, remote: true do |f| %>
-        <div class="modal-body">
-
-          <div class="row">
-            <div class="col-md-12">
-              <%= f.input  :email %>
-              <%= f.input :role, as: :radio_buttons, collection: [:admin, :staff], class: "radio-inline" %>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <h4>Creating Users</h4>
-              <p>
-                When you enter an email address and click "Create User," an
-                email will be sent to that email address letting the user know
-                that an account has been created for them. This email will
-                contain a unique link that will allow that user to create a
-                password the first time they log in.
-              </p>
-            </div>
-
-            <div class="col-md-6">
-              <h4>About Roles</h4>
-              <dl>
-                <dt>Staff</dt>
-                <dd>Able to search patient results and call-in history, able to view dashboard</dd>
-
-                <dt>Admin</dt>
-                <dd>Able to add users, reset password, delete users, and do what Staff can do</dd>
-              </dl>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <%= f.button :submit, "Create user" %>
-        </div>
-      </div>
-  <% end %>
-  </div>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title" id="newUserModalLabel">New User</h4>
 </div>
+<%= simple_form_for @user, html: { class: 'form-vertical' }, remote: true do |f| %>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.input  :email %>
+        <%= f.input :role, as: :radio_buttons, collection: [:admin, :staff], class: "radio-inline" %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h4>Creating Users</h4>
+        <p>
+          When you enter an email address and click "Create User," an
+          email will be sent to that email address letting the user know
+          that an account has been created for them. This email will
+          contain a unique link that will allow that user to create a
+          password the first time they log in.
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <h4>About Roles</h4>
+        <dl>
+          <dt>Staff</dt>
+          <dd>Able to search patient results and call-in history, able to view dashboard</dd>
+
+          <dt>Admin</dt>
+          <dd>Able to add users, reset password, delete users, and do what Staff can do</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <%= f.button :submit, "Create user" %>
+  </div>
+<% end %>

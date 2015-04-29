@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
   enum role: [ :admin, :staff ]
 
+  validates_presence_of :email, :role
+
   # This method is called by devise to check if user can login.
   def active_for_authentication?
     # Check with super and then check if our user is active

@@ -9,45 +9,49 @@
   <td class="email"><%= user.email %></td>
   <td class="roles"><%= user.role %></td>
   <td class="actions">
-    <%= simple_form_for user, remote: true do |f| %>
-      <%= f.input :active, :as => :hidden, :input_html => { :value => !user.active? }%>
-      <%=
-        button_tag(
-          type: 'submit',
-          class: "btn btn-default btn-sm",
-          onclick: "return confirm('Are you sure you want to #{user.active? ? 'deactivate' : 'activate'} #{user.email}?')"
-        ) do
-      %>
-        <% if user.active? %>
-          <span class="glyphicon glyphicon-remove">Deactivate</span>
-        <% else %>
-          <span class="glyphicon glyphicon-ok">Activate</span>
+    <% if user != current_user %>
+      <%= simple_form_for user, remote: true do |f| %>
+        <%= f.input :active, :as => :hidden, :input_html => { :value => !user.active? }%>
+        <%=
+          button_tag(
+            type: 'submit',
+            class: "btn btn-default btn-sm",
+            onclick: "return confirm('Are you sure you want to #{user.active? ? 'deactivate' : 'activate'} #{user.email}?')"
+          ) do
+        %>
+          <% if user.active? %>
+            <span class="glyphicon glyphicon-remove">Deactivate</span>
+          <% else %>
+            <span class="glyphicon glyphicon-ok">Activate</span>
+          <% end %>
         <% end %>
       <% end %>
-    <% end %>
 
-    <%= simple_form_for user, :url => send_reset_password_user_url(user), :method => 'get', remote: true do |f| %>
-      <%= button_tag(type: 'submit', class: "btn btn-default btn-sm") do %>
-        <span class="glyphicon glyphicon-envelope"></span> Reset Password
+      <%= simple_form_for user, :url => send_reset_password_user_url(user), :method => 'get', remote: true do |f| %>
+        <%= button_tag(type: 'submit', class: "btn btn-default btn-sm") do %>
+          <span class="glyphicon glyphicon-envelope"></span> Reset Password
+        <% end %>
       <% end %>
-    <% end %>
 
-    <div>
-      <%= link_to edit_user_path(user), class: 'btn btn-sm btn-default', remote: true do %>
-        <span class="glyphicon glyphicon-pencil"></span> Edit
-      <% end %>
-    </div>
+      <div>
+        <%= link_to edit_user_path(user), class: 'btn btn-sm btn-default', remote: true do %>
+          <span class="glyphicon glyphicon-pencil"></span> Edit
+        <% end %>
+      </div>
+    <% end %>
   </td>
   <td class="delete">
-    <%= simple_form_for user, :method => :delete, remote: true do |f| %>
-      <%=
-        button_tag(
-          type: 'submit',
-          class: "btn btn-danger btn-sm",
-          onclick: "return confirm('Are you sure you want permanently remove #{user.email}?')"
-        ) do
-      %>
-        <i class="glyphicon glyphicon-remove"></i>
+    <% if user != current_user %>
+      <%= simple_form_for user, :method => :delete, remote: true do |f| %>
+        <%=
+          button_tag(
+            type: 'submit',
+            class: "btn btn-danger btn-sm",
+            onclick: "return confirm('Are you sure you want permanently remove #{user.email}?')"
+          ) do
+        %>
+          <i class="glyphicon glyphicon-remove"></i>
+        <% end %>
       <% end %>
     <% end %>
   </td>

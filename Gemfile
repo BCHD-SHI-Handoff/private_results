@@ -65,7 +65,12 @@ end
 
 group :test do
   gem 'rack_session_access'
+  gem 'database_cleaner'
   gem 'capybara'
+  gem 'capybara-screenshot'
+  gem 'capybara-webkit'
+  gem 'selenium-webdriver'
+  gem 'poltergeist'
   gem 'twilio-test-toolkit'
   gem 'shoulda-matchers'
   gem 'shoulda-callback-matchers'

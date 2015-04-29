@@ -1,47 +1,41 @@
-<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="editUserModalLabel">Edit User</h4>
-      </div>
-      <%= simple_form_for @user, html: { class: 'form-vertical' }, remote: true do |f| %>
-        <div class="modal-body">
-
-          <div class="row">
-            <div class="col-md-12">
-              <%= f.input  :email %>
-              <%= f.input :role, as: :radio_buttons, collection: [:admin, :staff], class: "radio-inline" %>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <h4>Changing Email</h4>
-              <p>
-                When you edit a user's email, a new email confirmation link will
-                be sent to them. Upon clicking this link, their new email address will be
-                activated.
-              </p>
-            </div>
-
-            <div class="col-md-6">
-              <h4>About Roles</h4>
-              <dl>
-                <dt>Staff</dt>
-                <dd>Able to search patient results and call-in history, able to view dashboard</dd>
-
-                <dt>Admin</dt>
-                <dd>Able to add users, reset password, delete users, and do what Staff can do</dd>
-              </dl>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <%= f.button :submit, "Save user" %>
-        </div>
-      </div>
-  <% end %>
-  </div>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title" id="editUserModalLabel">Edit User</h4>
 </div>
+<%= simple_form_for @user, html: { class: 'form-vertical' }, remote: true do |f| %>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.input  :email %>
+        <%= f.input :role, as: :radio_buttons, collection: [:admin, :staff], class: "radio-inline" %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h4>Changing Email</h4>
+        <p>
+          When you edit a user's email, a new email confirmation link will
+          be sent to them. Upon clicking this link, their new email address will be
+          activated.
+        </p>
+      </div>
+
+      <div class="col-md-6">
+        <h4>About Roles</h4>
+        <dl>
+          <dt>Staff</dt>
+          <dd>Able to search patient results and call-in history, able to view dashboard</dd>
+
+          <dt>Admin</dt>
+          <dd>Able to add users, reset password, delete users, and do what Staff can do</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <%= f.button :submit, "Save user" %>
+  </div>
+<% end %>

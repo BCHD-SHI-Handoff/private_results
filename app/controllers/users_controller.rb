@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   use_growlyflash
   respond_to :html, :js
   before_action :find_user, only: [:edit, :update, :destroy, :send_reset_password]
+  before_filter :verify_is_admin
 
   def index
     @users = User.all
@@ -12,19 +13,30 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(user_params.merge({active: true}))
-    flash[:success] = "Email sent to '#{@user.email}'"
+    @user = User.new(user_params.merge({active: true}))
+
+    respond_to do |format|
+      if @user.save
+        flash[:success] = "Email sent to '#{@user.email}'"
+        format.js
+      else
+        format.js { render 'new' }
+      end
+    end
   end
 
   def update
-    if !@user.update_attributes(user_params)
-      flash[:error] = "Failed to update '#{@user.email}'"
-    else
-      if user_params["email"] || user_params["role"]
-        flash[:success] = "Successfully updated '#{@user.email}'"
-      elsif user_params["active"]
-        action = user_params["active"] == 'true' ? "activated" : "deactivated"
-        flash[:success] = "Successfully #{action} '#{@user.email}'"
+    respond_to do |format|
+      if @user.update_attributes(user_params)
+        if user_params["email"] || user_params["role"]
+          flash[:success] = "Successfully updated '#{@user.email}'"
+        elsif user_params["active"]
+          action = user_params["active"] == 'true' ? "activated" : "deactivated"
+          flash[:success] = "Successfully #{action} '#{@user.email}'"
+        end
+        format.js
+      else
+        format.js { render 'edit' }
       end
     end
   end
