@@ -336,7 +336,6 @@ if Rails.env == "development"
       result = Result.new({
         visit_id: visit.id,
         test_id: test[:test_id],
-        positive: [status_positive, status_positive_and_treated, status_hepb_infected].include?(status),
         status_id: status.nil? ? nil : status.id,
         recorded_on: visited_on + 1.days
       })
