@@ -15,29 +15,23 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params.merge({active: true}))
 
-    respond_to do |format|
-      if @user.save
-        flash[:success] = "Email sent to '#{@user.email}'"
-        format.js
-      else
-        format.js { render 'new' }
-      end
+    if @user.save
+      flash[:success] = "Email sent to '#{@user.email}'"
+    else
+      render 'new'
     end
   end
 
   def update
-    respond_to do |format|
-      if @user.update_attributes(user_params)
-        if user_params["email"] || user_params["role"]
-          flash[:success] = "Successfully updated '#{@user.email}'"
-        elsif user_params["active"]
-          action = user_params["active"] == 'true' ? "activated" : "deactivated"
-          flash[:success] = "Successfully #{action} '#{@user.email}'"
-        end
-        format.js
-      else
-        format.js { render 'edit' }
+    if @user.update_attributes(user_params)
+      if user_params["email"] || user_params["role"]
+        flash[:success] = "Successfully updated '#{@user.email}'"
+      elsif user_params["active"]
+        action = user_params["active"] == 'true' ? "activated" : "deactivated"
+        flash[:success] = "Successfully #{action} '#{@user.email}'"
       end
+    else
+      render 'edit'
     end
   end
 
