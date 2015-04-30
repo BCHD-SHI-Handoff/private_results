@@ -5,8 +5,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'factory_girl_rails'
 require 'capybara/rails'
-require 'capybara/poltergeist'
 require 'capybara-screenshot/rspec'
+require 'capybara/poltergeist'
 require "rack_session_access/capybara"
 require 'devise'
 require 'helpers'
@@ -16,15 +16,8 @@ include Warden::Test::Helpers
 Warden.test_mode!
 
 # Setup capybara to use the poltergeist (phatomJS) runner.
-# Capybara.javascript_driver = :poltergeist
-# Capybara.javascript_driver = :webkit
+Capybara.javascript_driver = :poltergeist
 Capybara.default_wait_time = 10
-
-Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome)
-end
-
-Capybara.javascript_driver = :chrome
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
