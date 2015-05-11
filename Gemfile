@@ -56,6 +56,8 @@ gem 'liquid', '~> 3.0.1'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+#
+gem 'bootstrap-datepicker-rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0'

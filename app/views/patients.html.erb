@@ -31,6 +31,17 @@
   <div class="row">
     <div class="col-sm-8 col-md-8">
       <% if @visits.nil? %>
+        <br>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="input-daterange input-group" id="datepicker">
+              <input type="text" class="form-control" name="start"/>
+              <span class="input-group-addon">to</span>
+              <input type="text" class="form-control" name="end" />
+            </div>
+            <button id="downloadCSV" type="submit" class="btn btn-primary">Download CSV</button>
+          </div>
+        </div>
       <% elsif @visits.length == 0 %>
         <div class="alert alert-danger" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign"></span>

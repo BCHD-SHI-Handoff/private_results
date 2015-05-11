@@ -30,6 +30,8 @@ GEM
     addressable (2.3.8)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.10)
+    bootstrap-datepicker-rails (1.4.0)
+      railties (>= 3.0)
     builder (3.2.2)
     capybara (2.4.4)
       mime-types (>= 1.16)
@@ -196,6 +198,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-datepicker-rails
   capybara
   capybara-screenshot
   coffee-rails (~> 4.0.0)
