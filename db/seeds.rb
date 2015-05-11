@@ -40,6 +40,7 @@ status_negative = Status.create(status: "Negative")
 status_positive = Status.create(status: "Positive")
 status_positive_and_treated = Status.create(status: "Positive and treated")
 status_pending = Status.create(status: "Pending")
+status_come_back = Status.create(status: "Come back to clinic")
 status_immune = Status.create(status: "Immune")
 status_need_vaccination = Status.create(status: "Need vaccination")
 status_hepb_infected = Status.create(status: "Hep B infected")
@@ -299,12 +300,12 @@ Script.create({
 if Rails.env == "development"
   # Setup an array of all of our tests and there possible statuses.
   tests = [
-    {test_id: chlamydia_test.id, statuses: [status_negative, status_positive_and_treated, status_pending, nil]},
-    {test_id: gonorrhea_test.id, statuses: [status_negative, status_positive_and_treated, status_pending, nil]},
-    {test_id: syphilis_test.id, statuses: [status_negative, status_positive_and_treated, status_pending, nil]},
-    {test_id: hiv_test.id, statuses: [status_negative, status_pending, nil]},
-    {test_id: hepb_test.id, statuses: [status_immune, status_need_vaccination, status_hepb_infected, status_pending, nil]},
-    {test_id: hepc_test.id, statuses: [status_negative, status_positive, status_pending, nil]}
+    {test_id: chlamydia_test.id, statuses: [status_negative, status_positive_and_treated, status_pending, status_come_back, nil]},
+    {test_id: gonorrhea_test.id, statuses: [status_negative, status_positive_and_treated, status_pending, status_come_back, nil]},
+    {test_id: syphilis_test.id, statuses: [status_negative, status_positive_and_treated, status_pending, status_come_back, nil]},
+    {test_id: hiv_test.id, statuses: [status_negative, status_pending, status_come_back, nil]},
+    {test_id: hepb_test.id, statuses: [status_immune, status_need_vaccination, status_hepb_infected, status_pending, status_come_back, nil]},
+    {test_id: hepc_test.id, statuses: [status_negative, status_positive, status_pending, status_come_back, nil]}
   ]
 
   # Create 100 visits for up to 10 different patients.
