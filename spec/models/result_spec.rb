@@ -31,4 +31,65 @@ describe Result do
       expect(actual_message).to eq expected_message
     end
   end
+
+  describe "update_delivery_status" do
+    it "should set delivery_status passed in" do
+      result1 = build(:result)
+      result2 = build(:result)
+      result3 = build(:result)
+      result1.update_delivery_status(Result.delivery_statuses[:not_delivered])
+      expect(result1.not_delivered?).to eq true
+      expect(result1.come_back?).to eq false
+      expect(result1.delivered?).to eq false
+
+      result2.update_delivery_status(Result.delivery_statuses[:come_back])
+      expect(result2.not_delivered?).to eq false
+      expect(result2.come_back?).to eq true
+      expect(result2.delivered?).to eq false
+
+      result3.update_delivery_status(Result.delivery_statuses[:delivered])
+      expect(result3.not_delivered?).to eq false
+      expect(result3.come_back?).to eq false
+      expect(result3.delivered?).to eq true
+    end
+
+    it "should set delivery_status based on status" do
+      result.status = nil
+      result.update_delivery_status(nil)
+      expect(result.not_delivered?).to eq true
+
+      result.status = Status.find_by_status("Pending")
+      result.update_delivery_status(nil)
+      expect(result.not_delivered?).to eq true
+
+      result.status = Status.find_by_status("Positive")
+      result.update_delivery_status(nil)
+      expect(result.come_back?).to eq true
+
+      result.status = Status.find_by_status("Negative")
+      result.update_delivery_status(nil)
+      expect(result.delivered?).to eq true
+    end
+
+    it "should not change a come_back result to not_delivered" do
+      result.come_back!
+      result.update_delivery_status(Result.delivery_statuses[:not_delivered])
+      expect(result.come_back?).to eq true
+    end
+
+    it "should change a come_back result to delivered" do
+      result.come_back!
+      result.update_delivery_status(Result.delivery_statuses[:delivered])
+      expect(result.delivered?).to eq true
+    end
+
+    it "should not change a delivered result" do
+      result.delivered!
+      result.update_delivery_status(Result.delivery_statuses[:come_back])
+      expect(result.delivered?).to eq true
+
+      result.update_delivery_status(Result.delivery_statuses[:not_delivered])
+      expect(result.delivered?).to eq true
+    end
+  end
 end

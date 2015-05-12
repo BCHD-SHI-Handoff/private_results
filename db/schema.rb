@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429230502) do
+ActiveRecord::Schema.define(version: 20150512145730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,10 +41,11 @@ ActiveRecord::Schema.define(version: 20150429230502) do
   add_index "deliveries_results", ["result_id"], name: "index_deliveries_results_on_result_id", using: :btree
 
   create_table "results", force: true do |t|
-    t.integer  "visit_id",    null: false
-    t.integer  "test_id",     null: false
+    t.integer  "visit_id",        null: false
+    t.integer  "test_id",         null: false
     t.integer  "status_id"
-    t.datetime "recorded_on", null: false
+    t.datetime "recorded_on",     null: false
+    t.integer  "delivery_status"
   end
 
   add_index "results", ["test_id"], name: "index_results_on_test_id", using: :btree
@@ -64,7 +65,8 @@ ActiveRecord::Schema.define(version: 20150429230502) do
   add_index "scripts", ["test_id"], name: "index_scripts_on_test_id", using: :btree
 
   create_table "statuses", force: true do |t|
-    t.string "status", null: false
+    t.string  "status",   null: false
+    t.integer "category"
   end
 
   create_table "tests", force: true do |t|

@@ -36,14 +36,17 @@ hepc_test = Test.create(name: "Hepatitis C")
 #######################
 #      STATUSES       #
 #######################
-status_negative = Status.create(status: "Negative")
-status_positive = Status.create(status: "Positive")
-status_positive_and_treated = Status.create(status: "Positive and treated")
-status_pending = Status.create(status: "Pending")
-status_come_back = Status.create(status: "Come back to clinic")
-status_immune = Status.create(status: "Immune")
-status_need_vaccination = Status.create(status: "Need vaccination")
-status_hepb_infected = Status.create(status: "Hep B infected")
+status_negative = Status.create(status: "Negative", category: :ok)
+status_positive_and_treated = Status.create(status: "Positive and treated", category: :ok)
+status_immune = Status.create(status: "Immune", category: :ok)
+status_need_vaccination = Status.create(status: "Need vaccination", category: :ok)
+status_hepb_infected = Status.create(status: "Hep B infected", category: :ok)
+status_hepc_positive = Status.create(status: "Hep C Positive", category: :ok)
+
+status_pending = Status.create(status: "Pending", category: :pending)
+
+status_positive = Status.create(status: "Positive", category: :come_back)
+status_come_back = Status.create(status: "Come back to clinic", category: :come_back)
 
 #######################
 #       SCRIPTS       #
@@ -107,11 +110,22 @@ Script.create({
   language: 'english',
   message: "You visited {{ clinic_name }} on {{ visit_date }} and were tested for {{ test_names }}.
 
-{% if recent_visit_with_pending_results %}Your test results are still pending. Please call back on {{ results_ready_on }} to get your test results.
-{% elsif any_results_require_clinic_visit %}One or more of your test results requires medical attention. Please come back to the clinic as soon as possible. The clinic hours are {{ clinic_hours }}.
-{% else %}{{ test_messages }}{% endif %}
+{{ message }}
+
 
 Thank you for calling!"
+})
+
+Script.create({
+  name: 'pending',
+  language: 'english',
+  message: "Your test results are still pending. Please call back on {{ results_ready_on }} to get your test results."
+})
+
+Script.create({
+  name: 'come_back',
+  language: 'english',
+  message: "One or more of your test results requires medical attention. Please come back to the clinic as soon as possible. The clinic hours are {{ clinic_hours }}."
 })
 
 #######################
@@ -277,7 +291,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: hepc_test.id,
-  status_id: status_positive.id,
+  status_id: status_hepc_positive.id,
   message: "Your hepatitis C test was positive, which means that you have been exposed to hepatitis C. You need further evaluation. Please return to the clinic. Clinic hours are {{ clinic_hours }}."
 })
 
