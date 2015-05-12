@@ -44,6 +44,6 @@ $(document).ready(function() {
   $('#downloadCSV').click(function() {
     startTimeStamp = startDateInput.datepicker('getDate').getTime();
     endTimeStamp = endDateInput.datepicker('getDate').getTime();
-    window.location = "/patients.csv?start=" + startTimeStamp + "&end=" + endTimeStamp
+    window.location = "/admin/patients.csv?start=" + startTimeStamp + "&end=" + endTimeStamp
   });
 });

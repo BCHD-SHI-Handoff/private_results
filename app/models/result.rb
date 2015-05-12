@@ -5,7 +5,7 @@ class Result < ActiveRecord::Base
   has_and_belongs_to_many :deliveries
 
   # Results must be associated with a visit and a test.
-  validates :visit, :test, presence: true
+  validates :visit, :test, :delivery_status, presence: true
 
   enum delivery_status: [ :not_delivered, :come_back, :delivered ]
 

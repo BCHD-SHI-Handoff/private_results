@@ -6,6 +6,14 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
   def verify_is_admin
-    (current_user.nil?) ? redirect_to(root_path) : (redirect_to(root_path) unless current_user.admin?)
+    (current_user.nil?) ? redirect_to(root_path) : (redirect_to("/admin") unless current_user.admin?)
+  end
+
+  def after_sign_in_path_for(resource)
+    dashboards_path
+  end
+
+  def after_sign_out_path_for(resource)
+    dashboards_path
   end
 end

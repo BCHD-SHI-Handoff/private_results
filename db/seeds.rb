@@ -106,7 +106,7 @@ Script.create({
 })
 
 Script.create({
-  name: 'master',
+  name: 'phone_master',
   language: 'english',
   message: "You visited {{ clinic_name }} on {{ visit_date }} and were tested for {{ test_names }}.
 
@@ -114,6 +114,14 @@ Script.create({
 
 
 Thank you for calling!"
+})
+
+Script.create({
+  name: 'online_master',
+  language: 'english',
+  message: "You visited {{ clinic_name }} on {{ visit_date }} and were tested for {{ test_names }}.
+
+{{ message }}"
 })
 
 Script.create({

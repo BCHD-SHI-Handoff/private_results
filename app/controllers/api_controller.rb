@@ -107,7 +107,7 @@ class ApiController < ApplicationController
     # Twilio likes long locales like "en-US" while rails likes short form and as symbols.
     I18n.locale = get_language_code().split("-").first.to_sym
 
-    @message = visit.get_results_message(session[:language])
+    @message = visit.get_results_message(session[:language], "phone")
 
     # Create a record of the message that we sent.
     delivery = Delivery.create(

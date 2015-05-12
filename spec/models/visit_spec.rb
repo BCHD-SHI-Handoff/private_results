@@ -39,7 +39,7 @@ describe Visit do
         actual_message += "Please come back to the clinic as soon as possible. The clinic hours are #{ clinic_hours }."
         actual_message += "\n\n\n"
         actual_message += "Thank you for calling!"
-        expect(visit.get_results_message("english")).to eq actual_message
+        expect(visit.get_results_message("english", "phone")).to eq actual_message
 
         # Check result delivery is marked as come_back.
         expect(visit.results.first.come_back?).to eq true
@@ -59,7 +59,7 @@ describe Visit do
         actual_message += "Your test results are still pending. Please call back on #{results_ready_date} to get your test results."
         actual_message += "\n\n\n"
         actual_message += "Thank you for calling!"
-        expect(visit.get_results_message("english")).to eq actual_message
+        expect(visit.get_results_message("english", "phone")).to eq actual_message
 
         # Check result delivery is marked as not_delivered.
         expect(visit.results.first.not_delivered?).to eq true
@@ -86,7 +86,7 @@ describe Visit do
         actual_message += "You need further evaluation. Please return to the clinic. Clinic hours are #{clinic_hours}."
         actual_message += "\n\n\n"
         actual_message += "Thank you for calling!"
-        expect(visit.get_results_message("english")).to eq actual_message
+        expect(visit.get_results_message("english", "phone")).to eq actual_message
 
         # Check result delivery status.
         expect(visit.results[0].delivered?).to eq true

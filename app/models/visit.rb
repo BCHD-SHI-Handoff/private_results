@@ -10,28 +10,30 @@ class Visit < ActiveRecord::Base
   # The username and password combo must be unique.
   validates_uniqueness_of :username, scope: :password
 
-  def get_results_message(language)
+  def get_results_message(language, delivery_method)
     # Get the proper clinic hours message for the stored language language.
     clinic_hours = self.clinic.hours_for_language(language)
 
-    template = Liquid::Template.parse(Script.get_message("master", language))
+    template = Liquid::Template.parse(Script.get_message("#{delivery_method}_master", language))
 
-    if results.any?{ |result| result.status.nil? || result.status.come_back? }
+    latest_results = get_latest_results()
+
+    if latest_results.any?{ |result| result.status.nil? || result.status.come_back? }
       # Grab the come_back script and hand it the clinic hours
       message_template = Liquid::Template.parse(Script.get_message("come_back", language))
       message = message_template.render({"clinic_hours" => clinic_hours})
 
       # Set all of our results to have a delivery status of "come back".
-      results.each{ |result| result.update_delivery_status(:come_back) }
-    elsif results.any?{ |result| result.status.pending? } and is_recent?
+      latest_results.each{ |result| result.update_delivery_status(:come_back) }
+    elsif latest_results.any?{ |result| result.status.pending? } and is_recent?
       # Set all of our results to have a delivery status of "not delivered".
       message_template = Liquid::Template.parse(Script.get_message("pending", language))
       message = message_template.render({"results_ready_on" => results_ready_on})
 
-      results.each{ |result| result.update_delivery_status(:not_delivered) }
+      latest_results.each{ |result| result.update_delivery_status(:not_delivered) }
     else
       message = test_messages({"clinic_hours" => clinic_hours})
-      results.each{ |result| result.update_delivery_status(nil) } # Depends on result status.
+      latest_results.each{ |result| result.update_delivery_status(nil) } # Depends on result status.
     end
 
     template.render(
@@ -42,6 +44,10 @@ class Visit < ActiveRecord::Base
         "message" => message
       }
     )
+  end
+
+  def get_latest_results()
+    results.group_by{|r| r.test_id}.map{|key, group| group.last}
   end
 
   def self.get_csv(start_date, end_date)
@@ -79,12 +85,12 @@ class Visit < ActiveRecord::Base
 
   # Get all of the test names for each result of the visit.
   def test_names
-    self.results.map{|r| r.test.name}
+    self.get_latest_results.map{|r| r.test.name}
   end
 
   # Join together all of the test result messages.
   def test_messages message_variables
-    self.results.map{ |r| r.message(message_variables) }.join("\n\n")
+    self.get_latest_results.map{ |r| r.message(message_variables) }.join("\n\n")
   end
 
   def visited_on_date

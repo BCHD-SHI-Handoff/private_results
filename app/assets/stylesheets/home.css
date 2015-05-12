@@ -107,3 +107,8 @@ body {
 .user .actions * {
   display: inline;
 }
+
+.message {
+  white-space: pre-line;
+  word-break: normal;
+}
