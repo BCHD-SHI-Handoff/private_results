@@ -1,3 +1,5 @@
+require 'csv'
+
 class Visit < ActiveRecord::Base
   belongs_to :clinic
   has_many :results
@@ -25,6 +27,37 @@ class Visit < ActiveRecord::Base
         "test_messages" => test_messages({"clinic_hours" => clinic_hours})
       }
     )
+  end
+
+  def self.get_csv(start_date, end_date)
+    # Grab all visits within our date range and include their clinic and results data.
+    visits = Visit
+      .includes(:clinic, results: [:test, :status, :deliveries])
+      .all
+      # .where(visited_on: start_date..end_date)
+
+    # For each result in each visit, add a row to our CSV.
+    rows = []
+    visits.each do |visit|
+      visit.results.each do |result|
+        if result.deliveries.length > 0
+          result.deliveries.each do |delivery|
+            rows.push(get_csv_hash(visit, result, delivery))
+          end
+        else
+          rows.push(get_csv_hash(visit, result, nil))
+        end
+      end
+    end
+
+    csv_data = CSV.generate({}) do |csv|
+      csv << rows.first.keys
+      rows.each do |row|
+        csv << row.values
+      end
+    end
+
+    csv_data
   end
 
   private
@@ -72,4 +105,22 @@ class Visit < ActiveRecord::Base
       I18n.l(date, format: "%A, %B %d")
     end
   end
+
+  def self.get_csv_hash(visit, result, delivery)
+    {
+      'patient_no' => visit.patient_number,
+      'username' => visit.username,
+      'password' => visit.password,
+      'visit_date' => visit.visited_on,
+      'cosite' => visit.clinic.code,
+      'infection' => result.test.name,
+      'result_at_time' => result.status.nil? ? nil : result.status.status,
+      'delivery_status' => result.delivery_status,
+      'accessed_by' => delivery.nil? ? nil : delivery.delivery_method,
+      'date_accessed' => delivery.nil? ? nil : delivery.delivered_at,
+      'called_from' => delivery.nil? ? nil : delivery.phone_number_used,
+      'message' => delivery.nil? ? nil : delivery.message
+    }
+  end
+
 end

@@ -1,5 +1,3 @@
-require 'csv'
-
 class PatientsController < ApplicationController
   def index
     respond_to do |format|
@@ -20,47 +18,11 @@ class PatientsController < ApplicationController
       }
 
       format.csv {
+        # Round our start and end dates to the beginning and end of the days, respectively.
+        # This ensures that we get every visit that happened on those days.
         start_date = Time.at(params['start'].to_i / 1000).beginning_of_day
         end_date = Time.at(params['end'].to_i / 1000).end_of_day
-        csv_data = CSV.generate({}) do |csv|
-          # Set our headers for the CSV file (first row).
-          csv << [
-            "patient_no",
-            "username",
-            "password",
-            'visit_date',
-            'cosite',
-            'infection',
-            'result',
-            'result_last_changed', 
-            'delivery_status'
-          ]
-
-          # Grab all visits within our date range and include their clinic and results data.
-          visits = Visit
-            .includes(:clinic, results: [:test, :status, :deliveries])
-            .where(visited_on: start_date..end_date)
-            .all
-
-          # For each result in each visit, add a row to our CSV.
-          visits.each do |visit|
-            visit.results.each do |result|
-              csv << [
-                visit.patient_number,
-                visit.username,
-                visit.password,
-                visit.visited_on,
-                visit.clinic.code,
-                result.test.name,
-                result.status.nil? ? nil : result.status.status,
-                result.recorded_on,
-                result.deliveries.length > 0 ? "delivered" : "not delivered"
-              ]
-            end
-          end
-        end
-        # Send the data so that is downloaded.
-        send_data csv_data
+        render text: Visit.get_csv(start_date, end_date)
       }
     end
   end

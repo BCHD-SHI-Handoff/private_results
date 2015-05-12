@@ -32,28 +32,28 @@
             <th>Delivery Status</th>
           </thead>
           <tbody>
-            <% visit.results.each do |result| %>
+            <% visit.results.group_by{|r| r.test.name}.each do |test_name, result_group| %>
               <tr>
-                <td><%= result.test.name %></td>
+                <td><%= test_name %></td>
                 <td>
-                  <% if result.status.nil? %>
+                  <% if result_group.last.status.nil? %>
                     <span class="label label-info">Unknown
                   <% else %>
-                    <% if ['negative', 'immune'].include?(result.status.status.downcase) %>
+                    <% if ['negative', 'immune'].include?(result_group.last.status.status.downcase) %>
                       <span class="label label-success">
-                    <% elsif ['positive', 'hep b infected'].include?(result.status.status.downcase) %>
+                    <% elsif ['positive', 'hep b infected'].include?(result_group.last.status.status.downcase) %>
                       <span class="label label-danger">
-                    <% elsif ['positive and treated', 'need vaccination'].include?(result.status.status.downcase) %>
+                    <% elsif ['positive and treated', 'need vaccination'].include?(result_group.last.status.status.downcase) %>
                       <span class="label label-warning">
                     <% else %>
                       <span class="label label-info">
                     <% end %>
-                      <%= result.status.status %>
+                      <%= result_group.last.status.status %>
                     </span>
                     <% end %>
                 </td>
                 <td>
-                  <% if result.deliveries.length > 0 %>
+                  <% if result_group.last.deliveries.length > 0 %>
                     <span class="label label-primary">Delivered</span>
                   <% else %>
                     <span class="label label-warning">Not Delivered</span>

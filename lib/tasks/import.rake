@@ -63,21 +63,12 @@ namespace :patients do
 
   def record_result(row, visit, test_abbr, test)
     if row["#{test_abbr}tested"] == '1'
-      # Update or create the result for this unique visit/test combo.
-      result = Result.where(visit_id: visit.id, test_id: test.id).first
-      status_id = Status.where(status: row["#{test_abbr}result"]).pluck(:id).first
-      if !result.nil?
-        result.status_id = status_id
-        result.recorded_on = Time.now
-        result.save
-      else
-        result = Result.create({
-          visit_id: visit.id,
-          test_id: test.id,
-          status_id: status_id,
-          recorded_on: Time.now
-        })
-      end
+      result = Result.create({
+        visit_id: visit.id,
+        test_id: test.id,
+        status_id: Status.where(status: row["#{test_abbr}result"]).pluck(:id).first,
+        recorded_on: Time.now
+      })
     end
   end
 end

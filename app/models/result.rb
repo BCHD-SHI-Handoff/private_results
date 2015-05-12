@@ -14,4 +14,12 @@ class Result < ActiveRecord::Base
     template = Liquid::Template.parse(message) # Parses and compiles the template
     template.render(message_variables)
   end
+
+  def delivery_status
+    if deliveries.length == 0
+      "Not delivered"
+    else
+      "maybe delivered"
+    end
+  end
 end
