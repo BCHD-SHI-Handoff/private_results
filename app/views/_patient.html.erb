@@ -53,8 +53,11 @@
                     <% end %>
                 </td>
                 <td>
-                  <% if result_group.last.deliveries.length > 0 %>
-                    <span class="label label-primary">Delivered</span>
+                  <% case result_group.last.delivery_status %>
+                  <% when "delivered" %>
+                    <span class="label label-success">Delivered</span>
+                  <% when "come_back" %>
+                    <span class="label label-primary">Come back</span>
                   <% else %>
                     <span class="label label-warning">Not Delivered</span>
                   <% end %>
