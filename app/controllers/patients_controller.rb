@@ -22,7 +22,7 @@ class PatientsController < ApplicationController
         # This ensures that we get every visit that happened on those days.
         start_date = Time.at(params['start'].to_i / 1000).beginning_of_day
         end_date = Time.at(params['end'].to_i / 1000).end_of_day
-        render text: Visit.get_csv(start_date, end_date)
+        send_data Visit.get_csv(start_date, end_date)
       }
     end
   end

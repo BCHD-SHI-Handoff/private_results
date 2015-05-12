@@ -54,8 +54,8 @@ class Visit < ActiveRecord::Base
     # Grab all visits within our date range and include their clinic and results data.
     visits = Visit
       .includes(:clinic, results: [:test, :status, :deliveries])
+      .where(visited_on: start_date..end_date)
       .all
-      # .where(visited_on: start_date..end_date)
 
     # For each result in each visit, add a row to our CSV.
     rows = []
@@ -72,9 +72,11 @@ class Visit < ActiveRecord::Base
     end
 
     csv_data = CSV.generate({}) do |csv|
-      csv << rows.first.keys
-      rows.each do |row|
-        csv << row.values
+      if !rows.blank?
+        csv << rows.first.keys
+        rows.each do |row|
+          csv << row.values
+        end
       end
     end
 
