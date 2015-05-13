@@ -71,7 +71,7 @@ describe Visit do
         visit.results << create(:result, status: Status.find_by_status("Immune"), test: Test.find_by_name("Hepatitis B"))
         visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
         visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Syphilis"))
-        visit.results << create(:result, status: Status.find_by_status("Hep C Positive"), test: Test.find_by_name("Hepatitis C"))
+        visit.results << create(:result, status: Status.find_by_status("Positive"), test: Test.find_by_name("Hepatitis C"))
         visited_on_date = visit.visited_on.strftime("%A, %B #{visit.visited_on.day.ordinalize}")
         clinic_hours = visit.clinic.hours_for_language("english")
         actual_message = "You visited #{visit.clinic.name} on #{visited_on_date} and were tested for Hepatitis B, Gonorrhea, Syphilis, and Hepatitis C."

@@ -62,7 +62,7 @@ describe Result do
       result.update_delivery_status(nil)
       expect(result.not_delivered?).to eq true
 
-      result.status = Status.find_by_status("Positive")
+      result.status = Status.find_by_status("Come back to clinic")
       result.update_delivery_status(nil)
       expect(result.come_back?).to eq true
 

@@ -22,10 +22,10 @@ class Result < ActiveRecord::Base
       if status.nil?
         new_delivery_status = Result.delivery_statuses[:not_delivered]
       else
-        new_delivery_status = case status.category
-          when "ok" then Result.delivery_statuses[:delivered]
-          when "come_back" then Result.delivery_statuses[:come_back]
-          else Result.delivery_statuses[:not_delivered]
+        new_delivery_status = case status.status
+          when "Pending" then Result.delivery_statuses[:not_delivered]
+          when "Come back to clinic" then Result.delivery_statuses[:come_back]
+          else Result.delivery_statuses[:delivered]
         end
       end
     end

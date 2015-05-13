@@ -18,14 +18,14 @@ class Visit < ActiveRecord::Base
 
     latest_results = get_latest_results()
 
-    if latest_results.any?{ |result| result.status.nil? || result.status.come_back? }
+    if latest_results.any?{ |result| result.status.nil? || result.status.status == "Come back to clinic" }
       # Grab the come_back script and hand it the clinic hours
       message_template = Liquid::Template.parse(Script.get_message("come_back", language))
       message = message_template.render({"clinic_hours" => clinic_hours})
 
       # Set all of our results to have a delivery status of "come back".
       latest_results.each{ |result| result.update_delivery_status(:come_back) }
-    elsif latest_results.any?{ |result| result.status.pending? } and is_recent?
+    elsif latest_results.any?{ |result| result.status.status == "Pending" } and is_recent?
       # Set all of our results to have a delivery status of "not delivered".
       message_template = Liquid::Template.parse(Script.get_message("pending", language))
       message = message_template.render({"results_ready_on" => results_ready_on})

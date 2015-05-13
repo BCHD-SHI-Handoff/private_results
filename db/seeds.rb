@@ -36,17 +36,16 @@ hepc_test = Test.create(name: "Hepatitis C")
 #######################
 #      STATUSES       #
 #######################
-status_negative = Status.create(status: "Negative", category: :ok)
-status_positive_and_treated = Status.create(status: "Positive and treated", category: :ok)
-status_immune = Status.create(status: "Immune", category: :ok)
-status_need_vaccination = Status.create(status: "Need vaccination", category: :ok)
-status_hepb_infected = Status.create(status: "Hep B infected", category: :ok)
-status_hepc_positive = Status.create(status: "Hep C Positive", category: :ok)
+status_negative = Status.create(status: "Negative")
+status_positive_and_treated = Status.create(status: "Positive and treated")
+status_immune = Status.create(status: "Immune")
+status_need_vaccination = Status.create(status: "Need vaccination")
+status_hepb_infected = Status.create(status: "Hep B infected")
 
-status_pending = Status.create(status: "Pending", category: :pending)
+status_pending = Status.create(status: "Pending")
 
-status_positive = Status.create(status: "Positive", category: :come_back)
-status_come_back = Status.create(status: "Come back to clinic", category: :come_back)
+status_positive = Status.create(status: "Positive")
+status_come_back = Status.create(status: "Come back to clinic")
 
 #######################
 #       SCRIPTS       #
@@ -299,7 +298,7 @@ Script.create({
 Script.create({
   language: 'english',
   test_id: hepc_test.id,
-  status_id: status_hepc_positive.id,
+  status_id: status_positive.id,
   message: "Your hepatitis C test was positive, which means that you have been exposed to hepatitis C. You need further evaluation. Please return to the clinic. Clinic hours are {{ clinic_hours }}."
 })
 
