@@ -12,7 +12,7 @@ describe "users" do
     login_as(staff_user, :scope => :user)
     visit users_path
     expect(current_path.to_s).to_not match users_path
-    expect(current_path.to_s).to match root_path
+    expect(current_path.to_s).to match dashboards_path
     expect(page).to_not have_link("Users")
   end
 

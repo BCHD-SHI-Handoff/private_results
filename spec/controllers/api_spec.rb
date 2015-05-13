@@ -136,7 +136,7 @@ describe ApiController, :type => :controller do
       expect(response).to have_http_status(:success) # 200
       expect(response).to render_template(:deliver_results)
 
-      actual_message = visit.get_results_message("english")
+      actual_message = visit.get_results_message("english", "phone")
       expect(assigns(:message)).to eq actual_message
 
       # Each result should point to the recorded delivery.

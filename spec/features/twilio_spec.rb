@@ -116,7 +116,7 @@ describe "twilio API" do
       page.set_rack_session(language: "english")
       page.set_rack_session(visit_id: visit.id)
       @call = ttt_call(api_deliver_results_path, nil, nil, options = {method: :get})
-      @message = visit.get_results_message("english")
+      @message = visit.get_results_message("english", "phone")
     end
 
     it "should deliver results" do

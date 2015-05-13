@@ -29,8 +29,8 @@ describe "patients" do
 
     visits = Visit.where(patient_number: '33').order(visited_on: :desc)
     delivery = create(:delivery)
-    visits.first.results.first.deliveries << delivery
-    visits.first.results.first.save!
+    visits.first.get_latest_results.first.deliveries << delivery
+    visits.first.get_latest_results.first.delivered!
 
     fill_in "patient_number", :with => "33"
     click_button "Search"
@@ -42,10 +42,10 @@ describe "patients" do
     within first(".visit") do
       # Check to make sure all of the results show up and one is delivered.
       within first("table") do
-        expect(page).to have_selector("tr", count: visits.first.results.length)
+        expect(page).to have_selector("tr", count: visits.first.get_latest_results.length)
         expect(first("tr")).to_not have_text("Not Delivered")
         expect(first("tr")).to have_text("Delivered")
-        expect(page).to have_text("Not Delivered", count: visits.first.results.length - 1)
+        expect(page).to have_text("Not Delivered", count: visits.first.get_latest_results.length - 1)
       end
 
       # Check we get the delivered message.

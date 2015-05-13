@@ -16,7 +16,7 @@ describe "accounts" do
 
   describe "login" do
     before :each do
-      visit root_path
+      visit dashboards_path
     end
 
     it "should successfully login with #{DEFAULT_USER_EMAIL}" do 
@@ -24,7 +24,7 @@ describe "accounts" do
       fill_in "user_email", :with => DEFAULT_USER_EMAIL
       fill_in "user_password", :with => DEFAULT_USER_PASSWORD
       click_button "Log in"
-      expect(current_path.to_s).to match root_path
+      expect(current_path.to_s).to match dashboards_path
       expect(page.find(".alert-info")).to have_text(I18n.t("devise.sessions.signed_in"))
     end
 
@@ -54,7 +54,7 @@ describe "accounts" do
 
     it "should successfully logout" do
       login_as(active_user, :scope => :user)
-      visit root_path
+      visit dashboards_path
       click_link "Sign Out"
       expect(current_path.to_s).to match new_user_session_path
       expect(page.find(".alert-warning")).to have_text(I18n.t("devise.failure.unauthenticated"))
@@ -64,7 +64,7 @@ describe "accounts" do
   describe "forgot your password" do
     it "should send password reset email" do
       # Click forgot passowrd link on login page.
-      visit root_path
+      visit dashboards_path
       click_link "Forgot your password?"
       expect(current_path.to_s).to match new_user_password_path
 
@@ -93,7 +93,7 @@ describe "accounts" do
       fill_in "user_password", :with => DEFAULT_USER_PASSWORD
       fill_in "user_password_confirmation", :with => DEFAULT_USER_PASSWORD
       click_button "Update Password"
-      expect(current_path.to_s).to match root_path
+      expect(current_path.to_s).to match dashboards_path
       expect(page.find(".alert-info")).to have_text(I18n.t("devise.passwords.updated"))
     end
 
@@ -102,7 +102,7 @@ describe "accounts" do
   describe "confirmation email" do
     it "should send confirmation email again" do
       # Click confirmation instruction link on login page.
-      visit root_path
+      visit dashboards_path
       click_link "Didn't receive confirmation instructions?"
       expect(current_path.to_s).to match new_user_confirmation_path
 
@@ -143,7 +143,6 @@ describe "accounts" do
       fill_in "user_password", :with => DEFAULT_USER_PASSWORD
       fill_in "user_password_confirmation", :with => DEFAULT_USER_PASSWORD
       click_button "Activate"
-      expect(current_path.to_s).to match root_path
       expect(page.find(".alert-info")).to have_text(I18n.t("devise.confirmations.confirmed"))
     end
   end
@@ -151,7 +150,7 @@ describe "accounts" do
   describe "resend unlock instructions" do
     it "should send unlock instructions again" do
       # Click unlock instruction link on login page.
-      visit root_path
+      visit dashboards_path
       click_link "Didn't receive unlock instructions?"
       expect(current_path.to_s).to match new_user_unlock_path
 
