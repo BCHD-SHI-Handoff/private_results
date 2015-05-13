@@ -11,6 +11,7 @@ describe Result do
   describe "ActiveModel validations" do
     it { expect(result).to validate_presence_of(:visit) }
     it { expect(result).to validate_presence_of(:test) }
+    it { expect(result).to validate_presence_of(:delivery_status) }
   end
 
   describe "ActiveRecord associations" do

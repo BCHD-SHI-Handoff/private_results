@@ -1,9 +1,9 @@
 require 'csv'
 
-# Usage: "rake patiensts:import file=path/to/patients_data.csv"
-namespace :patients do
+# Usage: "rake import:csv file=path/to/patients_data.csv"
+namespace :import do
   desc "Imports a csv file of patient visits and results data."
-  task import: :environment do
+  task csv: :environment do
     unknown_clinic = Clinic.find_by_code('U')
 
     chlamydia_test = Test.find_by_name("Chlamydia")
