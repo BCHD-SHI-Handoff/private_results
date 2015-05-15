@@ -70,6 +70,7 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'capybara-screenshot'
+  gem 'selenium-webdriver'
   gem 'poltergeist'
   gem 'twilio-test-toolkit'
   gem 'shoulda-matchers'

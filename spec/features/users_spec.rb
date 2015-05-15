@@ -24,40 +24,111 @@ describe "users" do
   end
 
   it "should not be able to edit self" do
+    admin_row = find("tr[data-user-id='#{@admin_user.id}']")
+    within admin_row do
+      expect(page).to have_text(@admin_user.email)
+      expect(page).to_not have_selector(:link_or_button, 'Deactivate')
+      expect(page).to_not have_selector(:link_or_button, 'Reset Password')
+      expect(page).to_not have_selector(:link_or_button, 'Edit')
+      expect(page).to_not have_css("button.btn-danger")
+    end
   end
 
   it "should be able to activate/deactivate accounts", :js => true do
-    admin_row = find("tr[data-user-id='1']")
+    admin_row = find("tr[data-user-id='#{@default_user.id}']")
+    expect(@default_user.active?).to eq true
     within admin_row do
       expect(page).to have_text(DEFAULT_USER_EMAIL)
+      expect(page).to have_selector(:link_or_button, 'Deactivate')
+      expect(page).to have_selector(:link_or_button, 'Reset Password')
+      expect(page).to have_selector(:link_or_button, 'Edit')
+      expect(page).to have_css("button.btn-danger")
       page.click_button "Deactivate"
+      # page.driver.browser.switch_to.alert.accept # Needed if using chrome driver
     end
 
-    # # Reload the tr as the update would have cleared the tr.
-    # admin_row = find("tr[data-user-id='1']")
-    # within admin_row do
-    #   expect(page.find(".growlyflash")).to have_text("Successfully deactivated '#{DEFAULT_USER_EMAIL}'")
-    #   expect(page.find(".label-warning")).to have_text("Inactive")
-    #   click_button "Activate"
-    # end
+    expect(page.find(".growlyflash")).to have_text("Successfully deactivated '#{DEFAULT_USER_EMAIL}'")
+    expect(@default_user.reload.active?).to eq false
 
-    # # Reload the tr as the update would have cleared the tr.
-    # admin_row = find("tr[data-user-id='1']")
-    # within admin_row do
-    #   expect(page.find(".label-info")).to have_text("Active")
-    #   expect(page.find(".growlyflash")).to have_text("Successfully activated '#{DEFAULT_USER_EMAIL}'")
-    # end
+    # Reload the tr as the update would have cleared the tr.
+    admin_row = find("tr[data-user-id='#{@default_user.id}']")
+    within admin_row do
+      expect(page.find(".label-warning")).to have_text("Inactive")
+      click_button "Activate"
+      # page.driver.browser.switch_to.alert.accept # Needed if using chrome driver
+    end
+
+    expect(page.find(".growlyflash")).to have_text("Successfully activated '#{DEFAULT_USER_EMAIL}'")
+    expect(@default_user.reload.active?).to eq true
+
+    # Reload the tr as the update would have cleared the tr.
+    admin_row = find("tr[data-user-id='#{@default_user.id}']")
+    within admin_row do
+      expect(page.find(".label-info")).to have_text("Active")
+    end
   end
 
-  it "should be able to edit accounts" do
+  it "should be able to edit accounts", :js => true do
+    admin_row = find("tr[data-user-id='#{@default_user.id}']")
+    within admin_row do
+      page.click_button "Edit"
+    end
+
+    expect(@default_user.staff?).to eq false
+    modal = find("div.modal-content")
+    within modal do
+      have_field("user[email]", :with => DEFAULT_USER_EMAIL)
+      expect(find_field("user_role_admin")).to be_checked
+      choose('staff')
+      page.click_button "Save user"
+    end
+
+    expect(page.find(".growlyflash")).to have_text("Successfully updated '#{DEFAULT_USER_EMAIL}'")
+    expect(@default_user.reload.staff?).to eq true
   end
 
-  it "should be able to delete accounts" do
+  it "should be able to delete accounts", :js => true do
+    expect(User.find_by_email(DEFAULT_USER_EMAIL)).to_not be_nil
+
+    admin_row = find("tr[data-user-id='#{@default_user.id}']")
+    within admin_row do
+      find("button.btn-danger").click
+      # page.driver.browser.switch_to.alert.accept # Needed if using chrome driver
+    end
+
+    expect(page.find(".growlyflash")).to have_text("'#{DEFAULT_USER_EMAIL}' has been removed")
+    expect(User.find_by_email(DEFAULT_USER_EMAIL)).to be_nil
   end
 
-  it "should be able to reset password" do
+  it "should be able to reset password", :js => true do
+    expect(@default_user.reset_password_token).to be_nil
+    admin_row = find("tr[data-user-id='#{@default_user.id}']")
+    within admin_row do
+      page.click_button "Reset Password"
+    end
+    expect(page.find(".growlyflash")).to have_text("Reset password instructions send to '#{DEFAULT_USER_EMAIL}'")
+    expect(@default_user.reload.reset_password_token).to_not be_nil
   end
 
-  it "should be able to create new users" do
+  it "should be able to create new users", js: true do
+    click_button "New"
+    modal = find("div.modal-content")
+    within modal do
+      fill_in "user_email", with: DEFAULT_USER_EMAIL
+      choose('admin')
+      click_button('Create user')
+    end
+
+    expect(page).to have_text("has already been taken")
+
+    modal = find("div.modal-content")
+    within modal do
+      fill_in "user_email", with: "test@example.com"
+      choose('admin')
+      click_button('Create user')
+    end
+
+    expect(page.find(".growlyflash")).to have_text("Email sent to 'test@example.com'")
+    expect(User.find_by_email("test@example.com")).to_not be_nil
   end
 end

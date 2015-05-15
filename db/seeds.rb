@@ -1,16 +1,16 @@
 if Rails.env == "test"
   # Doh! Having a test model clashes with a Test constant rails uses.
   Object.send(:remove_const, :Test)
+else
+  user = User.create(
+    email: DEFAULT_USER_EMAIL, # Found in config/initializers/constants.rb
+    password: DEFAULT_USER_PASSWORD,
+    password_confirmation: DEFAULT_USER_PASSWORD,
+    role: :admin,
+    active: true
+  )
+  user.confirm!
 end
-
-user = User.create(
-  email: DEFAULT_USER_EMAIL, # Found in config/initializers/constants.rb
-  password: DEFAULT_USER_PASSWORD,
-  password_confirmation: DEFAULT_USER_PASSWORD,
-  role: :admin,
-  active: true
-)
-user.confirm!
 
 #######################
 #       CLINICS       #

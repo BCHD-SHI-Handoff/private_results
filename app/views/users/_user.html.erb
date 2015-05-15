@@ -34,7 +34,7 @@
       <% end %>
 
       <div>
-        <%= link_to edit_user_path(user), class: 'btn btn-sm btn-default', remote: true do %>
+        <%= button_to edit_user_path(user), class: 'btn btn-sm btn-default', :method => 'get', remote: true do %>
           <span class="glyphicon glyphicon-pencil"></span> Edit
         <% end %>
       </div>

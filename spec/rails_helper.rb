@@ -7,6 +7,7 @@ require 'factory_girl_rails'
 require 'capybara/rails'
 require 'capybara-screenshot/rspec'
 require 'capybara/poltergeist'
+require 'selenium-webdriver'
 require "rack_session_access/capybara"
 require 'devise'
 require 'helpers'
@@ -17,6 +18,13 @@ Warden.test_mode!
 
 # Setup capybara to use the poltergeist (phatomJS) runner.
 Capybara.javascript_driver = :poltergeist
+# Below is how to use the chrome driver instead,
+# This can be useful for watching the tests playout in a chrome browser.
+# Capybara.register_driver :chrome do |app|
+#   Capybara::Selenium::Driver.new(app, :browser => :chrome)
+# end
+# Capybara.javascript_driver = :chrome
+
 Capybara.default_wait_time = 10
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -35,9 +43,19 @@ ActiveRecord::Migration.maintain_test_schema!
 # Doh! Having a test model clashes with a Test constant rails uses.
 Object.send(:remove_const, :Test)
 
+# We need to use DatabaseCleaner as our selenium tests require
+# us to turn off use_transactional_fixtures.
+# See http://stackoverflow.com/q/6154687 for details.
+# Note, we need to skip truncating our seeded tables.
+DatabaseCleaner.strategy = :truncation, {:except => %w[clinics scripts statuses tests]}
+
 RSpec.configure do |config|
   config.include Helpers
   config.include Devise::TestHelpers, :type => :controller
+
+  config.after :each do
+    Warden.test_reset!
+  end
 
   # Using the shortened version of FactoryGirl syntax.
   config.include FactoryGirl::Syntax::Methods
@@ -48,7 +66,25 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
+  config.before :each do
+    # Create our default user.
+    # Note: Normally we would also include this in the seeds file,
+    # however the DatabaseCleaner truncation, wipes the user table clean.
+    @default_user = User.create(
+      email: DEFAULT_USER_EMAIL, # Found in config/initializers/constants.rb
+      password: DEFAULT_USER_PASSWORD,
+      password_confirmation: DEFAULT_USER_PASSWORD,
+      role: :admin,
+      active: true
+    )
+    @default_user.confirm!
+
+    DatabaseCleaner.start
+  end
+  config.after :each do
+    DatabaseCleaner.clean
+  end
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and

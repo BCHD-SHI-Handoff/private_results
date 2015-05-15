@@ -17,7 +17,7 @@
 
   <h1 class="page-header">
     <div class="pull-right">
-      <%= link_to new_user_path, class: 'btn btn-large btn-primary', remote: true do %>
+      <%= button_to new_user_path, class: 'btn btn-large btn-primary', method: "get", remote: true do %>
         <span class="glyphicon glyphicon-plus"></span> New
       <% end %>
     </div>
