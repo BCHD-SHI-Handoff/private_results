@@ -1,0 +1,111 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h1 class="page-header">
+    <span class="glyphicon glyphicon-cog"></span>
+    Scripts
+  </h1>
+
+  <div role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active">
+        <a href="#special" role="tab" data-toggle="tab">Special Scripts</a>
+      </li>
+      <li role="presentation">
+        <a href="#tests" role="tab" data-toggle="tab">Test Scripts</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="special">
+        <div class="row">
+          <div class="col-md-12">
+            <br>
+            Special scripts handle any errors and the entire workflow of the call flow.
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <br>
+            <h4>Special Scripts:</h4>
+            <table class="table">
+              <thead>
+                <th>Name</th>
+                <th>Language</th>
+                <th>Notes</th>
+                <th>Message</th>
+              </thead>
+              <tbody>
+                <% @scripts.select{|s| !s.name.nil? }.each do |script| %>
+                  <tr>
+                    <td><%= script.name %></td>
+                    <td><%= script.language %></td>
+                    <td><pre><%= script.message %></pre></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="tests">
+        <div class="row">
+          <div class="col-md-12">
+            <br>
+            Test scripts are what we deliver for the different tests and their different statuses.
+            <br>
+            All test scripts have access to <strong>clinic_hours</strong> variable which will be
+            replaced with the clinics hours in the appropriate language.
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <br>
+            <div role="testtabs">
+              <ul class="nav nav-tabs" role="tablist">
+                <% Test.all.each_with_index do |test, index| %>
+                  <li role="presentation" class="<%= "active" if index == 0 %>">
+                    <a href="#<%= test.name.delete(' ') %>" role="tab" data-toggle="tab"><%= test.name %></a>
+                  </li>
+                <% end %>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <% Test.all.each_with_index do |test, index| %>
+                  <div role="testtabs" class="tab-pane <%= "active" if index == 0 %>" id="<%= test.name.delete(' ') %>">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <br>
+                        <h4>Scripts for <%= test.name %>:</h4>
+                        <table class="table">
+                          <thead>
+                            <th>Status</th>
+                            <th>Language</th>
+                            <th>Message</th>
+                          </thead>
+                          <tbody>
+                            <% @scripts.select{|s| s.test_id == test.id }.each do |script| %>
+                              <tr>
+                                <td><%= script.status.nil? ? "" : script.status.status %></td>
+                                <td><%= script.language %></td>
+                                <td><div class="well"><%= script.message %></div></td>
+                              </tr>
+                            <% end %>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

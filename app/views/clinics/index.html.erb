@@ -1,0 +1,26 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h1 class="page-header">
+    <span class="glyphicon glyphicon-cog"></span>
+    Clinics
+  </h1>
+  <div class="row">
+    <table class="table" id="users-table">
+      <thead>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Hours (English)</th>
+        <th>Hours (Spanish)</th>
+      </thead>
+      <tbody>
+        <% @clinics.each do |clinic| %>
+          <tr>
+            <td><%= clinic.name %></td>
+            <td><%= clinic.code %></td>
+            <td><%= clinic.hours_in_english %></td>
+            <td><%= clinic.hours_in_spanish %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
