@@ -97,5 +97,41 @@ describe Visit do
       end
 
     end
+
+    describe "get_csv" do
+      it "should return csv data for visits between start and end date" do
+        visits = create_list(:visit_with_results, 3, results_count: 3)
+        visits[0].results[0].deliveries << create_list(:delivery, 3)
+
+        data = Visit.get_csv(6.months.ago, Time.now)
+        data = data.split("\n").map{|row| row.split(",")}
+
+        # (1+8+3) 1 header, 8 results with 0 deliveries, 1 result with 3 deliveries.
+        expect(data.length).to eq 12
+
+        # Check header row
+        expect(data[0]).to eq ['patient_no', 'username', 'password', 'visit_date', 'cosite',
+          'infection', 'result_at_time', 'delivery_status', 'accessed_by',
+          'date_accessed', 'called_from', 'message']
+
+        # Check first record.
+        visit1 = Visit.first
+        expect(data[1][0]).to eq visit1.patient_number
+        expect(data[1][1]).to eq visit1.username
+        expect(data[1][2]).to eq visit1.password
+        expect(data[1][3]).to eq visit1.visited_on.to_s
+        expect(data[1][4]).to eq visit1.clinic.code
+
+        expect(data[1][5]).to eq visit1.results[0].test.name
+        expect(data[1][6]).to eq visit1.results[0].status.nil? ? "" : visit1.results[0].status.status
+        expect(data[1][7]).to eq visit1.results[0].delivered? ? "delivered": "not_delivered"
+
+        delivery0 = visit1.results[0].deliveries[0]
+        expect(data[1][8]).to eq delivery0.delivery_method
+        expect(data[1][9]).to eq delivery0.delivered_at.to_s
+        expect(data[1][10]).to eq delivery0.delivery_method == 'phone' ? delivery0.phone_number_used : ""
+        expect(data[1][11]).to eq delivery0.message
+      end
+    end
   end
 end
