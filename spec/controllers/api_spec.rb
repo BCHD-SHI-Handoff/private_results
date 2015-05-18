@@ -5,6 +5,21 @@ describe ApiController, :type => :controller do
     request.env["HTTP_ACCEPT"] = 'application/xml'
   end
 
+  describe "error" do
+    it "should gracefully handle any internal errors" do
+      # Cause an internal error by setting our session language
+      # to something that does not exist.
+      # This should result in us looking up a script for a language that does not exist,
+      # resulting in a FileNotFound exception.
+      session[:language] = "bad_language"
+      get :username_prompt
+
+      # The exception should get caught and we should return an error.
+      expect(response).to render_template(:error)
+      expect(assigns(:error_message)).to eq "Sorry, an unknown error occurred, please contact the clinic."
+    end
+  end
+
   describe "welcome" do
     it "should set welcome message" do
       get :welcome
