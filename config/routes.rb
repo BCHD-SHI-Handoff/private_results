@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  root to: 'results#index'
-  post 'results', to: 'results#show'
+  root to: 'online_results#index'
+  post 'results', to: 'online_results#show'
 
   scope '/admin' do
     as :user do
@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     end
   end
 
+  # Used by twilio.
   namespace :api, defaults: {format: 'xml'} do
     get 'welcome'
     get 'welcome_repeat'
