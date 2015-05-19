@@ -1,3 +1,4 @@
+ruby '2.1.5'
 source 'https://rubygems.org'
 
 
@@ -70,7 +71,7 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver' # Currently not being used.
   gem 'poltergeist'
   gem 'twilio-test-toolkit'
   gem 'shoulda-matchers'
