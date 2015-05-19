@@ -1,6 +1,8 @@
 # Private Results
 Private Results provides a way for patients to get their test results via phone or the web. Currently, this project has hardcoded data for [BCHD](http://health.baltimorecity.gov/) (clinic info).
 
+## LICENSE
+Private Results is copyright © 2014-2015 [Sexual Health Innovations](http://www.sexualhealthinnovations.org/). It is free software, and may be redistributed under the terms specified in the [MIT-LICENSE](blob/master/MIT-LICENSE.md) file.
 
 ## Workflow
 1. Patient visits a clinic and gets some tests done.
