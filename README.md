@@ -1,5 +1,6 @@
 # Private Results
-Private Results provides a way for patients to get their test results via phone or the web.
+Private Results provides a way for patients to get their test results via phone or the web. Currently, this project has hardcoded data for [BCHD](http://health.baltimorecity.gov/) (clinic info).
+
 
 ## Workflow
 1. Patient visits a clinic and gets some tests done.
@@ -25,6 +26,7 @@ the patient will not receive any of their results and will instead be instructed
 Similarly, if any test result is still **"Pending"**, and the patient's visit was recent (less than 7 days ago),
 then the patient will be told to call back. If neither of those cases is true, then we deliver each test result to the patient.
 
+
 ## Dependencies
 * Rails 4.1.8
 * Ruby 2.1.5
@@ -32,8 +34,8 @@ then the patient will be told to call back. If neither of those cases is true, t
 * Postgres
 * [Twilio](https://twilio.com/) Account
 
-## Development
 
+## Development
 Private Results is well tested, please run `rspec spec` from the top directory in order to make sure everything is working as it should.
 
 The seeds file contains the initial list of:
