@@ -1,7 +1,6 @@
 ruby '2.1.5'
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'
 
@@ -10,12 +9,8 @@ gem 'rails-i18n', '~> 4.0.0'
 
 # Use postgres as the database for Active Record
 gem 'pg'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
@@ -43,30 +38,24 @@ gem 'growlyflash', '~> 0.6.0'
 # We use twilio to receive calls
 gem 'twilio-ruby', '~> 3.12'
 
-# We use twilio to receive calls
+# We use liquid templates for message scripts
 gem 'liquid', '~> 3.0.1'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-#
+
 gem 'bootstrap-datepicker-rails'
 
-group :development, :test do
-  gem 'rspec-rails', '~> 3.0'
-  gem "factory_girl_rails", "~> 4.0"
-  gem "faker", "~> 1.4.3"
-end
+# Use newrelic for monitoring.
+gem 'newrelic_rpm'
 
 group :test do
+  gem "factory_girl_rails", "~> 4.0"
+  gem 'rspec-rails', '~> 3.0'
+  gem "faker", "~> 1.4.3"
   gem 'rack_session_access'
   gem 'database_cleaner'
   gem 'capybara'
