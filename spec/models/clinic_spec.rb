@@ -7,6 +7,8 @@ describe Clinic do
   describe "ActiveModel validations" do
     it { expect(clinic).to validate_presence_of(:code) }
     it { expect(clinic).to validate_presence_of(:name) }
+    it { expect(clinic).to validate_presence_of(:hours_in_english) }
+    it { expect(clinic).to validate_presence_of(:hours_in_spanish) }
     it { expect(clinic).to validate_uniqueness_of(:code) }
     it { expect(clinic).to validate_uniqueness_of(:name) }
   end

@@ -1,0 +1,2 @@
+$('#newClinicModal').modal('hide');
+$('#clinics-table').append($("<%= j (render partial: "clinic", locals: {clinic: @clinic}) %>").hide().fadeIn(600));

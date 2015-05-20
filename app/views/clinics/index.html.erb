@@ -1,24 +1,43 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <div id="new-clinic-form-container">
+    <div class="modal fade" id="newClinicModal" tabindex="-1" role="dialog" aria-labelledby="newClinicModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit-clinic-form-container">
+    <div class="modal fade" id="editClinicModal" tabindex="-1" role="dialog" aria-labelledby="editClinicModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+  </div>
+
   <h1 class="page-header">
+    <div class="pull-right">
+      <%= button_to new_clinic_path, class: 'btn btn-large btn-primary', method: "get", remote: true do %>
+        <span class="glyphicon glyphicon-plus"></span> New
+      <% end %>
+    </div>
     <span class="glyphicon glyphicon-cog"></span>
     Clinics
   </h1>
+
   <div class="row">
-    <table class="table" id="users-table">
+    <table class="table" id="clinics-table">
       <thead>
         <th>Name</th>
         <th>Code</th>
         <th>Hours (English)</th>
         <th>Hours (Spanish)</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </thead>
       <tbody>
         <% @clinics.each do |clinic| %>
-          <tr>
-            <td><%= clinic.name %></td>
-            <td><%= clinic.code %></td>
-            <td><%= clinic.hours_in_english %></td>
-            <td><%= clinic.hours_in_spanish %></td>
-          </tr>
+          <%= render partial: "clinic", locals: {clinic: clinic} %>
         <% end %>
       </tbody>
     </table>

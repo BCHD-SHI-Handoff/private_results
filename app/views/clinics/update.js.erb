@@ -1,0 +1,3 @@
+var clinicRow = $('#clinics-table').find("[data-clinic-id='<%= @clinic.id %>']");
+clinicRow.replaceWith($("<%= j (render partial: "clinic", locals: {clinic: @clinic}) %>"));
+$('#editClinicModal').modal('hide'); // When editing clinic from modal.

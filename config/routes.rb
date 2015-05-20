@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     get "/", to: 'dashboards#index'
     resources :dashboards, only: [:index]
     resources :patients, only: [:index]
-    resources :clinics, only: [:index]
+    resources :clinics
     resources :scripts, only: [:index]
 
     resources :users do

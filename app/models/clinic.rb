@@ -1,6 +1,7 @@
 class Clinic < ActiveRecord::Base
   has_many :visits
 
+  validates :hours_in_spanish, :hours_in_english, presence: true
   validates :code, :name, presence: true, uniqueness: { case_sensitive: false }
 
   def hours_for_language language

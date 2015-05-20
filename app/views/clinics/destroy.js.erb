@@ -1,0 +1,4 @@
+var clinicRow = $('#clinics-table').find("[data-clinic-id='<%= @clinic.id %>']");
+clinicRow.fadeOut(400, function() {
+  clinicRow.remove();
+});
