@@ -1,0 +1,32 @@
+<div role="tabpanel" class="tab-pane active" id="special">
+  <div class="row">
+    <div class="col-md-12">
+      <br>
+      Special scripts handle any errors and the entire workflow of the call flow.
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <br>
+      <h4>Special Scripts:</h4>
+      <table class="table">
+        <thead>
+          <th>Name</th>
+          <th>Language</th>
+          <th>Notes</th>
+          <th>Message</th>
+        </thead>
+        <tbody>
+          <% @scripts.select{|s| !s.name.nil? }.each do |script| %>
+            <tr>
+              <td><%= script.name %></td>
+              <td><%= script.language %></td>
+              <td><pre><%= script.message %></pre></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
