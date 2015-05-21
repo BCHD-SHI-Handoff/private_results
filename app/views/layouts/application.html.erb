@@ -55,28 +55,28 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <% if current_user  %>
             <ul class="nav nav-sidebar">
-              <li>
+              <li class=<%= active_or_blank(patients_path) %>>
                 <%= link_to patients_path do %>
                   <span class="glyphicon glyphicon-user"></span> Patients
                 <% end %>
               </li>
-              <li>
+              <li class=<%= active_or_blank(dashboards_path) %>>
                 <%= link_to dashboards_path do %>
                   <span class="glyphicon glyphicon-dashboard"></span> Dashboard
                 <% end %>
               </li>
               <% if current_user.admin? %>
-                <li>
+                <li class=<%= active_or_blank(users_path) %>>
                   <%= link_to users_path do %>
                     <span class="glyphicon glyphicon-cog"></span> Users
                   <% end %>
                 </li>
-                <li>
+                <li class=<%= active_or_blank(clinics_path) %>>
                   <%= link_to clinics_path do %>
                     <span class="glyphicon glyphicon-cog"></span> Clinics
                   <% end %>
                 </li>
-                <li>
+                <li class=<%= active_or_blank(scripts_path) %>>
                   <%= link_to scripts_path do %>
                     <span class="glyphicon glyphicon-cog"></span> Scripts
                   <% end %>

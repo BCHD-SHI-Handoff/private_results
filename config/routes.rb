@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     end
     devise_for :users, :controllers => { :confirmations => "confirmations" }
 
-    get "/", to: 'dashboards#index'
+    get "/", to: redirect('/admin/dashboards')
     resources :dashboards, only: [:index]
     resources :patients, only: [:index]
     resources :clinics

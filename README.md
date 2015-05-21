@@ -30,7 +30,7 @@ then the patient will be told to call back. If neither of those cases is true, t
 
 
 ## Dependencies
-* Rails 4.1.8
+* Rails 4.2.1
 * Ruby 2.1.5
 * [PhantomJS](https://github.com/teampoltergeist/poltergeist#installing-phantomjs) (for testing)
 * Postgres

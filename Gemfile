@@ -2,7 +2,7 @@ ruby '2.1.5'
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.8'
+gem 'rails', '4.2.1'
 
 # Provides common translations for different languages
 gem 'rails-i18n', '~> 4.0.0'
@@ -11,6 +11,7 @@ gem 'rails-i18n', '~> 4.0.0'
 gem 'pg'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+gem 'sass-rails'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
