@@ -1,7 +1,7 @@
 require 'csv'
 
 class Visit < ActiveRecord::Base
-  belongs_to :clinic
+  belongs_to :clinic, -> { with_deleted }
   has_many :results
 
   # Everything should be present for a visit entry.
