@@ -9,13 +9,18 @@ class Script < ActiveRecord::Base
   validates :name, presence: true, if: "test_id.nil?"
   validates :test_id, presence: true, if: "name.nil?"
 
-  # The test_id and status_id combo must be unique.
-  validates_uniqueness_of :test_id, scope: :status_id, conditions: -> { where(name: nil) }
+  # The status_id, test_id and language combo must be unique.
+  validates_uniqueness_of :status_id, scope: [:test_id, :language], conditions: -> { where(name: nil) }
+  validates_uniqueness_of :language, scope: [:test_id, :status_id], conditions: -> { where(name: nil) }
 
   # Name should be unique when it is not nil.
   validates_uniqueness_of :name, conditions: -> { where.not(name: nil) }
 
   def self.get_message(name, language = "english")
     Script.select(:message).find_by!(name: name, language: language).message
+  end
+
+  def description
+    "script for test: '#{self.test.name}', status: '#{self.status.nil? ? '' : self.status.status}' and language: '#{self.language}'"
   end
 end

@@ -1,0 +1,23 @@
+<tr data-script-id=<%= script.id %>>
+  <td><%= script.status.nil? ? "" : script.status.status %></td>
+  <td><%= script.language %></td>
+  <td><div class="well"><%= script.message %></div></td>
+  <td>
+    <%= button_to edit_script_path(script), class: 'btn btn-sm btn-default', :method => 'get', remote: true do %>
+      <span class="glyphicon glyphicon-pencil"></span> Edit
+    <% end %>
+  </td>
+  <td class="delete">
+    <%= simple_form_for script, :method => :delete, remote: true do |f| %>
+      <%=
+        button_tag(
+          type: 'submit',
+          class: "btn btn-danger btn-sm",
+          onclick: "return confirm(\"Are you sure you want permanently remove #{script.description}?\")"
+        ) do
+      %>
+        <i class="glyphicon glyphicon-remove"></i>
+      <% end %>
+    <% end %>
+  </td>
+</tr>

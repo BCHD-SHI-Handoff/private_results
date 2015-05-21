@@ -1,0 +1,3 @@
+var scriptRow = $('table').find("[data-script-id='<%= @script.id %>']");
+scriptRow.replaceWith($("<%= j (render partial: "test_scripts_row", locals: {script: @script}) %>"));
+$('#editScriptModal').modal('hide'); // When editing script from modal.

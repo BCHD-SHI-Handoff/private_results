@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title" id="editScriptModalLabel">Edit Script for <%= @script.test.name %> results</h4>
+</div>
+<%= simple_form_for @script, html: { class: 'form-vertical' }, remote: true do |f| %>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.association :test, label_method: :name, value_method: :id, as: :hidden %>
+        <%= f.association :status, label_method: :status, value_method: :id, include_blank: true, prompt: "Choose a status" %>
+        <%= f.input :language, as: :radio_buttons, collection: [:english, :spanish], class: "radio-inline" %>
+        <%= f.input :message, as: :text %>
+      </div>
+    </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <%= f.button :submit, "Save script" %>
+  </div>
+<% end %>

@@ -1,0 +1,4 @@
+var scriptRow = $('table').find("[data-script-id='<%= @script.id %>']");
+scriptRow.fadeOut(400, function() {
+  scriptRow.remove();
+});

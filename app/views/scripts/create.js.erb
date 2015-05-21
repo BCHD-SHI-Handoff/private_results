@@ -1,0 +1,4 @@
+$('#newScriptModal').modal('hide');
+$("table[data-script-table-id='<%= @script.test_id %>']").append(
+  $("<%= j (render partial: "test_scripts_row", locals: {script: @script}) %>").hide().fadeIn(600)
+);

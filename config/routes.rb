@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :dashboards, only: [:index]
     resources :patients, only: [:index]
     resources :clinics
-    resources :scripts, only: [:index]
+    resources :scripts
 
     resources :users do
       member do

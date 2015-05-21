@@ -1,2 +1,10 @@
 $('#new-clinic-form-container .modal-content').html("<%= j (render 'new_clinic_form') %>");
 $('#newClinicModal').modal('show');
+
+// Clear the the new modal form after it's been closed.
+// This fixes a bug where if the new modal has been rendered,
+// then the labels for the radio buttons in the edit form do
+// not work properly (not clickable).
+$('#newClinicModal').on('hidden.bs.modal', function (e) {
+  $('#new-clinic-form-container .modal-content').html("");
+});

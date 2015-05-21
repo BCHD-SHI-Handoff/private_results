@@ -1,4 +1,20 @@
 <div role="tabpanel" class="tab-pane" id="tests">
+  <div id="new-script-form-container">
+    <div class="modal fade" id="newScriptModal" tabindex="-1" role="dialog" aria-labelledby="newScriptModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="edit-script-form-container">
+    <div class="modal fade" id="editScriptModal" tabindex="-1" role="dialog" aria-labelledby="editScriptModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-12">
       <br>
@@ -27,20 +43,26 @@
               <div class="row">
                 <div class="col-md-12">
                   <br>
-                  <h4>Scripts for <%= test.name %>:</h4>
-                  <table class="table">
+                  <h4>
+                    <div class="pull-right">
+                      <%= button_to new_script_path(:test_id => test.id), class: 'btn btn-large btn-primary', method: "get", remote: true do %>
+                        <span class="glyphicon glyphicon-plus"></span> New
+                      <% end %>
+                    </div>
+                    Scripts for <%= test.name %>:
+                  </h4>
+
+                  <table class="table" data-script-table-id="<%= test.id %>">
                     <thead>
                       <th>Status</th>
                       <th>Language</th>
                       <th>Message</th>
+                      <th>Edit</th>
+                      <th>Delete</th>
                     </thead>
                     <tbody>
                       <% @scripts.select{|s| s.test_id == test.id }.each do |script| %>
-                        <tr>
-                          <td><%= script.status.nil? ? "" : script.status.status %></td>
-                          <td><%= script.language %></td>
-                          <td><div class="well"><%= script.message %></div></td>
-                        </tr>
+                        <%= render partial: "test_scripts_row", locals: {script: script} %>
                       <% end %>
                     </tbody>
                   </table>

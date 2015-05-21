@@ -1,2 +1,10 @@
 $('#new-user-form-container .modal-content').html("<%= j (render 'new_user_form') %>");
 $('#newUserModal').modal('show');
+
+// Clear the the new modal form after it's been closed.
+// This fixes a bug where if the new modal has been rendered,
+// then the labels for the radio buttons in the edit form do
+// not work properly (not clickable).
+$('#newUserModal').on('hidden.bs.modal', function (e) {
+  $('#new-user-form-container .modal-content').html("");
+});
