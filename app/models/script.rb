@@ -21,6 +21,10 @@ class Script < ActiveRecord::Base
   end
 
   def description
-    "script for test: '#{self.test.name}', status: '#{self.status.nil? ? '' : self.status.status}' and language: '#{self.language}'"
+    if self.name
+      self.name
+    else
+      "script for test: '#{self.test.name}', status: '#{self.status.nil? ? '' : self.status.status}' and language: '#{self.language}'"
+    end
   end
 end

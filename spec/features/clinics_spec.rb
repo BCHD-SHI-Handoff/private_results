@@ -32,13 +32,16 @@ describe "clinics" do
 
     modal = find("div.modal-content")
     within modal do
-      have_field("clinic[name]", :with => clinic.name)
-      have_field("clinic[code]", :with => clinic.code)
-      have_field("clinic[hours_in_english]", :with => clinic.hours_in_english)
-      have_field("clinic[hours_in_spanish]", :with => clinic.hours_in_spanish)
+      expect(page).to have_field("clinic[name]", :with => clinic.name)
+      expect(page).to have_field("clinic[code]", :with => clinic.code)
+      expect(page).to have_field("clinic[hours_in_english]", :with => clinic.hours_in_english)
+      expect(page).to have_field("clinic[hours_in_spanish]", :with => clinic.hours_in_spanish)
+      fill_in "clinic_name", with: "new name"
+      page.click_button "Save clinic"
     end
 
-    # We don't actually edit the clinic here as clincis are persisted across tests.
+    expect(page.find(".growlyflash")).to have_text("Successfully updated 'new name'")
+    expect(Clinic.first.name).to eq "new name"
   end
 
   it "should be able to create new clinics", js: true do
@@ -52,6 +55,26 @@ describe "clinics" do
 
     expect(page).to have_text("has already been taken")
 
-    # We don't actually createa a new clinic here as clincis are persisted across tests.
+    modal = find("div.modal-content")
+    within modal do
+      fill_in "clinic_name", with: "new clinic"
+      fill_in "clinic_code", with: "NEWC"
+      click_button('Create clinic')
+    end
+
+    expect(page.find(".growlyflash")).to have_text("Successfully added 'new clinic'")
+    expect(Clinic.last.name).to eq "new clinic"
+  end
+
+  it "should be able to delete clinics", :js => true do
+    clinic = Clinic.first
+    clinic_row = find("tr[data-clinic-id='#{clinic.id}']")
+    within clinic_row do
+      find("button.btn-danger").click
+      # page.driver.browser.switch_to.alert.accept # Needed if using chrome driver
+    end
+
+    expect(page.find(".growlyflash")).to have_text("'#{clinic.name}' has been removed")
+    expect(clinic.reload.deleted?).to eq true # Clinics use soft delete
   end
 end

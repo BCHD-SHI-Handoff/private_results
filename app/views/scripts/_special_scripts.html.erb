@@ -18,7 +18,7 @@
         </thead>
         <tbody>
           <% @scripts.select{|s| !s.name.nil? }.each do |script| %>
-            <tr>
+            <tr class="script">
               <td><%= script.name %></td>
               <td><%= script.language %></td>
               <td><pre><%= script.message %></pre></td>

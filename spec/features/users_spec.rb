@@ -77,7 +77,7 @@ describe "users" do
     expect(@default_user.staff?).to eq false
     modal = find("div.modal-content")
     within modal do
-      have_field("user[email]", :with => DEFAULT_USER_EMAIL)
+      expect(page).to have_field("user[email]", :with => DEFAULT_USER_EMAIL)
       expect(find_field("user_role_admin")).to be_checked
       choose('staff')
       page.click_button "Save user"
