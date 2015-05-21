@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150513140128) do
+ActiveRecord::Schema.define(version: 20150521141159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,11 +19,12 @@ ActiveRecord::Schema.define(version: 20150513140128) do
   create_table "clinics", force: true do |t|
     t.string   "code",             null: false
     t.string   "name",             null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "hours_in_english"
     t.string   "hours_in_spanish"
+    t.datetime "deleted_at"
   end
+
+  add_index "clinics", ["deleted_at"], name: "index_clinics_on_deleted_at", using: :btree
 
   create_table "deliveries", force: true do |t|
     t.datetime "delivered_at",      null: false
@@ -52,13 +53,11 @@ ActiveRecord::Schema.define(version: 20150513140128) do
   add_index "results", ["visit_id"], name: "index_results_on_visit_id", using: :btree
 
   create_table "scripts", force: true do |t|
-    t.string   "name"
-    t.integer  "test_id"
-    t.string   "language",   null: false
-    t.integer  "status_id"
-    t.text     "message",    null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "name"
+    t.integer "test_id"
+    t.string  "language",  null: false
+    t.integer "status_id"
+    t.text    "message",   null: false
   end
 
   add_index "scripts", ["status_id"], name: "index_scripts_on_status_id", using: :btree

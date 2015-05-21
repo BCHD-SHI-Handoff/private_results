@@ -52,6 +52,9 @@ gem 'bootstrap-datepicker-rails'
 # Use newrelic for monitoring.
 gem 'newrelic_rpm'
 
+# Makes dealing with soft deletes a lot easier.
+gem "paranoia", "~> 2.0"
+
 group :test do
   gem "factory_girl_rails", "~> 4.0"
   gem 'rspec-rails', '~> 3.0'
