@@ -40,14 +40,10 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
-# Doh! Having a test model clashes with a Test constant rails uses.
-Object.send(:remove_const, :Test)
-
 # We need to use DatabaseCleaner as our selenium tests require
 # us to turn off use_transactional_fixtures.
 # See http://stackoverflow.com/q/6154687 for details.
-# Note, we need to skip truncating our seeded tables.
-DatabaseCleaner.strategy = :truncation, {:except => %w[clinics scripts statuses tests]}
+DatabaseCleaner.strategy = :truncation
 
 RSpec.configure do |config|
   config.include Helpers
@@ -79,6 +75,11 @@ RSpec.configure do |config|
       active: true
     )
     @default_user.confirm!
+
+    # Load our clinics, tests and scripts.
+    # Unfortunately this slows our unit tests but it allows our tests
+    # to modify these three models.
+    SeedData::populate()
 
     DatabaseCleaner.start
   end

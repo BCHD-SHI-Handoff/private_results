@@ -18,5 +18,8 @@ module PrivateResults
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     config.i18n.default_locale = :en
+
+    # Autoload lib/ folder including all subdirectories
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
   end
 end
