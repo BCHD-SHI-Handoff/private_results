@@ -46,6 +46,7 @@ class Visit < ActiveRecord::Base
     )
   end
 
+  # Get the latest result for each test type.
   def get_latest_results()
     results.group_by{|r| r.test_id}.map{|key, group| group.last}
   end

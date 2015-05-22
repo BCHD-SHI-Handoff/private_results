@@ -9,98 +9,64 @@
 
   <h1 class="page-header"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</h1>
   <div class="row result-delivery-stats">
-    <h2>Results Delivered</h2>
+    <table class="table table-striped">
+      <thead>
+        <th># of ...</th>
+        <th>Last 30 Days</th>
+        <th>Last 3 Months</th>
+        <th>Last 12 Months</th>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Visits</th>
+          <td><%= @dashboard[:visits][:last_30_days] %></td>
+          <td><%= @dashboard[:visits][:last_3_months] %></td>
+          <td><%= @dashboard[:visits][:last_12_months] %></td>
+        </tr>
 
-    <div class="col-md-2">
-      <h4>Last 30 Days</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:results_delivered][:last_30_days] %>
-        </span>
-      </h1>
-    </div>
+        <tr>
+          <th>"Pending" Results</th>
+          <td><%= @dashboard[:pending_results][:last_30_days] %></td>
+          <td><%= @dashboard[:pending_results][:last_3_months] %></td>
+          <td><%= @dashboard[:pending_results][:last_12_months] %></td>
+        </tr>
 
-    <div class="col-md-2">
-      <h4>Last 3 Months</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:results_delivered][:last_3_months] %>
-        </span>
-      </h1>
-    </div>
+        <tr>
+          <th>"Come back to clinic" Results</th>
+          <td><%= @dashboard[:come_back_results][:last_30_days] %></td>
+          <td><%= @dashboard[:come_back_results][:last_3_months] %></td>
+          <td><%= @dashboard[:come_back_results][:last_12_months] %></td>
+        </tr>
 
-    <div class="col-md-2">
-      <h4>Last 12 Months</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:results_delivered][:last_12_months] %>
-        </span>
-      </h1>
-    </div>
+        <tr>
+          <th>Results Ready</th>
+          <td><%= @dashboard[:ready_results][:last_30_days] %></td>
+          <td><%= @dashboard[:ready_results][:last_3_months] %></td>
+          <td><%= @dashboard[:ready_results][:last_12_months] %></td>
+        </tr>
 
-  </div>
+        <tr>
+          <th>Results Delivered</th>
+          <td><%= @dashboard[:results_delivered][:last_30_days] %></td>
+          <td><%= @dashboard[:results_delivered][:last_3_months] %></td>
+          <td><%= @dashboard[:results_delivered][:last_12_months] %></td>
+        </tr>
 
-  <div class="row results-delivered-stats">
-    <h2>Percentage Results Delivered</h2>
+        <tr>
+          <th>Online Visits</th>
+          <td><%= @dashboard[:online_visits][:last_30_days] %></td>
+          <td><%= @dashboard[:online_visits][:last_3_months] %></td>
+          <td><%= @dashboard[:online_visits][:last_12_months] %></td>
+        </tr>
 
-    <div class="col-md-2">
-      <h4>Last 30 Days</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:percentage_delivered][:last_30_days] %>%
-        </span>
-      </h1>
-    </div>
+        <tr>
+          <th>Call-ins</th>
+          <td><%= @dashboard[:call_ins][:last_30_days] %></td>
+          <td><%= @dashboard[:call_ins][:last_3_months] %></td>
+          <td><%= @dashboard[:call_ins][:last_12_months] %></td>
+        </tr>
 
-    <div class="col-md-2">
-      <h4>Last 3 Months</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:percentage_delivered][:last_3_months] %>%
-        </span>
-      </h1>
-    </div>
-
-    <div class="col-md-2">
-      <h4>Last 12 Months</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:percentage_delivered][:last_12_months] %>%
-        </span>
-      </h1>
-    </div>
-
-  </div>
-
-  <div class="row visit-stats">
-    <h2>Visits</h2>
-
-    <div class="col-md-2">
-      <h4>Last 30 Days</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:visits][:last_30_days] %>
-        </span>
-      </h1>
-    </div>
-
-    <div class="col-md-2">
-      <h4>Last 3 Months</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:visits][:last_3_months] %>
-        </span>
-      </h1>
-    </div>
-
-    <div class="col-md-2">
-      <h4>Last 12 Months</h4>
-      <h1>
-        <span class="label label-primary">
-          <%= @dashboard[:visits][:last_12_months] %>
-        </span>
-      </h1>
-    </div>
-
+      </tbody>
+    </table>
   </div>
 </div>
