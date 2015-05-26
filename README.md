@@ -1,5 +1,5 @@
 # Private Results
-Private Results provides a way for patients to get their test results via phone or the web. Currently, this project has hardcoded data for [BCHD](http://health.baltimorecity.gov/) (clinic info).
+Private Results provides a way for patients to get their test results via phone or the web. Currently, this project has hardcoded data (clinic info) for [BCHD](http://health.baltimorecity.gov/).
 
 ## LICENSE
 Private Results is copyright © 2014-2015 [Sexual Health Innovations](http://www.sexualhealthinnovations.org/). It is free software, and may be redistributed under the terms specified in the [MIT-LICENSE](MIT-LICENSE.md) file.
@@ -40,7 +40,7 @@ then the patient will be told to call back. If neither of those cases is true, t
 ## Development
 Private Results is well tested, please run `rspec spec` from the top directory in order to make sure everything is working as it should.
 
-The seeds file contains the initial list of:
+Seed data has been split out into lib/seed_data.rb in order to make unit testing easier. This seed data contains the initial list of:
 * Clinics - name, code, hours
 * Tests - chlamydia, gonorrhea, etc
 * Statuses - Pending, Come back to clinic, etc
@@ -60,7 +60,7 @@ To test and develop with twilio, you'll need someway to allow twilio to connect 
 #### Deployment:
 Note: You'll need to run the Private Results rails app on a server that can be accessed by the internet and that has access to a mail server (to send out account information to the administrators of Private Results).
 
-1. Download Private Results and run rails server:
+* Download Private Results and run the rails server:
 ```
 git clone https://github.com/wes-r/private_results
 cd private_results
@@ -69,8 +69,8 @@ rake db:setup
 rake assets::precompile RAILS_ENV=production
 rails s -e production
 ```
-2. Point a domain at your rails server's ip:port
-3. Point twilio at your domain.
+* Point a domain at your rails server's ip:port
+* Point twilio at your domain.
 
 #### Running:
 You'll need to run `rake import:csv patient_data.csv` in order to import patient data.
