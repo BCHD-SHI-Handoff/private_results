@@ -69,13 +69,15 @@
 
         <table class="table table-striped">
           <thead>
-            <th>Called at</th>
+            <th>Delivered at</th>
+            <th>Method</th>
             <th>Message</th>
           </thead>
           <tbody>
             <% visit.results.map{|r| r.deliveries}.flatten.uniq.each do |delivery| %>
               <tr>
                 <td><%= delivery.delivered_at.to_formatted_s(:long) %></td>
+                <td><%= delivery.delivery_method.capitalize %></td>
                 <td><%= simple_format(delivery.message) %></td>
               </tr>
             <% end %>
