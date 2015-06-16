@@ -9,7 +9,7 @@ describe "dashboard" do
 
   it "should show dashboard" do
     expect(current_path.to_s).to match dashboards_path
-    expect(page).to have_text("\"Pending\" Results")
-    expect(page).to have_selector('td', count: 21)
+    expect(page).to have_text("Online Visits")
+    expect(page).to have_selector('td', count: 9)
   end
 end
