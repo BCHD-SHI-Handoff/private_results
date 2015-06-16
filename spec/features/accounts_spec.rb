@@ -19,7 +19,7 @@ describe "accounts" do
       visit dashboards_path
     end
 
-    it "should successfully login with #{DEFAULT_USER_EMAIL}" do 
+    it "should successfully login with #{DEFAULT_USER_EMAIL}" do
       expect(current_path.to_s).to match new_user_session_path
       fill_in "user_email", :with => DEFAULT_USER_EMAIL
       fill_in "user_password", :with => DEFAULT_USER_PASSWORD
@@ -28,7 +28,7 @@ describe "accounts" do
       expect(page.find(".alert-info")).to have_text(I18n.t("devise.sessions.signed_in"))
     end
 
-    it "should fail to login with invalid user" do 
+    it "should fail to login with invalid user" do
       fill_in "user_email", :with => invalid_email
       fill_in "user_password", :with => "bad_pass"
       click_button "Log in"
@@ -36,7 +36,7 @@ describe "accounts" do
       expect(page.find(".alert-warning")).to have_text(I18n.t("devise.failure.invalid", authentication_keys: "email"))
     end
 
-    it "should fail to login with inactive user" do 
+    it "should fail to login with inactive user" do
       fill_in "user_email", :with => inactive_user.email
       fill_in "user_password", :with => DEFAULT_USER_PASSWORD
       click_button "Log in"

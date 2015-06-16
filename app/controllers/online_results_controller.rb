@@ -6,8 +6,10 @@ class OnlineResultsController < ApplicationController
   end
 
   def show
+    @username = params['username']
+    @password = params['password']
     visits = Visit.includes(:clinic, results: [:test, :status])
-      .where(username: params['username'], password: params['password'])
+      .where(username: @username, password: @password)
 
     if visits.length != 1
       flash[:alert] = "The password does not match the username that you provided. If you think this is an error, please contact the clinic."

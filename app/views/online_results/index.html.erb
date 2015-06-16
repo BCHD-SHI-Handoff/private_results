@@ -13,11 +13,21 @@
       <form accept-charset="UTF-8" action="/results" class="ng-pristine ng-valid" method="post" autocomplete="off">
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" class="form-control" name="username" placeholder="Enter username" autocomplete="off">
+          <input type="text"
+              value="<%= @username %>"
+              class="form-control"
+              name="username"
+              placeholder="Enter username"
+              autocomplete="off">
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">Password</label>
-          <input class="form-control" name="password" placeholder="Password" autocomplete="off">
+          <input type="text"
+              value="<%= @password %>"
+              class="form-control"
+              name="password"
+              placeholder="Password"
+              autocomplete="off">
         </div>
 
         <button type="submit" class="btn btn-default">Submit</button>
