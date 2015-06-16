@@ -18,38 +18,10 @@
       </thead>
       <tbody>
         <tr>
-          <th>Visits</th>
+          <th>Patient Visits</th>
           <td><%= @dashboard[:visits][:last_30_days] %></td>
           <td><%= @dashboard[:visits][:last_3_months] %></td>
           <td><%= @dashboard[:visits][:last_12_months] %></td>
-        </tr>
-
-        <tr>
-          <th>"Pending" Results</th>
-          <td><%= @dashboard[:pending_results][:last_30_days] %></td>
-          <td><%= @dashboard[:pending_results][:last_3_months] %></td>
-          <td><%= @dashboard[:pending_results][:last_12_months] %></td>
-        </tr>
-
-        <tr>
-          <th>"Come back to clinic" Results</th>
-          <td><%= @dashboard[:come_back_results][:last_30_days] %></td>
-          <td><%= @dashboard[:come_back_results][:last_3_months] %></td>
-          <td><%= @dashboard[:come_back_results][:last_12_months] %></td>
-        </tr>
-
-        <tr>
-          <th>Results Ready</th>
-          <td><%= @dashboard[:ready_results][:last_30_days] %></td>
-          <td><%= @dashboard[:ready_results][:last_3_months] %></td>
-          <td><%= @dashboard[:ready_results][:last_12_months] %></td>
-        </tr>
-
-        <tr>
-          <th>Results Delivered</th>
-          <td><%= @dashboard[:results_delivered][:last_30_days] %></td>
-          <td><%= @dashboard[:results_delivered][:last_3_months] %></td>
-          <td><%= @dashboard[:results_delivered][:last_12_months] %></td>
         </tr>
 
         <tr>

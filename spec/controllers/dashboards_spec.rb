@@ -17,26 +17,6 @@ describe DashboardsController, :type => :controller do
           last_3_months: 0,
           last_12_months: 0
         },
-        pending_results: {
-          last_30_days: 0,
-          last_3_months: 0,
-          last_12_months: 0
-        },
-        come_back_results: {
-          last_30_days: 0,
-          last_3_months: 0,
-          last_12_months: 0
-        },
-        ready_results: {
-          last_30_days: 0,
-          last_3_months: 0,
-          last_12_months: 0
-        },
-        results_delivered: {
-          last_30_days: 0,
-          last_3_months: 0,
-          last_12_months: 0
-        },
         online_visits: {
           last_30_days: 0,
           last_3_months: 0,
@@ -142,26 +122,6 @@ describe DashboardsController, :type => :controller do
           last_30_days: 3,
           last_3_months: 4,
           last_12_months: 6
-        },
-        pending_results: {
-          last_30_days: 3,
-          last_3_months: 4,
-          last_12_months: 4
-        },
-        come_back_results: {
-          last_30_days: 1,
-          last_3_months: 2,
-          last_12_months: 2
-        },
-        ready_results: {
-          last_30_days: 2,
-          last_3_months: 2,
-          last_12_months: 4
-        },
-        results_delivered: {
-          last_30_days: 2,
-          last_3_months: 2,
-          last_12_months: 3
         },
         online_visits: {
           last_30_days: 2,
