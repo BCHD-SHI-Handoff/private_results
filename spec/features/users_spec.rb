@@ -27,8 +27,10 @@ describe "users" do
     admin_row = find("tr[data-user-id='#{@admin_user.id}']")
     within admin_row do
       expect(page).to have_text(@admin_user.email)
+      # Can reset password for self.
+      expect(page).to have_selector(:link_or_button, 'Reset Password')
+
       expect(page).to_not have_selector(:link_or_button, 'Deactivate')
-      expect(page).to_not have_selector(:link_or_button, 'Reset Password')
       expect(page).to_not have_selector(:link_or_button, 'Edit')
       expect(page).to_not have_css("button.btn-danger")
     end

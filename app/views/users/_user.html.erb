@@ -26,13 +26,15 @@
           <% end %>
         <% end %>
       <% end %>
+    <% end %>
 
-      <%= simple_form_for user, :url => send_reset_password_user_url(user), :method => 'get', remote: true do |f| %>
-        <%= button_tag(type: 'submit', class: "btn btn-default btn-sm") do %>
-          <span class="glyphicon glyphicon-envelope"></span> Reset Password
-        <% end %>
+    <%= simple_form_for user, :url => send_reset_password_user_url(user), :method => 'get', remote: true do |f| %>
+      <%= button_tag(type: 'submit', class: "btn btn-default btn-sm") do %>
+        <span class="glyphicon glyphicon-envelope"></span> Reset Password
       <% end %>
+    <% end %>
 
+    <% if user != current_user %>
       <div>
         <%= button_to edit_user_path(user), class: 'btn btn-sm btn-default', :method => 'get', remote: true do %>
           <span class="glyphicon glyphicon-pencil"></span> Edit
