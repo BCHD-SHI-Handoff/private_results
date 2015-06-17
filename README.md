@@ -14,20 +14,22 @@ Private Results is copyright © 2014-2015 [Sexual Health Innovations](http://www
 The results provided are dependant on the status of each test result and follows the following logic:
 ```ruby
 # Found in app/models/visit.rb
-if results.any?{ |result| result.status.nil? || result.status == "Come back to clinic" }
-  message = "Come back to the clinic"
-elsif results.any?{ |result| result.status == "Pending" } and visited_on > 7.days.ago
+if results.any?{ |result| result.status.nil? }
+  message = "There was a technical problem reading one of your test results..."
+elsif results.any?{ |result| result.status == "Come back to clinic" }
+  message = "Come back to the clinic..."
+elsif results.any?{ |result| result.status == "Pending" }
   message = "Your test results are still pending, call back..."
 else
   message = results.messages.join("\n")
 end
 ```
 
-This ensures that if any test result does not have a status or has the status **"Come back to clinic"**,
+This ensures that if any test result is corrupt (has no status) then we report a technical issue and
+instruct the patient to call the clinic. Similarly, if any result has the status **"Come back to clinic"**,
 the patient will not receive any of their results and will instead be instructed to come back to the clinic.
-Similarly, if any test result is still **"Pending"**, and the patient's visit was recent (less than 7 days ago),
-then the patient will be told to call back. If neither of those cases is true, then we deliver each test result to the patient.
-
+Lastly, if any test result is still **"Pending"**, then the patient will be told to call back.
+If neither of these cases is true, then we deliver each test result to the patient.
 
 ## Dependencies
 * Rails 4.2.1

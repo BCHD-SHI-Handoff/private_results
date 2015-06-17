@@ -53,24 +53,6 @@ describe Result do
       expect(result3.delivered?).to eq true
     end
 
-    it "should set delivery_status based on status" do
-      result.status = nil
-      result.update_delivery_status(nil)
-      expect(result.not_delivered?).to eq true
-
-      result.status = Status.find_by_status("Pending")
-      result.update_delivery_status(nil)
-      expect(result.not_delivered?).to eq true
-
-      result.status = Status.find_by_status("Come back to clinic")
-      result.update_delivery_status(nil)
-      expect(result.come_back?).to eq true
-
-      result.status = Status.find_by_status("Negative")
-      result.update_delivery_status(nil)
-      expect(result.delivered?).to eq true
-    end
-
     it "should not change a come_back result to not_delivered" do
       result.come_back!
       result.update_delivery_status(Result.delivery_statuses[:not_delivered])

@@ -48,7 +48,7 @@ describe "scripts" do
     click_button "New"
     modal = find("div.modal-content")
     within modal do
-      select "Come back to clinic", :from => "script[status_id]"
+      select "Negative", :from => "script[status_id]"
       choose("spanish")
       fill_in "script[message]", with: "new message"
       click_button('Create script')

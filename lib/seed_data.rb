@@ -115,6 +115,12 @@ Thank you for calling!"
     })
 
     Script.create({
+      name: 'technical_error',
+      language: 'english',
+      message: "There was a technical problem reading one of your test results, please contact the clinic."
+    })
+
+    Script.create({
       name: 'pending',
       language: 'english',
       message: "Your test results are still pending. Please call back on {{ results_ready_on }} to get your test results."
@@ -143,13 +149,6 @@ Thank you for calling!"
       message: "Your chlamydia test was positive, which means that you had chlamydia at the time you were tested. You were treated for chlamydia in the clinic already, so you were cured of chlamydia at that time and do not need to come back to the clinic. You do need to tell your partners so that they can get treated for chlamydia."
     })
 
-    Script.create({
-      language: 'english',
-      test_id: chlamydia_test.id,
-      status_id: status_pending.id,
-      message: "Your chlamydia test result is still pending. Call back tomorrow to see if your chlamydia result is ready."
-    })
-
     #######################
     #      GONORRHEA      #
     #######################
@@ -165,13 +164,6 @@ Thank you for calling!"
       test_id: gonorrhea_test.id,
       status_id: status_positive_and_treated.id,
       message: "Your gonorrhea test was positive, which means that you had gonorrhea at the time you were tested. You were treated for gonorrhea in the clinic already, so you were cured of gonorrhea at that time and do not need to come back to the clinic. You do need to tell your partners so that they can get treated for gonorrhea."
-    })
-
-    Script.create({
-      language: 'english',
-      test_id: gonorrhea_test.id,
-      status_id: status_pending.id,
-      message: "Your gonorrhea test result is still pending. Call back tomorrow to see if your gonorrhea result is ready."
     })
 
     #######################
@@ -191,13 +183,6 @@ Thank you for calling!"
       message: "Your syphilis test was positive, which means that you had syphilis at the time you were tested. You were treated for syphilis in the clinic already, so you were cured of syphilis at that time and do not need to come back to the clinic. You do need to tell your partners so that they can get treated for syphilis."
     })
 
-    Script.create({
-      language: 'english',
-      test_id: syphilis_test.id,
-      status_id: status_pending.id,
-      message: "Your syphilis test result is still pending. Call back tomorrow to see if your syphilis result is ready."
-    })
-
     #######################
     #         HIV         #
     #######################
@@ -206,13 +191,6 @@ Thank you for calling!"
       test_id: hiv_test.id,
       status_id: status_negative.id,
       message: "Your HIV test was negative, which means that you probably do not have HIV."
-    })
-
-    Script.create({
-      language: 'english',
-      test_id: hiv_test.id,
-      status_id: status_pending.id,
-      message: "Your HIV test result is still pending. Call back tomorrow to see if your HIV result is ready."
     })
 
     #######################
@@ -239,13 +217,6 @@ Thank you for calling!"
       message: "Your hepatitis B test results show that you have evidence of hepatitis B and need to come back to the clinic. Clinic hours are {{ clinic_hours }}."
     })
 
-    Script.create({
-      language: 'english',
-      test_id: hepb_test.id,
-      status_id: status_pending.id,
-      message: "Your hepatitis B test result is still pending. Call back tomorrow to see if your hepatitis B result is ready."
-    })
-
     #######################
     #     HEPATITIS C     #
     #######################
@@ -261,13 +232,6 @@ Thank you for calling!"
       test_id: hepc_test.id,
       status_id: status_positive.id,
       message: "Your hepatitis C test was positive, which means that you have been exposed to hepatitis C. You need further evaluation. Please return to the clinic. Clinic hours are {{ clinic_hours }}."
-    })
-
-    Script.create({
-      language: 'english',
-      test_id: hepc_test.id,
-      status_id: status_pending.id,
-      message: "Your hepatitis C test result is still pending. Call back tomorrow to see if your hepatitis C result is ready."
     })
 
   end

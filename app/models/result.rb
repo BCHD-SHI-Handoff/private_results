@@ -18,18 +18,6 @@ class Result < ActiveRecord::Base
   end
 
   def update_delivery_status(new_delivery_status)
-    if new_delivery_status.nil?
-      if status.nil?
-        new_delivery_status = Result.delivery_statuses[:not_delivered]
-      else
-        new_delivery_status = case status.status
-          when "Pending" then Result.delivery_statuses[:not_delivered]
-          when "Come back to clinic" then Result.delivery_statuses[:come_back]
-          else Result.delivery_statuses[:delivered]
-        end
-      end
-    end
-
     # Once a result has been delivered it should never be changed.
     # Likewise, once a :come_back message has been given, it should never be set to :not_delivered.
     unless delivered? || (come_back? and new_delivery_status == Result.delivery_statuses[:not_delivered])

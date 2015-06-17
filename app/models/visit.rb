@@ -18,22 +18,31 @@ class Visit < ActiveRecord::Base
 
     latest_results = get_latest_results()
 
-    if latest_results.any?{ |result| result.status.nil? || result.status.status == "Come back to clinic" }
+    # Check if any results don't have a status (malformed).
+    if latest_results.any?{ |result| result.status.nil? }
+      message = Script.get_message("technical_error", language)
+      latest_results.each{ |result| result.update_delivery_status(:not_delivered) }
+
+    # Check if any results have a come back to clinic status.
+    elsif latest_results.any?{ |result| result.status.status == "Come back to clinic" }
       # Grab the come_back script and hand it the clinic hours
       message_template = Liquid::Template.parse(Script.get_message("come_back", language))
       message = message_template.render({"clinic_hours" => clinic_hours})
 
       # Set all of our results to have a delivery status of "come back".
       latest_results.each{ |result| result.update_delivery_status(:come_back) }
-    elsif latest_results.any?{ |result| result.status.status == "Pending" } and is_recent?
+
+    # Check if any results are still pending.
+    elsif latest_results.any?{ |result| result.status.status == "Pending" }
       # Set all of our results to have a delivery status of "not delivered".
       message_template = Liquid::Template.parse(Script.get_message("pending", language))
       message = message_template.render({"results_ready_on" => results_ready_on})
 
       latest_results.each{ |result| result.update_delivery_status(:not_delivered) }
+
     else
       message = test_messages({"clinic_hours" => clinic_hours})
-      latest_results.each{ |result| result.update_delivery_status(nil) } # Depends on result status.
+      latest_results.each{ |result| result.update_delivery_status(:delivered) }
     end
 
     template.render(
@@ -100,12 +109,9 @@ class Visit < ActiveRecord::Base
     format_date(self.visited_on)
   end
 
+  # Either 7 days from visit date or tomorrow's date (whichever is later).
   def results_ready_on
-    format_date(self.visited_on + 7.days)
-  end
-
-  def is_recent?
-    self.visited_on > 7.days.ago
+    format_date([self.visited_on + 7.days, 1.day.from_now].max)
   end
 
   # Formats the visited_on timestamp.
