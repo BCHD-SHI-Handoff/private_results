@@ -150,12 +150,6 @@ Thank you for calling!"
       message: "Your chlamydia test result is still pending. Call back tomorrow to see if your chlamydia result is ready."
     })
 
-    Script.create({
-      language: 'english',
-      test_id: chlamydia_test.id,
-      message: "I am not able to read your chlamydia test result. You will have to come back to the clinic in order to get your chlamydia test results. Clinic hours are {{ clinic_hours }}."
-    })
-
     #######################
     #      GONORRHEA      #
     #######################
@@ -178,12 +172,6 @@ Thank you for calling!"
       test_id: gonorrhea_test.id,
       status_id: status_pending.id,
       message: "Your gonorrhea test result is still pending. Call back tomorrow to see if your gonorrhea result is ready."
-    })
-
-    Script.create({
-      language: 'english',
-      test_id: gonorrhea_test.id,
-      message: "I am not able to read your gonorrhea test result. You will have to come back to the clinic in order to get your gonorrhea test results. Clinic hours are {{ clinic_hours }}."
     })
 
     #######################
@@ -210,12 +198,6 @@ Thank you for calling!"
       message: "Your syphilis test result is still pending. Call back tomorrow to see if your syphilis result is ready."
     })
 
-    Script.create({
-      language: 'english',
-      test_id: syphilis_test.id,
-      message: "I am not able to read your syphilis test result. You will have to come back to the clinic in order to get your syphilis test results. Clinic hours are {{ clinic_hours }}."
-    })
-
     #######################
     #         HIV         #
     #######################
@@ -231,12 +213,6 @@ Thank you for calling!"
       test_id: hiv_test.id,
       status_id: status_pending.id,
       message: "Your HIV test result is still pending. Call back tomorrow to see if your HIV result is ready."
-    })
-
-    Script.create({
-      language: 'english',
-      test_id: hiv_test.id,
-      message: "I am not able to read your HIV test result. You will have to come back to the clinic in order to get your HIV test results. Clinic hours are {{ clinic_hours }}."
     })
 
     #######################
@@ -270,12 +246,6 @@ Thank you for calling!"
       message: "Your hepatitis B test result is still pending. Call back tomorrow to see if your hepatitis B result is ready."
     })
 
-    Script.create({
-      language: 'english',
-      test_id: hepb_test.id,
-      message: "I am not able to read your hepatitis B test results. You will have to come back to the clinic in order to get your hepatitis B test results. Clinic hours are {{ clinic_hours }}."
-    })
-
     #######################
     #     HEPATITIS C     #
     #######################
@@ -298,12 +268,6 @@ Thank you for calling!"
       test_id: hepc_test.id,
       status_id: status_pending.id,
       message: "Your hepatitis C test result is still pending. Call back tomorrow to see if your hepatitis C result is ready."
-    })
-
-    Script.create({
-      language: 'english',
-      test_id: hepc_test.id,
-      message: "I am not able to read your hepatitis C test result. You will have to come back to the clinic in order to get your hepatitis C test results. Clinic hours are {{ clinic_hours }}."
     })
 
   end

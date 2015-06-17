@@ -17,6 +17,7 @@ describe Script do
     it "validates presense of test_id when name is nil" do
       test_script = Script.create({test_id: 33424, status_id: 3432434, language: "english", message: "hello world"})
       expect(test_script).to validate_presence_of(:test_id)
+      expect(test_script).to validate_presence_of(:status_id)
     end
   end
 
