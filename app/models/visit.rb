@@ -41,8 +41,13 @@ class Visit < ActiveRecord::Base
       latest_results.each{ |result| result.update_delivery_status(:not_delivered) }
 
     else
-      message = test_messages({"clinic_hours" => clinic_hours})
-      latest_results.each{ |result| result.update_delivery_status(:delivered) }
+      begin
+        message = test_messages({"clinic_hours" => clinic_hours})
+        latest_results.each{ |result| result.update_delivery_status(:delivered) }
+      rescue ActiveRecord::RecordNotFound # If a script was not found.
+        message = Script.get_message("technical_error", language)
+        latest_results.each{ |result| result.update_delivery_status(:not_delivered) }
+      end
     end
 
     template.render(

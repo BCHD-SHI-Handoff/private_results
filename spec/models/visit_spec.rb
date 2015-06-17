@@ -114,6 +114,22 @@ describe Visit do
         expect(visit.results[3].delivered?).to eq true
       end
 
+      it "should return error when a script is not found" do
+        visit = create(:visit, visited_on: 8.days.ago)
+        # There should not be an "Immune" script for "Hepatitis C".
+        visit.results << create(:result, status: Status.find_by_status("Immune"), test: Test.find_by_name("Hepatitis C"))
+        visited_on_date = visit.visited_on.strftime("%A, %B #{visit.visited_on.day.ordinalize}")
+        clinic_hours = visit.clinic.hours_for_language("english")
+        actual_message = "You visited #{visit.clinic.name} on #{visited_on_date} and were tested for Hepatitis C."
+        actual_message += "\n\n"
+        actual_message += "There was a technical problem reading one of your test results, please contact the clinic."
+        actual_message += "\n\n\n"
+        actual_message += "Thank you for calling!"
+        expect(visit.get_results_message("english", "phone")).to eq actual_message
+
+        # Check result delivery status.
+        expect(visit.results[0].delivered?).to eq false
+      end
     end
 
     describe "get_csv" do

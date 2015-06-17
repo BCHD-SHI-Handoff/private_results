@@ -12,7 +12,7 @@ class Result < ActiveRecord::Base
   # Look up the associated script for the test and status combo.
   # Additionally pass in any variables to the script.
   def message message_variables
-    message = Script.select(:message).find_by(test_id: self.test_id, status_id: self.status_id).message
+    message = Script.select(:message).find_by!(test_id: self.test_id, status_id: self.status_id).message
     template = Liquid::Template.parse(message) # Parses and compiles the template
     template.render(message_variables)
   end
