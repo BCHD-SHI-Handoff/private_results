@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-12">
         <%= f.input :name %>
-        <%= f.input :code %>
+        <%= f.input :code, disabled: true, hint: 'Clinic code cannot be changed as visits are associated with clinics by their clinic code.' %>
         <%= f.input :hours_in_english %>
         <%= f.input :hours_in_spanish %>
       </div>

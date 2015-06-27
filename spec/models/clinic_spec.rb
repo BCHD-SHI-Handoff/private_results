@@ -42,4 +42,13 @@ describe Clinic do
     expect(Clinic.find(clinic.id)).to_not be_nil
     expect(clinic.deleted_at).to be_nil
   end
+
+  it "cannot update clinic code" do
+    clinic.save!
+    clinic.code = "CHANGED"
+    assert_raises ActiveRecord::RecordInvalid do
+      clinic.save!
+    end
+    expect(clinic.errors[:code]).to eq "Change of clinic code is not allowed."
+  end
 end
