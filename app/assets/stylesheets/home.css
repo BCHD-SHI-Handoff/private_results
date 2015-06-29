@@ -64,3 +64,11 @@ body {
   white-space: pre-line;
   word-break: normal;
 }
+
+/*
+ * Login pages
+ */
+.instruction_login {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}

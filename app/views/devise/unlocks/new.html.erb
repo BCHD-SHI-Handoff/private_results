@@ -1,28 +1,25 @@
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  <h1 class="page-header">
-    <span class="glyphicon glyphicon-lock"></span>
-    Resend Unlock Instructions
-  </h1>
+<div class="col-md-9 col-md-offset-3 main">
+  <h4 class="instruction_login">Didn't receive unlock instructions? We'll send them to ya.</h4>
 
   <div class="row">
-  <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-    <%= devise_error_messages! %>
-      <div class="input-group">
+    <div class="col-sm-8 col-md-8">
+      <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
+      <%= devise_error_messages! %>
+      <div class="form-group">
         <%= f.email_field :email,
                           autofocus: true,
-                          class: 'form-control input-lg',
+                          class: 'form-control',
                           placeholder: 'Email'%>
-
-        <span class="input-group-btn">
-          <button class="btn btn-lg" type="submit">
-            <span class="glyphicon glyphicon-exclamation-sign"></span> Resend unlock instructions
+      </div>
+      <div class="form-group">
+          <button class="btn btn-primary" type="submit">
+            Resend unlock instructions
           </button>
-        </span>
       </div>
 
-  <% end %>
+      <% end %>
+    </div>
   </div>
-
   <br>
   <%= render "devise/shared/links" %>
 </div>

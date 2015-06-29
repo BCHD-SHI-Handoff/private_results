@@ -52,8 +52,8 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <% if current_user  %>
+        <% if current_user  %>
+          <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
               <li class=<%= active_or_blank(patients_path) %>>
                 <%= link_to patients_path do %>
@@ -83,8 +83,8 @@
                 </li>
               <% end %>
             </ul>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
         <%= yield %>
 
       </div>
