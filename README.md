@@ -64,7 +64,7 @@ Note: You'll need to run the Private Results rails app on a server that can be a
 
 * Download Private Results and run the rails server:
 ```
-git clone https://github.com/wes-r/private_results
+git clone https://github.com/SexualHealthInnovations/private_results
 cd private_results
 bundle install
 rake db:setup
