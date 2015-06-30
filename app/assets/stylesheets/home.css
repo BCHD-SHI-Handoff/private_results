@@ -65,6 +65,44 @@ body {
   word-break: normal;
 }
 
+a {
+  color: #4496b5;
+}
+
+.btn-primary {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #4496b5;
+  *background-color: #4496b5;
+  background-image: -moz-linear-gradient(top, #6cbad8, #4496b5);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6cbad8), to(#4496b5));
+  background-image: -webkit-linear-gradient(top, #6cbad8, #4496b5);
+  background-image: -o-linear-gradient(top, #6cbad8, #4496b5);
+  background-image: linear-gradient(to bottom, #6cbad8, #4496b5);
+  background-repeat: repeat-x;
+  border-color: #4496b5 #4496b5 #002a80;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff6cbad8', endColorstr='#ff4496b5', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+  color: #ffffff;
+  background-color: #4496b5;
+  *background-color: #4496b5;
+}
+
+.btn-primary:active,
+.btn-primary.active {
+  background-color: #4496b5 \9;
+}
+
 /*
  * Login pages
  */
