@@ -36,7 +36,7 @@ body {
 .nav-sidebar > .active:hover a,
 .nav-sidebar > .active > a {
   color: #fff;
-  background-color: #428bca;
+  background-color: #4496b5;
 }
 
 /*
@@ -67,6 +67,10 @@ body {
 
 a {
   color: #4496b5;
+}
+
+a:hover {
+  color: grey;
 }
 
 .btn-primary {

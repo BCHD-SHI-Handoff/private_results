@@ -1,12 +1,14 @@
 <div class="patient_search_result">
-  <h3>
+  <br/>
+  <h4>
     Patient: <%= visits.first.patient_number%>
     <small>
       has had
       <span class="badge"><%= visits.length %></span>
       Visits
     </small>
-  </h3>
+  </h4>
+  <br/>
 
   <% visits.each do |visit| %>
     <div class="row">
