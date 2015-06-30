@@ -10,6 +10,87 @@
   </h4>
   <br/>
 
+  <h4>Visits</h4>
+  <% visits.each do |visit| %>
+    <div class="accordion" id="accordion-test">
+      <div class="accordion-group">
+        <div class="accordion-heading ">
+          <a class="accordion-toggle positive" data-toggle="collapse" data-parent="#accordion-test_<%= visit.id %>" href="#accordian-test-inner_<%= visit.id %>">
+        <h4>
+          <time><%= visit.visited_on.to_formatted_s(:long) %></time>
+          <small>
+            <%= visit.clinic.name %>
+          </small>
+        </h4>
+        </a>
+      </div>
+      <div id="accordian-test-inner_<%= visit.id %>" class="accordion-body collapse">
+        <div class="accordion-inner">
+
+        <table class="table table-condensed">
+          <thead>
+            <th>Test</th>
+            <th>Result</th>
+            <th>Delivery Status</th>
+          </thead>
+          <tbody>
+            <% visit.results.group_by{|r| r.test.name}.each do |test_name, result_group| %>
+              <tr>
+                <td><%= test_name %></td>
+                <td>
+                  <% if result_group.last.status.nil? %>
+                    <span class="label label-info">Unknown
+                  <% else %>
+                    <% if ['negative', 'immune'].include?(result_group.last.status.status.downcase) %>
+                      <span class="label label-success">
+                    <% elsif ['positive', 'hep b infected'].include?(result_group.last.status.status.downcase) %>
+                      <span class="label label-danger">
+                    <% elsif ['positive and treated', 'need vaccination'].include?(result_group.last.status.status.downcase) %>
+                      <span class="label label-warning">
+                    <% else %>
+                      <span class="label label-info">
+                    <% end %>
+                      <%= result_group.last.status.status %>
+                    </span>
+                    <% end %>
+                </td>
+                <td>
+                  <% case result_group.last.delivery_status %>
+                  <% when "delivered" %>
+                    <span class="label label-success">Delivered</span>
+                  <% when "come_back" %>
+                    <span class="label label-primary">Come back</span>
+                  <% else %>
+                    <span class="label label-warning">Not Delivered</span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+        <table class="table table-striped">
+          <thead>
+            <th>Delivered at</th>
+            <th>Method</th>
+            <th>Message</th>
+          </thead>
+          <tbody>
+            <% visit.results.map{|r| r.deliveries}.flatten.uniq.each do |delivery| %>
+              <tr>
+                <td><%= delivery.delivered_at.to_formatted_s(:long) %></td>
+                <td><%= delivery.delivery_method.capitalize %></td>
+                <td><%= simple_format(delivery.message) %></td>
+              </tr>
+            <% end %>
+        </table>
+         </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!--
   <% visits.each do |visit| %>
     <div class="row">
       <div class="col-sm-12 col-md-12 visit">
@@ -87,4 +168,5 @@
       </div>
     </div>
   <% end %>
+  -->
 </div>

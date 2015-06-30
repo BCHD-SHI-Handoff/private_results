@@ -48,8 +48,8 @@ body {
 }
 @media (min-width: 768px) {
   .main {
-    padding-right: 40px;
-    padding-left: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
   }
 }
 .main .page-header {
@@ -65,12 +65,28 @@ body {
   word-break: normal;
 }
 
-a {
+a:visited, a:link {
   color: #4496b5;
+  text-decoration: none;
 }
 
 a:hover {
   color: grey;
+  text-decoration: none;
+}
+
+ a:active {
+  color: black;
+  text-decoration: none;
+}
+
+span.glyphicon-sm {
+    font-size: .8em;
+}
+
+.row {
+  margin-right: 0px;
+  margin-left: 0px;
 }
 
 .btn-primary {
@@ -105,6 +121,16 @@ a:hover {
 .btn-primary:active,
 .btn-primary.active {
   background-color: #4496b5 \9;
+}
+
+.form-inline .patient-search-form {
+  width: 300px;
+}
+
+.visit {
+    border-top: 2px solid lightgrey;
+    padding-top: 2em;
+    margin-bottom: 2em;
 }
 
 /*
