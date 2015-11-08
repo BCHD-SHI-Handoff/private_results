@@ -25,6 +25,16 @@ describe Visit do
   end
 
   describe "public instance methods" do
+    it "get_latest_results" do
+      visit = create(:visit)
+      visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Hepatitis B")) # Old pending result
+      visit.results << create(:result, status: Status.find_by_status("Immune"), test: Test.find_by_name("Hepatitis B"))
+      visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
+      visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Syphilis"))
+      visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Syphilis"))
+      expect(visit.get_latest_results.map(&:id)).to eq [visit.results[1].id, visit.results[2].id, visit.results[4].id]
+    end
+
     describe "get_results_message" do
       it "should return technical error message if at least one result has no status" do
         # Create a visit that is less than 7 days old (recent) and has at least one result pending.
@@ -46,7 +56,6 @@ describe Visit do
       end
 
       it "should return come back message if at least one result has a come back status" do
-        # Create a visit that is less than 7 days old (recent) and has at least one result pending.
         visit = create(:visit)
         visit.results << create(:result, status: Status.find_by_status("Come back to clinic"), test: Test.find_by_name("Chlamydia"))
         visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
@@ -66,7 +75,7 @@ describe Visit do
       end
 
       it "should return pending message if at least one result is pending" do
-        # Create a visit that is less than 7 days old (recent) and has at least one result pending.
+        # Create a visit that has at least one result pending.
         visit = create(:visit, visited_on: 3.days.ago)
         visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Chlamydia"))
         visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
@@ -87,9 +96,11 @@ describe Visit do
 
       it "should return results message" do
         visit = create(:visit, visited_on: 8.days.ago)
+        visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Hepatitis B")) # Old pending result
         visit.results << create(:result, status: Status.find_by_status("Immune"), test: Test.find_by_name("Hepatitis B"))
         visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Gonorrhea"))
         visit.results << create(:result, status: Status.find_by_status("Negative"), test: Test.find_by_name("Syphilis"))
+        visit.results << create(:result, status: Status.find_by_status("Pending"), test: Test.find_by_name("Hepatitis C")) # Old pending result
         visit.results << create(:result, status: Status.find_by_status("Positive"), test: Test.find_by_name("Hepatitis C"))
         visited_on_date = visit.visited_on.strftime("%A, %B #{visit.visited_on.day.ordinalize}")
         clinic_hours = visit.clinic.hours_for_language("english")
@@ -108,10 +119,12 @@ describe Visit do
         expect(visit.get_results_message("english", "phone")).to eq actual_message
 
         # Check result delivery status.
-        expect(visit.results[0].delivered?).to eq true
+        # 0 is pending
         expect(visit.results[1].delivered?).to eq true
         expect(visit.results[2].delivered?).to eq true
         expect(visit.results[3].delivered?).to eq true
+        # 4 is pending
+        expect(visit.results[5].delivered?).to eq true
       end
 
       it "should return error when a script is not found" do
