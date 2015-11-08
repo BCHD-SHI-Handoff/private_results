@@ -36,10 +36,10 @@ describe "patients" do
     click_button "Search"
 
     # Should have 3 visits.
-    expect(page).to have_selector('.visit', count: 3)
+    expect(page).to have_selector('.spec-visit', count: 3)
 
     # First visit should have some results and one delivered.
-    within first(".visit") do
+    within first(".spec-visit") do
       # Check to make sure all of the results show up and one is delivered.
       within first("table") do
         expect(page).to have_selector("tr", count: visits.first.get_latest_results.length)

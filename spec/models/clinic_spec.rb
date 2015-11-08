@@ -49,6 +49,6 @@ describe Clinic do
     assert_raises ActiveRecord::RecordInvalid do
       clinic.save!
     end
-    expect(clinic.errors[:code]).to eq "Change of clinic code is not allowed."
+    expect(clinic.errors[:code].first).to eq "Change of clinic code is not allowed."
   end
 end

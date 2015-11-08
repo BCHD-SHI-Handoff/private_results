@@ -49,10 +49,10 @@ describe ClinicsController, :type => :controller do
   describe "update" do
     it "should update clinic code" do
       clinic = Clinic.first
-      xhr :get, :update, id: clinic.id, format: :js, clinic: {code: "UP"}
+      xhr :get, :update, id: clinic.id, format: :js, clinic: {name: "New Clinic Name"}
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:update)
-      expect(clinic.reload.code).to eq "UP"
+      expect(clinic.reload.name).to eq "New Clinic Name"
       expect(flash[:success]).to eq "Successfully updated '#{clinic.name}'"
     end
   end

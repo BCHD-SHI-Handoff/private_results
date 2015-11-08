@@ -103,7 +103,7 @@ describe "accounts" do
     it "should send confirmation email again" do
       # Click confirmation instruction link on login page.
       visit dashboards_path
-      click_link "Didn't receive confirmation instructions?"
+      click_link "Didn't receive email confirmation after creating a new user?"
       expect(current_path.to_s).to match new_user_confirmation_path
 
       # Fill in email and click submit.
@@ -151,7 +151,7 @@ describe "accounts" do
     it "should send unlock instructions again" do
       # Click unlock instruction link on login page.
       visit dashboards_path
-      click_link "Didn't receive unlock instructions?"
+      click_link "Didn't receive unlock instructions after getting locked out of your account?"
       expect(current_path.to_s).to match new_user_unlock_path
 
       # Fill in email and click submit.
