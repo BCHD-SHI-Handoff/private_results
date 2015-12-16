@@ -10,6 +10,11 @@ class Visit < ActiveRecord::Base
   # The username and password combo must be unique.
   validates_uniqueness_of :username, scope: :password
 
+  # Messages are delivered in the following preference order:
+  #   1. Results with at least one blank status = Technical Error
+  #   2. Results with at least one come back to clinic = Come back to clinic
+  #   3. Results with at least one pending - Pending
+  #   4. Deliver messages.
   def get_results_message(language, delivery_method)
     # Get the proper clinic hours message for the stored language language.
     clinic_hours = self.clinic.hours_for_language(language)

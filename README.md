@@ -11,25 +11,17 @@ Private Results is copyright © 2014-2015 [Sexual Health Innovations](http://www
 4. Patient calls (or visits website) Private Results and enters the username and password they were provided.
 5. Private Results looks up the username and password and delivers the results.
 
-The results provided are dependant on the status of each test result and follows the following logic:
-```ruby
-# Found in app/models/visit.rb
-if results.any?{ |result| result.status.nil? }
-  message = "There was a technical problem reading one of your test results..."
-elsif results.any?{ |result| result.status == "Come back to clinic" }
-  message = "Come back to the clinic..."
-elsif results.any?{ |result| result.status == "Pending" }
-  message = "Your test results are still pending, call back..."
-else
-  message = results.messages.join("\n")
-end
-```
+Messages are delivered in the following preference order:
+1. Results with at least one blank status = Technical Error
+2. Results with at least one come back to clinic = Come back to clinic
+3. Results with at least one pending - Pending
+4. Deliver messages.
 
 This ensures that if any test result is corrupt (has no status) then we report a technical issue and
 instruct the patient to call the clinic. Similarly, if any result has the status **"Come back to clinic"**,
 the patient will not receive any of their results and will instead be instructed to come back to the clinic.
 Lastly, if any test result is still **"Pending"**, then the patient will be told to call back.
-If neither of these cases is true, then we deliver each test result to the patient.
+If none of these cases is true, then we deliver each test result to the patient.
 
 ## Dependencies
 * Rails 4.2.1
