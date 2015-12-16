@@ -176,8 +176,8 @@ describe Visit do
         delivery0 = visit1.results[0].deliveries[0]
         expect(data[1][8]).to eq delivery0.delivery_method
         expect(data[1][9]).to eq delivery0.delivered_at.to_s
-        expect(data[1][10]).to eq delivery0.delivery_method == 'phone' ? delivery0.phone_number_used : ""
-        expect(data[1][11]).to eq delivery0.message
+        # expect(data[1][10]).to eq delivery0.delivery_method == 'phone' ? delivery0.phone_number_used : "" # XXX Not recording phone numbers now.
+        expect(data[1][10]).to eq delivery0.message
       end
     end
   end
