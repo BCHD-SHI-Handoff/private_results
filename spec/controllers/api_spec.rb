@@ -158,7 +158,7 @@ describe ApiController, :type => :controller do
       visit.results.each do |result|
         expect(result.deliveries.length).to eq 1
         expect(result.deliveries.first.message).to eq actual_message
-        expect(result.deliveries.first.phone_number_used).to eq "+15551234567"
+        # expect(result.deliveries.first.phone_number_used).to eq "+15551234567" // Not recording phone numbers.
         expect(result.deliveries.first.delivery_method).to eq "phone"
       end
     end

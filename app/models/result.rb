@@ -17,7 +17,7 @@ class Result < ActiveRecord::Base
     template.render(message_variables)
   end
 
-  def update_delivery_status(new_delivery_status)
+  def maybe_update_delivery_status(new_delivery_status)
     # Once a result has been delivered it should never be changed.
     # Likewise, once a :come_back message has been given, it should never be set to :not_delivered.
     unless delivered? || (come_back? and new_delivery_status == Result.delivery_statuses[:not_delivered])

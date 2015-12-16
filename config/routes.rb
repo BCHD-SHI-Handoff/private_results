@@ -10,7 +10,13 @@ Rails.application.routes.draw do
 
     get "/", to: redirect('/admin/dashboards')
     resources :dashboards, only: [:index]
-    resources :patients, only: [:index]
+
+    resources :patients, only: [:index] do
+      collection do
+        get :export
+      end
+    end
+
     resources :clinics
     resources :scripts
 

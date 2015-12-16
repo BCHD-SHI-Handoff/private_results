@@ -42,17 +42,19 @@
     </table>
   </div>
 
-  <h4>Export Data</h4>
-  <div class="row">
-    <div class="col-sm-9 col-md-9">
-      <div class="input-daterange input-group" id="datepicker">
-        <input type="text" class="form-control" name="start"/>
-        <span class="input-group-addon">to</span>
-        <input type="text" class="form-control" name="end" />
+  <% if current_user.admin? %>
+    <h4>Export Data</h4>
+    <div class="row">
+      <div class="col-sm-9 col-md-9">
+        <div class="input-daterange input-group" id="datepicker">
+          <input type="text" class="form-control" name="start"/>
+          <span class="input-group-addon">to</span>
+          <input type="text" class="form-control" name="end" />
+        </div>
+      </div>
+      <div class="col-sm-3 col-md-3">
+        <button id="downloadCSV" type="submit" class="btn btn-primary">Download CSV</button>
       </div>
     </div>
-    <div class="col-sm-3 col-md-3">
-      <button id="downloadCSV" type="submit" class="btn btn-primary">Download CSV</button>
-    </div>
-  </div>
+  <% end %>
 </div>

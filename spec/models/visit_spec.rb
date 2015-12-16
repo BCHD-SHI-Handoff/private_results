@@ -159,7 +159,7 @@ describe Visit do
         # Check header row
         expect(data[0]).to eq ['patient_no', 'username', 'password', 'visit_date', 'cosite',
           'infection', 'result_at_time', 'delivery_status', 'accessed_by',
-          'date_accessed', 'called_from', 'message']
+          'date_accessed', 'message']
 
         # Check first record.
         visit1 = Visit.first

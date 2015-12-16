@@ -21,7 +21,7 @@ class Visit < ActiveRecord::Base
     # Check if any results don't have a status (malformed).
     if latest_results.any?{ |result| result.status.nil? }
       message = Script.get_message("technical_error", language)
-      latest_results.each{ |result| result.update_delivery_status(:not_delivered) }
+      latest_results.each{ |result| result.maybe_update_delivery_status(:not_delivered) }
 
     # Check if any results have a come back to clinic status.
     elsif latest_results.any?{ |result| result.status.status == "Come back to clinic" }
@@ -30,7 +30,7 @@ class Visit < ActiveRecord::Base
       message = message_template.render({"clinic_hours" => clinic_hours})
 
       # Set all of our results to have a delivery status of "come back".
-      latest_results.each{ |result| result.update_delivery_status(:come_back) }
+      latest_results.each{ |result| result.maybe_update_delivery_status(:come_back) }
 
     # Check if any results are still pending.
     elsif latest_results.any?{ |result| result.status.status == "Pending" }
@@ -38,15 +38,15 @@ class Visit < ActiveRecord::Base
       message_template = Liquid::Template.parse(Script.get_message("pending", language))
       message = message_template.render({"results_ready_on" => results_ready_on})
 
-      latest_results.each{ |result| result.update_delivery_status(:not_delivered) }
+      latest_results.each{ |result| result.maybe_update_delivery_status(:not_delivered) }
 
     else
       begin
         message = test_messages({"clinic_hours" => clinic_hours})
-        latest_results.each{ |result| result.update_delivery_status(:delivered) }
+        latest_results.each{ |result| result.maybe_update_delivery_status(:delivered) }
       rescue ActiveRecord::RecordNotFound # If a script was not found.
         message = Script.get_message("technical_error", language)
-        latest_results.each{ |result| result.update_delivery_status(:not_delivered) }
+        latest_results.each{ |result| result.maybe_update_delivery_status(:not_delivered) }
       end
     end
 
