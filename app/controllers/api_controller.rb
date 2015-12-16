@@ -113,7 +113,7 @@ class ApiController < ApplicationController
     delivery = Delivery.create(
       delivered_at: Time.now,
       delivery_method: "phone",
-      phone_number_used: params['Caller'],
+      # phone_number_used: params['Caller'], // XXX presently do not record phone numbers
       message: @message
     )
     visit.results.each do |result|

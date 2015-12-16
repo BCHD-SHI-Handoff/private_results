@@ -143,7 +143,7 @@ class Visit < ActiveRecord::Base
       'delivery_status' => result.delivery_status,
       'accessed_by' => delivery.nil? ? nil : delivery.delivery_method,
       'date_accessed' => delivery.nil? ? nil : delivery.delivered_at,
-      'called_from' => delivery.nil? ? nil : delivery.phone_number_used,
+      # 'called_from' => delivery.nil? ? nil : delivery.phone_number_used, # XXX Don't include phone numbers atm
       'message' => delivery.nil? ? nil : delivery.message
     }
   end
