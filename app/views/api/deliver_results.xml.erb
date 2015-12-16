@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
+  <% if @message_count and @message_count >= 4 %>
+    <Hangup/>
+  <% end %>
+
   <Say voice="alice" language='<%= @language_code %>'><%= @message %></Say>
 
   <Pause/>

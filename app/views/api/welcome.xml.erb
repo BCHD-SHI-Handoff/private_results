@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
+  <% if @welcome_count and @welcome_count >= 4 %>
+    <Hangup/>
+  <% end %>
+
   <Pause/>
 
   <% if @welcome_message %>

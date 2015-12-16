@@ -1,3 +1,5 @@
+# Note all of the *_count stuff is in order to force hangups
+# when a message get's repeated 3 times.
 class ApiController < ApplicationController
   skip_before_action :authenticate_user!
   skip_before_filter :verify_authenticity_token
@@ -25,6 +27,9 @@ class ApiController < ApplicationController
 
   # Patient failed to select a language at the welcome prompt.
   def welcome_repeat
+    @welcome_count = session[:welcome_count] || 2
+    session[:welcome_count] = @welcome_count + 1
+
     @error_message = Script.get_message("language_not_selected")
     render action: :welcome
   end
@@ -53,6 +58,9 @@ class ApiController < ApplicationController
 
   # Patient failed to enter a username at the username prompt.
   def username_prompt_repeat
+    @username_count = session[:username_count] || 2
+    session[:username_count] = @username_count + 1
+
     @error_message = Script.get_message("username_prompt_repeat", session[:language])
     render action: :username_prompt
   end
@@ -79,6 +87,9 @@ class ApiController < ApplicationController
 
   # Patient failed to enter a password at the password prompt.
   def password_prompt_repeat
+    @password_count = session[:password_count] || 2
+    session[:password_count] = @password_count + 1
+
     @error_message = Script.get_message("password_prompt_repeat", session[:language])
     render action: :password_prompt
   end
@@ -124,6 +135,9 @@ class ApiController < ApplicationController
   end
 
   def repeat_message
+    @message_count = session[:message_count] || 2
+    session[:message_count] = @message_count + 1
+
     @message = session[:message]
     render action: :deliver_results
   end
