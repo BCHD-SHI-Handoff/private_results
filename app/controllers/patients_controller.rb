@@ -12,6 +12,8 @@ class PatientsController < ApplicationController
           .where(patient_number: params[:patient_number])
           .order(visited_on: :desc)
           .all
+
+      AuditLog.viewed_patient_number(current_user, @patient_number)
     end
 
     render "/patients"
@@ -22,6 +24,9 @@ class PatientsController < ApplicationController
     # This ensures that we get every visit that happened on those days.
     start_date = Time.at(params['start'].to_i / 1000).beginning_of_day
     end_date = Time.at(params['end'].to_i / 1000).end_of_day
+
+    AuditLog.viewed_csv(current_user, start_date, end_date)
+
     send_data Visit.get_csv(start_date, end_date)
   end
 end

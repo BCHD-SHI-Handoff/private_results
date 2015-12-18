@@ -43,4 +43,12 @@ $(document).ready(function() {
     endTimeStamp = endDateInput.datepicker('getDate').getTime();
     window.location = "/admin/patients/export.csv?start=" + startTimeStamp + "&end=" + endTimeStamp
   });
+
+
+  // Open "audit_logs/export.csv?start=$end=$" when user clicks on the download CSV button.
+  $('#downloadAuditLogs').click(function() {
+    startTimeStamp = startDateInput.datepicker('getDate').getTime();
+    endTimeStamp = endDateInput.datepicker('getDate').getTime();
+    window.location = "/admin/audit_logs/export.csv?start=" + startTimeStamp + "&end=" + endTimeStamp
+  });
 });

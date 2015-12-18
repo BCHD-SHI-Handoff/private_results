@@ -1,0 +1,41 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <% if flash[:notice].present? %>
+    <p class="alert alert-info"><%= notice %></p>
+  <% end %>
+
+  <% if flash[:alert].present?  %>
+    <p class="alert alert-warning"><%= alert %></p>
+  <% end %>
+
+  <h2 class="page-header">Audit Logs</h2>
+  Audit logs contain the following information:
+  <ul>
+    <li><b>created_at</b> - Entry date of log.</li>
+    <li><b>user_id</b> - Internal user id of user who accessed data.</li>
+    <li><b>user_email</b> - Email address of user who accessed data.</li>
+    <li><b>viewed_patient_number</b> - Patient Number viewed (via search on the patients page).</li>
+    <li><b>viewed_csv_start_date</b> - Start date of downloaded CSV data.</li>
+    <li><b>viewed_csv_end_date</b> - End date of downloaded CSV data.</li>
+  </ul>
+
+  Each entry will contain either <b>viewed_patient_number</b> or both
+  <b>viewed_csv_start_date</b> and <b>viewed_csv_end_date</b>.
+
+  <br>
+  <br>
+
+  <h4>Export Audit Log Data</h4>
+  Select the entry date range for the audit logs you wish to download.
+  <div class="row">
+    <div class="col-sm-9 col-md-9">
+      <div class="input-daterange input-group" id="datepicker">
+        <input type="text" class="form-control" name="start"/>
+        <span class="input-group-addon">to</span>
+        <input type="text" class="form-control" name="end" />
+      </div>
+    </div>
+    <div class="col-sm-3 col-md-3">
+      <button id="downloadAuditLogs" type="submit" class="btn btn-primary">Download CSV</button>
+    </div>
+  </div>
+</div>

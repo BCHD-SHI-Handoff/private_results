@@ -11,29 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150521141159) do
+ActiveRecord::Schema.define(version: 20151217212937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "clinics", force: true do |t|
-    t.string   "code",             null: false
-    t.string   "name",             null: false
+  create_table "audit_logs", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id",               null: false
+    t.string   "user_email",            null: false
+    t.string   "viewed_patient_number"
+    t.datetime "viewed_csv_start_date"
+    t.datetime "viewed_csv_end_date"
+  end
+
+  create_table "clinics", force: :cascade do |t|
+    t.string   "code",                            null: false
+    t.string   "name",                            null: false
     t.string   "hours_in_english"
     t.string   "hours_in_spanish"
     t.datetime "deleted_at"
+    t.boolean  "activated",        default: true, null: false
   end
 
   add_index "clinics", ["deleted_at"], name: "index_clinics_on_deleted_at", using: :btree
 
-  create_table "deliveries", force: true do |t|
+  create_table "deliveries", force: :cascade do |t|
     t.datetime "delivered_at",      null: false
     t.string   "delivery_method",   null: false
     t.string   "phone_number_used"
     t.text     "message",           null: false
   end
 
-  create_table "deliveries_results", id: false, force: true do |t|
+  create_table "deliveries_results", id: false, force: :cascade do |t|
     t.integer "delivery_id"
     t.integer "result_id"
   end
@@ -41,7 +52,7 @@ ActiveRecord::Schema.define(version: 20150521141159) do
   add_index "deliveries_results", ["delivery_id"], name: "index_deliveries_results_on_delivery_id", using: :btree
   add_index "deliveries_results", ["result_id"], name: "index_deliveries_results_on_result_id", using: :btree
 
-  create_table "results", force: true do |t|
+  create_table "results", force: :cascade do |t|
     t.integer  "visit_id",                    null: false
     t.integer  "test_id",                     null: false
     t.integer  "status_id"
@@ -52,7 +63,7 @@ ActiveRecord::Schema.define(version: 20150521141159) do
   add_index "results", ["test_id"], name: "index_results_on_test_id", using: :btree
   add_index "results", ["visit_id"], name: "index_results_on_visit_id", using: :btree
 
-  create_table "scripts", force: true do |t|
+  create_table "scripts", force: :cascade do |t|
     t.string  "name"
     t.integer "test_id"
     t.string  "language",  null: false
@@ -63,15 +74,15 @@ ActiveRecord::Schema.define(version: 20150521141159) do
   add_index "scripts", ["status_id"], name: "index_scripts_on_status_id", using: :btree
   add_index "scripts", ["test_id"], name: "index_scripts_on_test_id", using: :btree
 
-  create_table "statuses", force: true do |t|
+  create_table "statuses", force: :cascade do |t|
     t.string "status", null: false
   end
 
-  create_table "tests", force: true do |t|
+  create_table "tests", force: :cascade do |t|
     t.string "name", null: false
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -100,7 +111,7 @@ ActiveRecord::Schema.define(version: 20150521141159) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
-  create_table "visits", force: true do |t|
+  create_table "visits", force: :cascade do |t|
     t.string   "patient_number", null: false
     t.integer  "clinic_id",      null: false
     t.string   "username",       null: false

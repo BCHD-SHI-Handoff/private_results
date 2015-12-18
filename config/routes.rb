@@ -17,6 +17,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :audit_logs, only: [:index] do
+      collection do
+        get :export
+      end
+    end
+
     resources :clinics
     resources :scripts
 

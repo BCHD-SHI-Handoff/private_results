@@ -29,6 +29,12 @@ describe PatientsController, :type => :controller do
       expect(response).to render_template(:patients)
       expect(assigns(:patient_number)).to eq "33"
       expect(assigns(:visits).length).to eq 3
+
+      # Should have created an audit log entry
+      expect(AuditLog.all.length).to eq 1
+      expect(AuditLog.first.user_id).to eq @user.id
+      expect(AuditLog.first.user_email).to eq @user.email
+      expect(AuditLog.first.viewed_patient_number).to eq "33"
     end
 
   end

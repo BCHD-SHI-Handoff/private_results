@@ -81,6 +81,11 @@
                     <span class="glyphicon glyphicon-cog"></span> Scripts
                   <% end %>
                 </li>
+                <li class=<%= active_or_blank(audit_logs_path) %>>
+                  <%= link_to audit_logs_path do %>
+                    <span class="glyphicon glyphicon-file"></span> Audit Logs
+                  <% end %>
+                </li>
               <% end %>
             </ul>
           </div>
