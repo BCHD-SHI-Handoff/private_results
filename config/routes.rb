@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'online_results#index'
-  post 'results', to: 'online_results#show'
+  post '', to: 'online_results#show'
+  get 'results', to: 'online_results#results'
+  get 'results/timedout', to: 'online_results#timedout'
 
   scope '/admin' do
     as :user do

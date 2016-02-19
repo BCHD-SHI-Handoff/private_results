@@ -74,7 +74,7 @@ module SeedData
     Script.create({
       name: 'username_prompt_invalid',
       language: 'english',
-      message: "We couldn’t find the username '{{ username }}' in our system. If you think this is an error, please contact the clinic."
+      message: "We couldn’t find the username '{{ username }}' in our system. If you think this is an error, please contact the clinic. If your visit was recent, please try again tomorrow."
     })
 
     Script.create({
@@ -93,6 +93,18 @@ module SeedData
       name: 'password_prompt_invalid',
       language: 'english',
       message: "The password '{{ password }}' does not match the username '{{ username }}' that you provided. If you think this is an error, please contact the clinic."
+    })
+
+    Script.create({
+      name: 'online_not_found',
+      language: 'english',
+      message: "The password does not match the username that you provided. If you think this is an error, please contact the clinic. If your visit was recent, please try again tomorrow."
+    })
+
+    Script.create({
+      name: 'online_not_found',
+      language: 'spanish',
+      message: "The password does not match the username that you provided. If you think this is an error, please contact the clinic. If your visit was recent, please try again tomorrow."
     })
 
     Script.create({

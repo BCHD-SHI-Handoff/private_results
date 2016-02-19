@@ -1,6 +1,5 @@
 <div class="col-md-9 col-md-offset-3 main">
   <h4 class="instruction_login">Your results</h4>
-
   <div class="row">
     <div class="col-sm-8 col-md-8">
     <p><%= @message %></p>
@@ -10,3 +9,13 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Redirect page after a timeout.
+  setTimeout(
+    function() {
+      window.location.href='/results/timedout';
+    },
+    60000
+  );
+</script>

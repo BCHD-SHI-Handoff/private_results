@@ -140,3 +140,11 @@ span.glyphicon-sm {
   padding-top: 30px;
   padding-bottom: 30px;
 }
+
+.language-selection label {
+  margin-right: 10px;-
+}
+
+.language-selection label input {
+  margin-right: 3px;
+}

@@ -14,8 +14,8 @@ class Script < ActiveRecord::Base
   validates_uniqueness_of :status_id, scope: [:test_id, :language], conditions: -> { where(name: nil) }
   validates_uniqueness_of :language, scope: [:test_id, :status_id], conditions: -> { where(name: nil) }
 
-  # Name should be unique when it is not nil.
-  validates_uniqueness_of :name, conditions: -> { where.not(name: nil) }
+  # Name & language should be unique when it is not nil.
+  validates_uniqueness_of :name, scope: [:language], conditions: -> { where.not(name: nil) }
 
   def self.get_message(name, language = "english")
     Script.select(:message).find_by!(name: name, language: language).message
